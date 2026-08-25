@@ -2,7 +2,7 @@
 
 ##  Información Personal
 * **Nombre:** Pérez Collas
-* <img width="720" height="1280" alt="WhatsApp Image 2026-08-24 at 8 53 47 PM" src="https://github.com/user-attachments/assets/6adc984c-42f8-408d-ae1a-8401e9e93b49" />
+* <img width="150" alt="WhatsApp Image 2026-08-24 at 8 53 47 PM" src="https://github.com/user-attachments/assets/6adc984c-42f8-408d-ae1a-8401e9e93b49" />
 
 
 ---
