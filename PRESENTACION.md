@@ -15,3 +15,4 @@ Bienestar Games es un equipo enfocado en el desarrollo de videojuegos y experien
 | Nombre                      | Carpeta personal             |
 | --------------------------- | ---------------------------- |
 | José Manuel Moreno Carrillo | [/jose_moreno](/jose_moreno) |
+| Humberto Perez Collas       | .                            |
