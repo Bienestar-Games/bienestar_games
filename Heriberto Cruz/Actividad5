@@ -1,0 +1,27 @@
+Reflexión analítica: modelos GAP y PLAY aplicados a FIFA
+1. Introducción
+
+El videojuego seleccionado es FIFA (EA Sports), cuya audiencia va del jugador casual al competitivo que domina combinaciones de sticks. Esto lo hace un buen caso para aplicar GAP (Game Approachability Principles, Desurvire y Wiberg), que evalúa cómo un juego enseña a jugar, y PLAY (Principles of Game Playability, Desurvire, Chen y Wiberg), que evalúa cómo se construye la experiencia global.
+
+2. Cómo enseña a jugar (GAP)
+Practice / Demostración: Skill Games y entrenamiento libre antes de la temporada; íconos de botones contextuales durante los primeros minutos.
+Auto-eficacia: niveles de dificultad y asistencia de pase/tiro que permiten anotar y ganar pronto.
+Scaffolding (débil): hay explicaciones puntuales (fuera de lugar, faltas), pero si el jugador falla un regate avanzado varias veces, no recibe ayuda progresiva adicional.
+Sandbox: el modo Kick Off permite practicar sin afectar Carrera o Ultimate Team.
+Coolness / Información a tiempo: presentación tipo transmisión (cámaras, comentaristas) e indicadores en pantalla que aparecen justo cuando son relevantes.
+Transferencia de conocimiento / Auto-maestría: los Skill Games aíslan una mecánica a la vez, y la progresión hacia combinaciones de sticks refuerza el dominio gradual.
+3. Cómo construye la experiencia (PLAY)
+
+Game Play: varios modos (Carrera, Ultimate Team, Volta, Kick Off) evitan la repetición; sliders de dificultad balancean el reto; metas claras a corto y largo plazo. Punto débil: animaciones "asistidas" del motor a veces reducen la sensación de control del jugador.
+
+Coolness / Inmersión emocional: fuerte conexión por la identificación con clubes/jugadores reales, ambientación de estadio y narrativa de Carrera/Volta.
+
+Usabilidad y mecánicas: controles intuitivos y con retroalimentación inmediata (sonido, vibración). Punto débil: la navegación de menús alrededor de Ultimate Team es confusa, cargada por la exposición constante de micropagos.
+
+4. Reflexión final
+
+Problema detectado: falta de scaffolding progresivo ante fallos repetidos en mecánicas avanzadas, y una navegación de menús con fricción por la presión de compras en Ultimate Team, lo que afecta la percepción de control y equidad.
+
+Elemento positivo: el uso de Sandbox junto con la variedad de modos da a cada perfil de jugador una vía de entrada adecuada, sostenida por una inmersión audiovisual sobresaliente.
+
+Mejora propuesta: incorporar en Kick Off un tutorial adaptativo —Demostración → Práctica aislada → Refuerzo positivo → Scaffolding creciente— que se active solo cuando el sistema detecte fallos repetidos, sin interrumpir a quienes ya dominan la mecánica.
