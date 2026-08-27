@@ -1,0 +1,26 @@
+# Propuesta conceptual de videojuego — Sprint 2
+
+## Título tentativo
+**Último Minuto**
+
+## La idea
+Fútbol arcade (1v1 o hasta 3v3) donde controlas a un solo jugador a la vez y decides cuándo cambiarte a otro compañero.
+
+## Mecánica principal
+Cambiarte de jugador: sueltas al que controlas y tomas a otro en la cancha. El que dejas solo se mantiene en su posición, sin jugar por su cuenta.
+
+## Objetivo del jugador
+Meter más goles que el rival, estando siempre en el jugador que más conviene controlar en ese momento.
+
+## Reglas básicas
+- Partidos cortos (3-5 min por tiempo).
+- Solo te cambias a compañeros visibles o marcados en el radar.
+- Cambiar tiene un pequeño tiempo de espera (1-2 seg) para no abusar de ello.
+- Faltas y saques simples, sin buscar realismo.
+- El jugador soltado no dispara ni pasa por su cuenta.
+
+## Qué debe sentir el jugador
+Sentir que va un paso adelante, decidiendo constantemente a quién controlar. No es la diversión fácil de anotar, sino la satisfacción de decidir bien y a tiempo. Esto pasa porque solo puedes estar en un lugar a la vez: mientras controlas a uno, el resto del equipo queda algo vulnerable, y esa vulnerabilidad genera la tensión.
+
+## Por qué todo encaja
+Cambiar de jugador obliga a leer la cancha en vez de solo reaccionar al balón, y eso produce la tensión buscada. El tiempo de espera evita que se abuse del cambio, y que los compañeros no controlados hagan poco asegura que tú sigas siendo quien decide el partido. Nada se contradice: cada regla existe para sostener esa misma sensación.
