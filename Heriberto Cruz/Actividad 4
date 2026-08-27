@@ -1,0 +1,29 @@
+1. Ideas previas
+
+Antes de leer los textos, juzgaba un buen juego de forma intuitiva: diversión inmediata, dificultad balanceada, buena historia y controles que se sienten bien. Sabía reconocer cuándo un juego "funcionaba", pero no tenía un vocabulario ni una estructura para explicar por qué, ni para diagnosticar qué fallaba en uno que no funcionaba.
+
+2. Conceptos nuevos
+
+GAP se enfoca en la accesibilidad para el jugador novato en sus primeros minutos. Aporta ideas como:
+
+Sandbox sin consecuencias: espacio seguro para practicar antes de que el fallo cueste caro.
+Scaffolding: ayuda que empieza general y se vuelve específica solo si el jugador sigue atorado.
+Self-Efficacy: la confianza del jugador en poder lograr el objetivo, distinta de si el juego es "jugable".
+Information On Demand and In Time: la información debe estar disponible cuando se necesita, no solo una vez.
+La evaluación heurística y las pruebas con usuarios reales no compiten: cada una detecta problemas distintos y se complementan.
+
+PLAY amplía esto a la jugabilidad general, validado empíricamente con juegos bien y mal calificados. Aporta:
+
+Categorías evaluables (Game Play, Entretenimiento/Inmersión, Usabilidad/Mecánicas).
+"Fácil de aprender, difícil de dominar" como principio concreto.
+El jugador no debería necesitar leer el manual ni el tutorial para jugar.
+El error no debe penalizar repetidamente lo mismo; el desafío debe sentirse como logro.
+3. Aplicaciones al diseño
+Usar GAP como checklist desde la etapa conceptual, no solo al final.
+Incluir un sandbox sin consecuencias antes de mecánicas riesgosas.
+Dar Scaffolding progresivo: pistas generales primero, ayuda específica después.
+Combinar evaluación heurística temprana con pruebas de usuario antes de la entrega final.
+Revisar que la información crítica en pantalla no desaparezca tras mostrarse una vez.
+4. Conclusión
+
+Mis ideas previas no estaban mal, pero eran observaciones sueltas sin estructura. GAP y PLAY convierten "se siente raro" en categorías específicas y revisables. Lo más útil: evaluación heurística y pruebas de usuario se complementan, así que podemos usar GAP como checklist desde ahora en el proyecto de equipo y reservar pruebas reales para validar antes de la entrega final.
