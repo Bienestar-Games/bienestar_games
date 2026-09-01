@@ -14,8 +14,8 @@
 
 ## Reflexión
 
-**Problema detectado:** la curva de dificultad es un problema principalmente por los deathclaws hay zonas y niveles que requieren mejoras del personaje, otra cosa es que como rpg mucho contenido se queda sin explorar una vez se decide un camino/ habilidades se requiere un segundo run.
+**Problema detectado:** la curva de dificultad es un problema principalmente por los deathclaws hay zonas y niveles que requieren mejoras del personaje, otra cosa es que como rpg mucho contenido se queda sin explorar una vez se decide un camino / habilidades / perks / special points se requiere un segundo run, muy poca introducción al uso del pipboy, bancos de mejora de armas/munición, requerí ver tutoriales en muchas ocaciones para saber que habilidades tomar, otra cosa es que muchas veces quieres usar un arma o realizar una actividad tu SPECIAL limita mucho y las habilidades que tienes también por lo que se requiere pasarse el juego una vez para saber que decisiones tomar en el segundo run.
 
 **Elemento positivo:** el sistema de decisiones y reputación con facciones logra que el jugador sienta un control genuino sobre el mundo, reforzando la inmersión y la rejugabilidad.
 
-**Mejora propuesta:** añadir señalización más clara de zonas peligrosas (visual o narrativa) antes de que el jugador entre, permitiendo decisiones informadas sin sacrificar la libertad de exploración característica del juego ark survival hace esto al spawnear en el mapa.
+**Mejora propuesta:** añadir señalización más clara de zonas peligrosas (visual o narrativa) antes de que el jugador entre, permitiendo decisiones informadas sin sacrificar la libertad de exploración característica del juego ark survival hace esto al spawnear en el mapa, tener una guía más detallada (visual) pudiera ser un video introducir los caminos que puede tomar un jugador y darle a entender que cada decision que tome cuenta mucho para el final, pudiera ser como una cinta que se reprodujera en el pipboy, notas dinámicas, video introductorio de guía.
