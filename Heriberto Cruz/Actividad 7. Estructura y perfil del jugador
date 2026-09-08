@@ -1,0 +1,39 @@
+¿Para quién estamos diseñando?
+
+Hay una idea del artículo que revisamos en clase que se nos quedó grabada: un juego no está terminado en el código ni en la pantalla, se termina de armar cuando alguien lo juega y le encuentra sentido. Y eso nos obliga a hacernos una pregunta incómoda antes de ponernos a diseñar nada: ¿a quién le estamos hablando con este juego? Porque si tratamos de que le guste a todos por igual, corremos el riesgo de que no le importe a nadie en particular.
+
+Un plataformas 2D ya trae encima cierta tradición (Mario, Celeste, ese tipo de juegos), así que aquí la pregunta no es tanto "qué inventar" sino "a qué parte de esa tradición le queremos apostar".
+
+Pensando en las dimensiones de motivación que vimos con McKechnie-Martin et al. (2024), no queremos meter a nuestro jugador en una sola casilla fija tipo "es un explorador" o "es un competidor". Es más real pensarlo como alguien que trae varias motivaciones encima, con distinto peso. Aquí decidimos quedarnos con dos o tres y cuidarlas bien:
+
+Lo principal es competencia: dominar el salto, agarrarle el timing a una plataforma o a un enemigo, y sentir que ya lo pasaste limpio. Eso es básicamente el corazón de cualquier plataformas. Junto con eso hay algo de exploración, pero ligera: una moneda escondida, un atajo, un camino alterno que no es obligatorio pero que está ahí para quien quiera buscarlo. Y en tercer lugar, un poco de sensación cuando el ritmo de saltos se acelera en los tramos más difíciles.
+
+Lo que decidimos no perseguir: narrativa fuerte, sistemas sociales, nada de eso. Este juego se sostiene solo con la sensación de controlar bien al personaje y con las ganas de superar el siguiente reto de plataformeo.
+
+El contexto en el que se juega
+
+A diferencia de un juego móvil, este lo pensamos para PC, con teclado (y de forma opcional control), que es justo el esquema del tutorial de Alva Majo en el que nos estamos basando. Eso cambia bastante las cosas: en PC podemos pedir inputs más precisos —mantener presionado, soltar en el momento justo, doble tap— porque el teclado responde mejor que una pantalla táctil. También nos da margen para afinar la sensación del salto con cosas como coyote time o un pequeño buffer, detalles que en móvil serían mucho más difíciles de hacer sentir bien.
+
+Las sesiones aquí ya no son de "una más y ya" como en un endless runner. Son sesiones más largas, de varios minutos, donde el jugador recorre uno o varios niveles completos antes de parar. No hay tanta presión de interrupciones constantes como en móvil, así que podemos dejar que el ritmo respire un poco más.
+
+En experiencia pensamos en alguien casual-intermedio, algo que va de la mano con que este es, literalmente, "el primer juego 2D" del tutorial: tiene que ser accesible para alguien que nunca ha tocado un plataformas en serio, pero con secciones opcionales más exigentes para quien sí busca reto.
+
+Cómo ese perfil termina definiendo la estructura
+
+Aquí nos sirve mucho la idea de Schell de mirar cada mecánica desde la lente del jugador: no basta con que algo sea divertido de programar, tiene que servir a la experiencia que elegimos arriba. El loop principal nos quedó así:
+
+Explorar la escena → moverse y saltar entre plataformas → resolver el reto (una plataforma difícil, esquivar un enemigo) → llegar a un punto de control o al final del nivel → pasar al siguiente nivel, donde hay algo nuevo.
+
+Es un loop más largo que el de un runner, porque no depende de morir para reiniciar el ciclo completo: el jugador puede avanzar, devolverse un poco si se le escapó una moneda, tomarse su tiempo. Aun así, cada micro-reto sigue dando esa retroalimentación inmediata: si fallas un salto, lo sientes al instante y sabes exactamente por qué.
+
+Para la estructura general sí tiene sentido pensar en niveles, a diferencia de un runner sin fin. Aquí nos apoyamos en Scott Rogers y su idea de cómo se enseña una mecánica dentro de un nivel: primero se presenta sola, en un tramo corto y sin castigo fuerte, después se deja que el jugador la practique, y poco a poco se sube la exigencia combinándola con lo que ya aprendió. Aplicado a nuestro juego: los primeros niveles enseñan una sola mecánica a la vez —saltar, doble salto, una plataforma móvil—; los niveles intermedios empiezan a mezclar dos o tres de esas mecánicas, y ahí es donde entra la exploración, dejando espacio para rutas alternas sin que buscarlas sea obligatorio; y los niveles más avanzados suben el ritmo y piden más precisión, aprovechando todo lo que el jugador ya trae practicado.
+
+Sobre el ritmo y la dificultad
+
+Como las sesiones ya no son tan cortas, podemos pensar el ritmo por nivel en vez de por segundo. Cada nivel debería tener su propio arco: empezar tranquilo para que el jugador se acomode al patrón nuevo, subir la exigencia a la mitad, y cerrar con el reto más fuerte de ese nivel justo antes de pasar al siguiente. Esto evita algo que Rogers menciona bastante seguido: niveles "planos", donde el reto está parejo del principio al final y el jugador termina aburriéndose o frustrándose sin sentir que avanzó en nada.
+
+Para que la dificultad se sienta justa, los errores tienen que sentirse siempre culpa del jugador: colisiones claras, sin hitboxes tramposas, con suficiente aviso visual antes de un peligro nuevo. Si alguien casual pierde la confianza de que el juego juega limpio, difícilmente se queda a intentarlo de nuevo.
+
+En resumen
+
+Todo esto salió de hacernos la misma pregunta una y otra vez: ¿qué motivación queremos cuidar primero? Aquí decidimos cuidar la sensación de dominar el movimiento del personaje y las ganas de explorar un poco de más, y por eso el juego usa niveles con su propia curva de dificultad, un loop más largo que el de un runner, y fallos siempre justos y atribuibles al jugador. Si alguna mecánica no le aporta claramente a eso, probablemente no debería estar ahí.
