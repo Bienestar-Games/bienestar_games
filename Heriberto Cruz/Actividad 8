@@ -1,0 +1,45 @@
+1. Propuesta narrativa
+
+No queríamos inventar una historia grande para justificar el juego, sobre todo porque venimos de un tutorial pensado para aprender los fundamentos de Godot, no para contar una trama. Así que en vez de partir de una historia y buscarle mecánicas, hicimos el ejercicio al revés: partimos de lo que ya sabíamos que el juego hace bien —saltar, medir el timing, avanzar por plataformas— y le pusimos encima la narrativa mínima necesaria para que eso tenga sentido.
+
+Tema: aprender a confiar en el propio movimiento. No es una historia sobre un personaje que salva algo, es sobre alguien que todavía no domina su cuerpo en ese lugar y va ganando control conforme avanza.
+
+Mundo: una estructura vieja y a medio caer —puede ser ruinas, una torre, una mina, el asset que ya tengamos disponible— que no está hecha para caminarse con calma. El terreno mismo empuja al jugador a moverse rápido y con precisión: plataformas que ya no aguantan quietas, huecos, tramos que se activan con el movimiento.
+
+Conflicto: el lugar se está viniendo abajo (literal, no como metáfora forzada) y quedarse quieto o dudar es lo que te cuesta la partida. El conflicto no está en un enemigo con diálogo, está en la relación directa entre el jugador y el espacio.
+
+Meta del jugador: llegar al otro lado / a la salida de cada nivel antes de que esa sección termine de colapsar o se vuelva intransitable.
+
+Obstáculo principal: el propio terreno inestable — no un villano ni un monstruo, sino la certeza de que quedarse ahí no es opción. Eso nos evita tener que diseñar IA de enemigos complicada en esta primera versión y mantiene el foco donde queremos: el movimiento del jugador.
+
+Con esto ya no necesitamos ni un párrafo más de lore. El "por qué" del juego se resuelve jugando, no leyendo.
+
+2. Traducción a espacio
+
+Dónde ocurre: dentro de la estructura que se cae, en niveles verticales/horizontales cortos (según el tramo), siempre en interiores o semi-interiores para justificar visualmente por qué todo se derrumba alrededor.
+
+Los 3 verbos centrales:
+
+Saltar — el verbo base, ya viene del tutorial y es el corazón del control del personaje.
+Esquivar — moverse lateralmente o agacharse para evitar que una plataforma o escombro te alcance.
+Trepar / aferrarse (wall grab o similar) — para los tramos donde el suelo directamente desaparece y la única salida es lateral o hacia arriba.
+
+Elegimos solo tres a propósito: es un primer juego, y cada verbo nuevo implica animaciones, colisiones y casos límite adicionales. Tres verbos bien pulidos valen más que cinco a medias.
+
+Los 3 obstáculos centrales:
+
+Plataforma que cede — se cae o desaparece un momento después de que el jugador la pisa. Obliga a decidir rápido.
+Escombro / bloque que cae desde arriba — presión vertical, obliga a leer el nivel antes de moverse.
+Hueco que crece — una grieta o vacío que se hace más ancho con el tiempo, obliga a un salto con timing en vez de uno cómodo.
+
+Los tres nacen del mismo conflicto (la estructura colapsando), así que ninguno se siente pegado con cinta: todos son la misma amenaza expresada de formas distintas.
+
+Cómo escala: empezamos con los obstáculos apareciendo uno a la vez y con tiempo de sobra para reaccionar. Conforme avanzan los niveles, dos obstáculos empiezan a combinarse en el mismo tramo (por ejemplo, plataforma que cede justo antes de un hueco que crece), y el tiempo de reacción se reduce poco a poco. Guardamos la combinación de los tres obstáculos juntos para los últimos niveles, como el reto "final" que junta todo lo que el jugador ya practicó.
+
+3. Coherencia
+
+¿Alinea con el perfil de jugador? Sí. El perfil que definimos antes pedía cuidar sobre todo competencia (dominar el salto y el timing) y algo de exploración y sensación. Aquí no metimos narrativa pesada ni sistemas sociales que compitieran con eso, y el conflicto —el terreno mismo— refuerza justo la competencia de movimiento en vez de distraer con otra cosa.
+
+¿El ritmo es el adecuado? También cuadra con lo que ya habíamos definido: sesiones de varios minutos, con cada nivel teniendo su propio arco de tensión (empieza tranquilo, sube a la mitad, cierra con el reto más fuerte). El terreno colapsando nos da una razón narrativa natural para ese ritmo creciente, sin tener que forzarlo.
+
+¿La progresión es consistente? Sí: un verbo y un obstáculo a la vez al inicio, combinaciones de dos a la mitad, los tres juntos al final. Es la misma lógica de enseñar-practicar-combinar que ya habíamos usado para pensar los niveles, solo que ahora tiene una razón narrativa detrás (la estructura se derrumba cada vez más rápido) en vez de ser una subida de dificultad sin motivo aparente.
