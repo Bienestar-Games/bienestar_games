@@ -1,0 +1,67 @@
+# Documento de Diseño UI + Riesgos
+
+*Proyecto: juego de plataformas 2D en Godot 4*
+*Actividad 9 — Curso de Diseño de Videojuegos*
+
+## Introducción
+
+Este documento evalúa la viabilidad del proyecto de plataformas 2D a partir de dos ejes: la interfaz de usuario (UI) que sostiene la comunicación entre el sistema y el jugador, y los riesgos que podrían comprometer la experiencia si no se validan a tiempo. El juego es un prototipo individual construido en Godot 4, basado en la estructura de plataformas del tutorial de Alva Majo (movimiento, salto, colisiones y niveles con obstáculos), sobre la cual se definen aquí las decisiones de diseño propias.
+
+## 1. Concepto de UI: HUD, canales de información y feedback
+
+El HUD (Heads-Up Display) se mantiene minimalista para no competir visualmente con la acción de plataformeo, que depende de que el jugador lea el entorno con precisión. La información se organiza en tres canales complementarios:
+
+- **Canal permanente (HUD fijo):** vidas y monedas, siempre visibles, para que el jugador conozca su margen de error sin interrumpir el juego.
+- **Canal contextual (feedback en el mundo):** prompts de acción, brillos en plataformas interactuables y animaciones del personaje (aterrizaje, impacto, salto) que comunican estado sin texto.
+- **Canal transitorio (eventos):** mensajes breves de checkpoint alcanzado, nivel completado o reinicio, que aparecen y desaparecen para no acumularse en pantalla.
+
+La siguiente tabla resume los elementos del HUD y su función:
+
+| Elemento HUD | Ubicación | Información que comunica | Cuándo se actualiza |
+|---|---|---|---|
+| Barra/contador de vidas | Esquina superior izquierda | Cuántos golpes/errores puede absorber el jugador antes de reiniciar el checkpoint | Al recibir daño o perder una vida |
+| Contador de monedas/gemas | Esquina superior derecha | Progreso de recolección en el nivel actual | Al recoger un objeto |
+| Indicador de checkpoint | Aparece brevemente en el centro-superior | Confirma que el progreso quedó guardado | Al tocar una bandera/punto de guardado |
+| Prompt de acción contextual | Centro-inferior, cerca del personaje | Qué botón usar frente a una palanca, puerta o borde de salto | Al entrar en el rango de un objeto interactivo |
+| Pantalla de pausa/menú | Overlay a pantalla completa | Estado del nivel, opción de reiniciar o salir | Al presionar el botón de pausa |
+
+El principio que guía estas decisiones es el de retroalimentación inmediata que describe Schell: cada acción relevante del jugador (saltar, recibir daño, recolectar, morir) produce una respuesta perceptible en menos de un frame de diferencia perceptible, ya sea sonora, visual o ambas, para que el jugador nunca dude si su input fue registrado.
+
+## 2. Loop principal de interacción
+
+El loop central sigue la estructura clásica de plataformas, ajustada al alcance del prototipo:
+
+1. **Observar:** el jugador lee la plataforma, el hueco o el enemigo que tiene delante usando las señales visuales del nivel (color, distancia, sombra de aterrizaje).
+2. **Decidir y ejecutar:** aplica movimiento horizontal y/o salto (incluyendo variantes como salto con control de altura o coyote time, si el tutorial base lo contempla).
+3. **Recibir feedback:** el sistema confirma el resultado —aterrizaje limpio, golpe recibido, moneda recolectada o caída— mediante animación, sonido y actualización del HUD.
+4. **Ajustar el modelo mental:** el jugador actualiza lo que cree sobre el nivel (qué tan lejos llega su salto, qué obstáculos son letales) y usa ese aprendizaje en el siguiente segmento.
+
+Este ciclo se repite en escalas anidadas: segundo a segundo dentro de un mismo salto, y a nivel de sesión completa conforme el jugador progresa entre checkpoints. La UI no participa en la decisión de movimiento (eso ocurre en el mundo del juego), pero sí en las etapas 3 y 4, que es donde el HUD y el feedback contextual entregan la información necesaria para que el aprendizaje del jugador sea preciso.
+
+## 3. Dinámicas asociadas y cómo la UI las regula
+
+**Dinámica de riesgo-recompensa:** monedas o gemas colocadas en rutas alternativas más peligrosas (cerca de huecos o enemigos) generan una decisión de exploración vs. seguridad. El contador de monedas visible en todo momento es lo que hace legible esa recompensa antes de tomar el riesgo; sin el contador, la dinámica pierde sentido porque el jugador no puede evaluar el costo-beneficio.
+
+**Dinámica de progreso y pérdida acotada:** el sistema de vidas limita los intentos antes de perder avance, pero el checkpoint acota esa pérdida a un segmento corto del nivel. El indicador de checkpoint (evento transitorio) es lo que le permite al jugador anticipar cuánto retrocederá si falla, reduciendo la frustración y sosteniendo la dinámica de "reintentar rápido" que caracteriza al género.
+
+**Dinámica de dominio de la mecánica (mastery):** conforme el jugador repite el loop de salto, va afinando su percepción de distancias y tiempos. Los prompts contextuales solo aparecen la primera vez que se encuentra un tipo de obstáculo o mecánica, y luego se retiran; esto regula la dinámica para que la ayuda no se sienta condescendiente una vez que la habilidad ya se adquirió.
+
+## 4. Principal riesgo del diseño
+
+El riesgo más alto no es técnico sino de experiencia: **la legibilidad del salto**. En un plataformero, si el jugador no puede predecir con precisión el alcance y la altura de su salto a partir de las señales visuales del nivel, cualquier muerte se percibe como injusta ("culpa del juego") en vez de como un error propio, sin importar qué tan pulido esté el resto del HUD. Este riesgo es crítico porque no se corrige agregando más interfaz: un HUD más grande o más texto no arregla un salto ilegible, y de hecho puede empeorar la lectura del nivel al saturar la pantalla.
+
+**Cómo se validaría con un prototipo:** un playtest de bajo costo con 4-6 personas ajenas al desarrollo, usando 2-3 niveles cortos que combinen huecos y plataformas de distinta distancia. Se mediría: (a) número de muertes por segmento, (b) si el jugador verbaliza sorpresa ("no pensé que llegaba") en el momento del fallo, y (c) tiempo de recuperación tras morir. Un umbral simple —por ejemplo, más de 3 muertes "por sorpresa" en el mismo segmento entre distintos jugadores— indicaría que el problema es de diseño de nivel/física y no de habilidad individual, y dispararía un ajuste (retocar el arco de salto, añadir una señal visual de aterrizaje, o rediseñar el segmento).
+
+## 5. Trade-off explícito
+
+**Legibilidad vs. minimalismo visual.** Añadir más señales explícitas (sombra de aterrizaje proyectada, marcador de distancia máxima de salto, líneas guía) mejora la legibilidad del salto y reduce el riesgo descrito arriba, pero satura visualmente el nivel y puede romper la estética limpia que se busca en un plataformero centrado en la habilidad física del jugador. Priorizar minimalismo reduce el riesgo de saturación visual, pero aumenta la probabilidad de muertes "injustas" mientras el jugador aún no domina el timing.
+
+**Decisión adoptada:** usar la sombra de aterrizaje solo como señal implícita en el arte del nivel (no como elemento de HUD), y reservar señales explícitas de UI únicamente para los primeros dos niveles del prototipo, donde el jugador todavía está calibrando su percepción del salto. En niveles posteriores estas señales se retiran, apostando a que el dominio de la mecánica (dinámica descrita en la sección 3) ya compensa la pérdida de ayuda visual.
+
+## 6. Justificación de decisiones
+
+Las decisiones anteriores se sostienen en dos criterios convergentes. Primero, el criterio de Schell de que la interfaz debe desaparecer cuando no es necesaria: cada elemento de UI que se agregó (prompts contextuales, señales tempranas de salto) tiene una condición explícita de retiro, evitando que el HUD crezca indefinidamente conforme se agregan mecánicas. Segundo, el criterio de Salen & Zimmerman sobre las reglas implícitas y explícitas de un sistema: las dinámicas de riesgo-recompensa y de dominio de la mecánica solo funcionan si la regla relevante (cuánto vale un riesgo, cuándo se retira la ayuda) es visible en el momento en que el jugador la necesita y no antes ni después. Priorizar el riesgo de legibilidad del salto sobre otros riesgos más técnicos (por ejemplo, rendimiento o bugs de colisión) se justifica porque este prototipo corre sobre una base ya probada por el tutorial de referencia, mientras que el diseño de niveles y la calibración del salto son enteramente decisiones propias y, por lo tanto, la fuente de incertidumbre más alta del proyecto.
+
+## Conclusión
+
+El diseño de UI propuesto es deliberadamente austero: prioriza que el jugador siempre sepa cuántos errores puede cometer (vidas), cuánto ha progresado (monedas, checkpoints) y qué puede hacer en cada momento (prompts contextuales retirables), sin saturar la pantalla. El riesgo principal —la legibilidad del salto— se aborda con un plan de validación concreto y de bajo costo, y el trade-off entre legibilidad y minimalismo se resuelve escalonando la ayuda visual a lo largo de los primeros niveles en lugar de aplicarla de forma uniforme.
