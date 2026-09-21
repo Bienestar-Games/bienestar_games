@@ -16,5 +16,5 @@ Bienestar Games es un equipo enfocado en el desarrollo de videojuegos y experien
 | --------------------------- | ---------------------------- |
 | José Manuel Moreno Carrillo | [/jose_moreno](/jose_moreno) |
 | Humberto Perez Collas       | https://github.com/perezcollas/repopersonal.git
-|Heriberto Daniel Cruz Perez |  https://github.com/Bienestar-Games/bienestar_games/tree/dev/Heriberto%20Cruz |
-
+|Heriberto Daniel Cruz Perez  | https://github.com/Bienestar-Games/bienestar_games/tree/dev/Heriberto%20Cruz |
+|Juan Pablo Ceja Covarrubias  | https://github.com/Bienestar-Games/bienestar_games/tree/dev/Juan_Pablo |
