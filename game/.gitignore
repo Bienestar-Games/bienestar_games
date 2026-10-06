@@ -1,0 +1,14 @@
+# Godot 4+
+.godot/
+.nomedia
+
+# Exportación
+export_credentials.cfg
+
+# Traducciones importadas (generadas desde CSV)
+*.translation
+
+# Mono
+.mono/
+data_*/
+mono_crash.*.json
