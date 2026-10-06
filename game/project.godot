@@ -11,4 +11,5 @@ config_version=5
 [application]
 
 config/name="Death Border"
+run/main_scene="uid://bnpugrgd547nj"
 config/features=PackedStringArray("4.7")

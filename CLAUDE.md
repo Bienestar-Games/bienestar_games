@@ -33,7 +33,7 @@ bienestar_games/
 
 El proyecto Godot vive en `game/` para no mezclarse con las carpetas personales. Abrir siempre `game/project.godot`. Todas las rutas `res://` de abajo son relativas a `game/`.
 
-> Origen: el código base (`BaseCharacter`, `Weapon`, `Magazine`, `InventoryController`, `EnemySpawnZone`, máquinas de estados) viene del prototipo `JosManMor/death_border`. Al migrarlo a `game/`, mueve los archivos **desde el editor de Godot** (FileSystem → arrastrar) para que se actualicen las referencias y los UIDs.
+> El proyecto se empieza **desde cero**. Las clases que el GDD marca como "ya implementadas" (`BaseCharacter`, `Weapon`, `Magazine`, `InventoryController`, `EnemySpawnZone`, estados del jugador) vienen de otro proyecto y aquí hay que construirlas. Para mover archivos usa siempre el editor de Godot (FileSystem → arrastrar), así se actualizan las referencias y los UIDs.
 
 ## Estructura del proyecto Godot (`game/`)
 
@@ -129,7 +129,7 @@ game/
 ## Convenciones
 
 ### Nombres
-- **Archivos y carpetas**: `snake_case` (`melee_fast.tscn`, `game_loop_manager.gd`). Sin mayúsculas, espacios ni acentos. Hay que renombrar `Player.tscn` → `player.tscn`.
+- **Archivos y carpetas**: `snake_case` (`melee_fast.tscn`, `game_loop_manager.gd`). Sin mayúsculas, espacios ni acentos.
 - **`class_name`**: `PascalCase` (`BaseCharacter`, `ItemData`, `WaveManager`).
 - **Nodos en escena**: `PascalCase` (`HitBox`, `NavigationAgent2D`, `HealthBar`).
 - **Señales**: en pasado y `snake_case` (`died`, `wave_ended`, `barrier_opened`, `extraction_cancelled`).
@@ -150,7 +150,10 @@ Todas las acciones se definen en el **InputMap**, nunca con teclas directas en e
 - `main`: solo versiones estables y entregas (etiquetas `v0.1-prototipo`…).
 - `dev`: integración. Todos los PR apuntan aquí.
 - Ramas de trabajo: `feature/B<nn>-descripcion-corta` (p. ej. `feature/B15-barrier-interaction`), `fix/B<nn>-...`, `docs/...`.
-- Commits con Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`. Referencia la issue en el commit: `feat: barrera con mantener F (#15)`.
+- Commits **convencionales** (Conventional Commits) con el formato `tipo: descripción (#issue)`:
+  - `feat`: funcionalidad nueva · `fix`: corrección de bug · `refactor`: cambio de código sin cambio de comportamiento
+  - `docs`: documentación · `chore`: configuración, estructura, assets · `test`: escenas de prueba
+  - Ejemplo: `feat: barrera con mantener F (#15)`.
 - Para evitar conflictos en `.tscn`, no editen la misma escena en dos ramas a la vez. Coordinen en la issue quién toca `main.tscn` y `refugio.tscn`.
 
 ### Git y Godot
@@ -159,5 +162,5 @@ Todas las acciones se definen en el **InputMap**, nunca con teclas directas en e
 - Las carpetas vacías llevan un `.gitkeep` hasta que tengan contenido.
 
 ## Notas técnicas
-- Renderer: el prototipo heredado usa `Mobile`, pero el objetivo es PC (§1). Valorar `Forward+` o `Compatibility` antes de exportar (B41).
+- Renderer: el objetivo es PC (§1). Hay que confirmar `Forward+` o `Compatibility` antes de exportar (B41).
 - Los valores numéricos de balance aún no están definidos (ver cierre del GDD). Empiecen con los del MVP §8 en `balance_config.tres` y ajústenlos tras el playtest (B40).
