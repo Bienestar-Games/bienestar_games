@@ -1,0 +1,6 @@
+# Exportaciones locales del juego
+builds/
+
+# Sistema
+.DS_Store
+Thumbs.db
