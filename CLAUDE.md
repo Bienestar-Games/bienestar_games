@@ -1,6 +1,17 @@
 # CLAUDE.md
 
-Guía para trabajar en este repositorio. Responder y documentar en español.
+Guía para trabajar en este repositorio. Responder al equipo en español.
+
+## Idioma
+
+**Todo lo que se produzca para el juego va en inglés**:
+- Código: identificadores, nombres de archivos y carpetas, nodos, señales, acciones del InputMap.
+- Comentarios y documentación del código (`##` docstrings).
+- Mensajes de commit, ramas, títulos y descripciones de PR.
+- Documentación nueva en `docs/`.
+- Textos de UI del juego.
+
+Excepciones, que se quedan en español: el GDD (`gdd/`), las carpetas personales de actividades y este `CLAUDE.md`.
 
 ## Proyecto
 
@@ -65,7 +76,7 @@ game/
 ├── scenes/
 │   ├── main/                        # main.tscn: escena raíz que instancia mapa + HUD + managers (B38)
 │   ├── maps/
-│   │   └── refugio/                 # refugio.tscn: TileMap, colisiones, NavigationRegion2D (B03)
+│   │   └── shelter/                 # shelter.tscn (refugio): TileMap, colisiones, NavigationRegion2D (B03)
 │   ├── entities/
 │   │   ├── base_character.gd        # class_name BaseCharacter (base_health, daño, muerte)
 │   │   ├── player/                  # Kade: player.tscn/.gd, sprite frames
@@ -135,7 +146,6 @@ game/
 - **Señales**: en pasado y `snake_case` (`died`, `wave_ended`, `barrier_opened`, `extraction_cancelled`).
 - **Estados**: `<entidad>_<estado>_state.gd` (`player_decision_state.gd`, `enemy_chasing_state.gd`).
 - **Constantes**: `UPPER_SNAKE_CASE`. **Variables y funciones privadas**: con prefijo `_`.
-- Identificadores de código en inglés; textos de UI y documentación en español.
 
 ### Escenas
 - Una escena = una responsabilidad. Instancia las escenas, no copies nodos.
@@ -149,12 +159,12 @@ Todas las acciones se definen en el **InputMap**, nunca con teclas directas en e
 ### Ramas y commits
 - `main`: solo versiones estables y entregas (etiquetas `v0.1-prototipo`…).
 - `dev`: integración. Todos los PR apuntan aquí.
-- Ramas de trabajo: `feature/B<nn>-descripcion-corta` (p. ej. `feature/B15-barrier-interaction`), `fix/B<nn>-...`, `docs/...`.
-- Commits **convencionales** (Conventional Commits) con el formato `tipo: descripción (#issue)`:
+- Ramas de trabajo: `feature/B<nn>-short-description` (p. ej. `feature/B15-barrier-interaction`), `fix/B<nn>-...`, `docs/...`.
+- Commits **convencionales** (Conventional Commits) con el formato `type: description (#issue)`, en inglés:
   - `feat`: funcionalidad nueva · `fix`: corrección de bug · `refactor`: cambio de código sin cambio de comportamiento
   - `docs`: documentación · `chore`: configuración, estructura, assets · `test`: escenas de prueba
-  - Ejemplo: `feat: barrera con mantener F (#15)`.
-- Para evitar conflictos en `.tscn`, no editen la misma escena en dos ramas a la vez. Coordinen en la issue quién toca `main.tscn` y `refugio.tscn`.
+  - Ejemplo: `feat: hold F to open barrier (#15)`.
+- Para evitar conflictos en `.tscn`, no editen la misma escena en dos ramas a la vez. Coordinen en la issue quién toca `main.tscn` y `shelter.tscn`.
 
 ### Git y Godot
 - `.gitignore` dentro de `game/`: `.godot/`, `*.translation`, `export_credentials.cfg`; en la raíz: `builds/`.
