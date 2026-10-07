@@ -1,0 +1,6 @@
+Paleta Graybox - Refugio (Sprint 1)
+Referencia GDD v1: §8
+
+- Suelos: Utilizar los tiles de piso base del Tilesheet/PNG de Kenney.
+- Muros / Colisiones: Utilizar los bloques de paredes sólidos del Tilesheet.
+- Objetivo: Prototipar la distribución inicial del mapa de shelter antes del arte final.
