@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dj4m8xbarrier1"]
+
+[ext_resource type="Texture2D" uid="uid://b6kuekcaunf8n" path="res://assets/kenney/PNG/Tiles/tile_169.png" id="1_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_barrier"]
+size = Vector2(64, 64)
+
+[node name="Barrier" type="StaticBody2D"]
+collision_layer = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_barrier")
