@@ -1,13 +1,9 @@
 [gd_scene format=3 uid="uid://bnpugrgd547nj"]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://c4smparqxu5uu" path="res://scenes/maps/shelter/shelter.tscn" id="2_shelter"]
-[ext_resource type="PackedScene" uid="uid://wsbq46vhfxa7" path="res://entities/player/Player.tscn" id="3_player"]
+[ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
 script = ExtResource("1_main")
 
-[node name="Shelter" parent="." instance=ExtResource("2_shelter")]
-
-[node name="Player" parent="." instance=ExtResource("3_player")]
-position = Vector2(320, 320)
+[node name="PuebloViejo" parent="." instance=ExtResource("2_map")]
