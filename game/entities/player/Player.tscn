@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://dhijj4cgqwuby" path="res://scripts/states/player/on_inventory_state.gd" id="7_ppr6r"]
 [ext_resource type="Script" uid="uid://ddphrtlthrtol" path="res://scripts/states/player/moving.gd" id="8_rqk8h"]
 [ext_resource type="Texture2D" uid="uid://cq11hks0hvltr" path="res://assets/sprites/player/character.png" id="8_rx1o7"]
+[ext_resource type="Script" path="res://entities/player/states/player_decision_state.gd" id="9_decision"]
+[ext_resource type="Script" path="res://entities/player/states/player_extracting_state.gd" id="10_extract"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8lruo"]
 radius = 11.045361
@@ -311,6 +313,14 @@ inventory_controller = NodePath("../../InventoryController")
 
 [node name="Moving" type="Node" parent="StateMachine" unique_id=1971325715 node_paths=PackedStringArray("player")]
 script = ExtResource("8_rqk8h")
+player = NodePath("../..")
+
+[node name="Decision" type="Node" parent="StateMachine" unique_id=500000001 node_paths=PackedStringArray("player")]
+script = ExtResource("9_decision")
+player = NodePath("../..")
+
+[node name="Extracting" type="Node" parent="StateMachine" unique_id=500000002 node_paths=PackedStringArray("player")]
+script = ExtResource("10_extract")
 player = NodePath("../..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1282814956]
