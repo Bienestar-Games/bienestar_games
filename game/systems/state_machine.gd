@@ -32,5 +32,14 @@ func on_child_transition(state, new_state_name):
 	if current_state:
 		current_state.exit()
 	new_state.enter()
-	
+	current_state = new_state
+
+# Bypasses the current-state guard — use for global transitions triggered externally
+func force_transition(new_state_name: String) -> void:
+	var new_state = states.get(new_state_name.to_lower())
+	if !new_state:
+		return
+	if current_state:
+		current_state.exit()
+	new_state.enter()
 	current_state = new_state
