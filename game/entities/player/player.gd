@@ -42,8 +42,8 @@ func aim(pos: Vector2):
 	
 
 func _player_input():
-	move_direction.x = int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
-	move_direction.y = int(Input.is_action_pressed("down")) - int(Input.is_action_pressed("up"))	
+	move_direction.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
+	move_direction.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
 
 func handle_animation(state: String):
 	
