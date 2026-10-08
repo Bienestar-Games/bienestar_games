@@ -9,12 +9,41 @@ extends BaseCharacter
 @onready var _state_machine = $StateMachine
 #@onready var head = %Head
 
+var _weapons: Array[Weapon] = []
+var _current_weapon_index: int = 0
+
 func _ready() -> void:
 	died.connect(_on_died)
 	Events.decision_phase_started.connect(_on_decision_phase_started)
 	Events.wave_started.connect(_on_wave_started)
 	Events.extraction_started.connect(_on_extraction_started)
 	Events.extraction_cancelled.connect(_on_extraction_cancelled)
+	_init_weapons()
+
+func _init_weapons() -> void:
+	for child in f_arm_2.get_children():
+		if child is Weapon:
+			_weapons.append(child)
+	_update_active_weapon()
+
+func _update_active_weapon() -> void:
+	for i in _weapons.size():
+		var w: Weapon = _weapons[i]
+		var active: bool = (i == _current_weapon_index)
+		w.process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
+		w.visible = active
+
+func switch_weapon(index: int) -> void:
+	if _weapons.is_empty() or index == _current_weapon_index:
+		return
+	_current_weapon_index = clamp(index, 0, _weapons.size() - 1)
+	_update_active_weapon()
+
+func switch_to_next_weapon() -> void:
+	if _weapons.is_empty():
+		return
+	_current_weapon_index = (_current_weapon_index + 1) % _weapons.size()
+	_update_active_weapon()
 
 func _on_died() -> void:
 	GameLoopManager.end_run(false)
@@ -39,14 +68,14 @@ func aim(pos: Vector2):
 		f_arm_2.rotation = lerp_angle(f_arm_2.rotation, (pos - aim_pivot.global_position).angle(), (0.10))
 	b_arm_2.look_at(hand.global_position)
 	#head.look_at(pos)
-	
+
 
 func _player_input():
 	move_direction.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
 	move_direction.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
 
 func handle_animation(state: String):
-	
+
 	match state:
 		"moving":
 			animation_tree["parameters/conditions/idle"] = false
@@ -56,4 +85,3 @@ func handle_animation(state: String):
 			animation_tree["parameters/conditions/moving"] = false
 			animation_tree["parameters/conditions/idle"] = true
 			animation_tree["parameters/Moving/blend_position"] = Vector2.ZERO
-	
