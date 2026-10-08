@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bua6gpddif372"]
+
+[ext_resource type="Texture2D" uid="uid://dyb2djib33yks" path="res://assets/sprites/consumables/consumables.png" id="1_1wru1"]
+[ext_resource type="Script" uid="uid://dn70l7hhh7lpa" path="res://scenes/inventory_controller/actions/consumable_action.gd" id="1_2scbg"]
+[ext_resource type="Script" uid="uid://btxfpoa22ofmv" path="res://scenes/inventory_controller/item_data.gd" id="2_culw2"]
+
+[sub_resource type="Resource" id="Resource_28vty"]
+script = ExtResource("1_2scbg")
+modifier_name = "Bandage"
+modifier_value = 100
+metadata/_custom_type_script = "uid://dn70l7hhh7lpa"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fbdut"]
+size = Vector2(19, 15)
+
+[node name="Health" type="Node2D" unique_id=648923726]
+script = ExtResource("2_culw2")
+item_name = "bandage"
+item_icon = ExtResource("1_1wru1")
+action_data = SubResource("Resource_28vty")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1002464090]
+texture = ExtResource("1_1wru1")
+hframes = 2
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1948202501]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1723586093]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_fbdut")

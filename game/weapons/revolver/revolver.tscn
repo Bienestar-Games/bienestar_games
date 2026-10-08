@@ -1,0 +1,291 @@
+[gd_scene format=3 uid="uid://cuuy4bp8vbbwx"]
+
+[ext_resource type="Script" uid="uid://7w5l71jmggwx" path="res://scenes/weapons/weapon.gd" id="1_y8ai0"]
+[ext_resource type="PackedScene" uid="uid://4avysv4k1817" path="res://scenes/weapons/bullets/pistol_bullet/pistol_bullet.tscn" id="2_x7leg"]
+[ext_resource type="PackedScene" uid="uid://nyi04k3g41gv" path="res://scenes/weapons/magazine/magazine.tscn" id="4_6iuvm"]
+[ext_resource type="Texture2D" uid="uid://blullsoec4ky7" path="res://assets/sprites/weapons/revolver/shoot_animation.png" id="4_x7leg"]
+[ext_resource type="AudioStream" uid="uid://dy4kkgetnsjso" path="res://assets/effects/weapons/revolver/freesound_community-single-pistol-gunshot-33-37187.mp3" id="5_wvb0v"]
+[ext_resource type="AudioStream" uid="uid://d1qmq4i3711rb" path="res://assets/effects/weapons/revolver/spinopel-dry-fire-gun-364844.mp3" id="7_6iuvm"]
+[ext_resource type="AudioStream" uid="uid://bumkb0ly60f5a" path="res://assets/effects/weapons/revolver/freesound_community-clean-revolver-reload-6889.mp3" id="8_4d2n8"]
+[ext_resource type="Script" uid="uid://sn6cuh3pac12" path="res://scripts/states/state_machine.gd" id="10_4vrqk"]
+[ext_resource type="Script" uid="uid://bxcmy6kulqf43" path="res://scripts/states/weapon/weapon_idle_state.gd" id="11_xbswl"]
+[ext_resource type="Script" uid="uid://cvph7k10awnt8" path="res://scripts/states/weapon/weapon_shooting_state.gd" id="12_x7leg"]
+[ext_resource type="Script" uid="uid://dvvhuve8e1sxn" path="res://scripts/states/weapon/weapon_reloading_state.gd" id="13_wd8iu"]
+
+[sub_resource type="Animation" id="Animation_6iuvm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponRoot/FlipContainer/Muzzle/CPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponRoot/FlipContainer:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.8794241]
+}
+
+[sub_resource type="Animation" id="Animation_gjuct"]
+resource_name = "dry_shoot"
+length = 0.13333334
+step = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponRoot/FlipContainer/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.075, 0.09),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SFX")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.4007,
+"start_offset": 0.1,
+"stream": ExtResource("7_6iuvm")
+}],
+"times": PackedFloat32Array(0.0040000007)
+}
+tracks/1/use_blend = true
+
+[sub_resource type="Animation" id="Animation_4vrqk"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_brjjw"]
+resource_name = "reload"
+length = 2.275
+step = 0.025
+markers = [{
+"color": Color(1, 1, 1, 1),
+"name": &"new_marker_2",
+"time": 0.58286726
+}, {
+"color": Color(1, 1, 1, 1),
+"name": &"new_marker",
+"time": 0.22065689
+}]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponRoot/FlipContainer:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.049999997, 0.2, 0.6, 1.1999999, 1.3, 1.425, 2.125, 2.725, 3),
+"transitions": PackedFloat32Array(-0.5, 1, 1, -2, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.847588, -0.8482300164692446, 1.4992378274631286, 1.1815879036001609, 1.2758356832078552, 0.0, 0.0, -6.370451769779303]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponRoot/FlipContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WeaponRoot/FlipContainer/Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.00999999, 0.049999997, 0.099999994, 0.25, 0.3, 0.35, 0.4, 0.44999996, 0.475, 0.5, 0.525, 0.88251644, 0.9325165, 0.98251647, 1.0825164, 1.2910914, 1.4410915, 1.5410914, 1.625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 4, 5, 6, 11, 12, 13, 14, 15, 16, 6, 7, 8, 9, 10, 6, 5, 4, 0]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SFX")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.6841,
+"start_offset": 0.45,
+"stream": ExtResource("8_4d2n8")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
+
+[sub_resource type="Animation" id="Animation_uwxth"]
+resource_name = "shoot"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponRoot/FlipContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0972, 0.16242962, 0.3, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-20, -20), Vector2(-10, -10), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponRoot/FlipContainer:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0972, 0.14990614, 0.18371071, 0.2629928, 0.48785204, 0.8158144),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -1.0663961729685358, -0.3839724354387525, -0.5829399701661057, -0.28274333882308117, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WeaponRoot/FlipContainer/Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.075, 0.09),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SFX")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.4357,
+"start_offset": 0.045,
+"stream": ExtResource("7_6iuvm")
+}, {
+"end_offset": 1.5505704,
+"start_offset": 0.1013,
+"stream": ExtResource("5_wvb0v")
+}],
+"times": PackedFloat32Array(0.024, 0.15738346)
+}
+tracks/3/use_blend = true
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WeaponRoot/FlipContainer/Muzzle/CPUParticles2D:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uwxth"]
+_data = {
+&"RESET": SubResource("Animation_6iuvm"),
+&"dry_shoot": SubResource("Animation_gjuct"),
+&"idle": SubResource("Animation_4vrqk"),
+&"reload": SubResource("Animation_brjjw"),
+&"shoot": SubResource("Animation_uwxth")
+}
+
+[node name="Revolver" type="Node2D" unique_id=1687305472 node_paths=PackedStringArray("magazine", "muzzle", "_animation_player", "_weapon_root", "shoot_cd", "reload_cd")]
+y_sort_enabled = true
+script = ExtResource("1_y8ai0")
+magazine = NodePath("Magazine")
+bullet_scene = ExtResource("2_x7leg")
+muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")
+_animation_player = NodePath("AnimationPlayer")
+_weapon_root = NodePath("WeaponRoot")
+shoot_cd = NodePath("ShootCooldown")
+reload_cd = NodePath("ReloadCooldown")
+
+[node name="ShootCooldown" type="Timer" parent="." unique_id=298395638]
+one_shot = true
+
+[node name="ReloadCooldown" type="Timer" parent="." unique_id=1386006205]
+wait_time = 2.28
+one_shot = true
+
+[node name="SFX" type="AudioStreamPlayer" parent="." unique_id=1845661700]
+bus = &"SFX"
+
+[node name="Magazine" parent="." unique_id=1664022930 instance=ExtResource("4_6iuvm")]
+
+[node name="WeaponRoot" type="Node2D" parent="." unique_id=1754980855]
+
+[node name="FlipContainer" type="Node2D" parent="WeaponRoot" unique_id=1280959034]
+rotation = -0.8794241
+
+[node name="Muzzle" type="Node2D" parent="WeaponRoot/FlipContainer" unique_id=1722883685]
+position = Vector2(12, -5)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="WeaponRoot/FlipContainer/Muzzle" unique_id=1536148649]
+position = Vector2(3, 1)
+emitting = false
+amount = 10
+explosiveness = 0.9
+direction = Vector2(1, -1)
+spread = 21.0
+gravity = Vector2(0, -50)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+color = Color(0.57449776, 0.5901394, 0.6189884, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="WeaponRoot/FlipContainer" unique_id=296474174]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_x7leg")
+hframes = 5
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1374679150]
+libraries/ = SubResource("AnimationLibrary_uwxth")
+
+[node name="StateMachine" type="Node" parent="." unique_id=414248360 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("10_4vrqk")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1520326578 node_paths=PackedStringArray("weapon")]
+script = ExtResource("11_xbswl")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://bxcmy6kulqf43"
+
+[node name="Reloading" type="Node" parent="StateMachine" unique_id=648531541 node_paths=PackedStringArray("weapon")]
+script = ExtResource("13_wd8iu")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://dvvhuve8e1sxn"
+
+[node name="Shooting" type="Node" parent="StateMachine" unique_id=1691282505 node_paths=PackedStringArray("weapon")]
+script = ExtResource("12_x7leg")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://cvph7k10awnt8"

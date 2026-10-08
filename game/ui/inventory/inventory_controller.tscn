@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://c8glw31h4fpf6"]
+
+[ext_resource type="Texture2D" uid="uid://1kikk2k1ukv7" path="res://assets/sprites/player/inventory.png" id="1_6kso5"]
+[ext_resource type="Script" uid="uid://dyb1fw2xx7l4h" path="res://scenes/inventory_controller/inventory_controller.gd" id="1_a4xqk"]
+[ext_resource type="PackedScene" uid="uid://bitdfubg02rl" path="res://scenes/inventory_controller/inventory_slot.tscn" id="2_2liut"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0anu"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.378534, 0.260719, 0.21043485, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="InventoryController" type="CanvasLayer" unique_id=1456284274]
+visible = false
+script = ExtResource("1_a4xqk")
+inventory_slot_prefab = ExtResource("2_2liut")
+
+[node name="InventoryUi" type="Control" parent="." unique_id=1957300552]
+custom_minimum_size = Vector2(600, 285)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -552.0
+offset_bottom = -363.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="InventoryUi" unique_id=420823834]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 72.0
+offset_top = 29.5
+offset_right = 432.0
+offset_bottom = 314.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h0anu")
+
+[node name="TextureRect" type="TextureRect" parent="InventoryUi/Panel" unique_id=1315073221]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6kso5")
+
+[node name="MarginContainer" type="MarginContainer" parent="InventoryUi/Panel" unique_id=639719782]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="InventoryUi/Panel/MarginContainer" unique_id=1953156036]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 26
+theme_override_constants/v_separation = 26
+columns = 3

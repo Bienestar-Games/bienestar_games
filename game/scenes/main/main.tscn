@@ -1,3 +1,7 @@
 [gd_scene format=3 uid="uid://bnpugrgd547nj"]
 
+[ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="1_hyk8p"]
+
 [node name="Main" type="Node2D" unique_id=1926789006]
+
+[node name="PuebloViejo" parent="." unique_id=297036221 instance=ExtResource("1_hyk8p")]

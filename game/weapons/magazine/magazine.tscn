@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://nyi04k3g41gv"]
+
+[ext_resource type="Script" uid="uid://gqmvwlj7657f" path="res://scenes/weapons/magazine/magazine.gd" id="1_julxh"]
+
+[node name="Magazine" type="Node2D" unique_id=1664022930]
+script = ExtResource("1_julxh")

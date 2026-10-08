@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bda5fs8k0kvaa"]
+
+[ext_resource type="Script" uid="uid://bapcrsstxuxnf" path="res://scenes/interaction_controller/interaction_controller.gd" id="1_hqibn"]
+[ext_resource type="Script" uid="uid://dn70l7hhh7lpa" path="res://scenes/inventory_controller/actions/consumable_action.gd" id="2_35xjo"]
+[ext_resource type="Script" uid="uid://btxfpoa22ofmv" path="res://scenes/inventory_controller/item_data.gd" id="3_l6t83"]
+
+[sub_resource type="Resource" id="Resource_j54gf"]
+script = ExtResource("2_35xjo")
+metadata/_custom_type_script = "uid://dn70l7hhh7lpa"
+
+[sub_resource type="Resource" id="Resource_culw2"]
+script = ExtResource("3_l6t83")
+action_data = SubResource("Resource_j54gf")
+metadata/_custom_type_script = "uid://btxfpoa22ofmv"
+
+[node name="InteractionController" type="Node" unique_id=1107707173]
+script = ExtResource("1_hqibn")
+item_data = SubResource("Resource_culw2")

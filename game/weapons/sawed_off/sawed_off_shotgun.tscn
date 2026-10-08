@@ -1,0 +1,403 @@
+[gd_scene format=3 uid="uid://wxusl1dlpwew"]
+
+[ext_resource type="Script" uid="uid://7w5l71jmggwx" path="res://scenes/weapons/weapon.gd" id="1_cqmou"]
+[ext_resource type="Texture2D" uid="uid://jruqfj4ldcst" path="res://assets/sprites/weapons/sawed_off_shotgun/sawed_off_shotgun.png" id="1_xgd2f"]
+[ext_resource type="AudioStream" uid="uid://cib1h5611ylaw" path="res://assets/effects/weapons/sawed_off_shotgun/ElevenLabs_western_shot_gun_shot.mp3" id="2_bg414"]
+[ext_resource type="PackedScene" uid="uid://b38uvvaokaxg0" path="res://scenes/weapons/bullets/shotgun_bullet.tscn" id="2_x2she"]
+[ext_resource type="Script" uid="uid://sn6cuh3pac12" path="res://scripts/states/state_machine.gd" id="3_7pkqb"]
+[ext_resource type="Script" uid="uid://bxcmy6kulqf43" path="res://scripts/states/weapon/weapon_idle_state.gd" id="4_gr4y8"]
+[ext_resource type="Script" uid="uid://dvvhuve8e1sxn" path="res://scripts/states/weapon/weapon_reloading_state.gd" id="5_cqmou"]
+[ext_resource type="Script" uid="uid://cvph7k10awnt8" path="res://scripts/states/weapon/weapon_shooting_state.gd" id="6_6ajkl"]
+[ext_resource type="AudioStream" uid="uid://d1qmq4i3711rb" path="res://assets/effects/weapons/revolver/spinopel-dry-fire-gun-364844.mp3" id="6_bgm0i"]
+[ext_resource type="AudioStream" uid="uid://bptyephcxery8" path="res://assets/effects/weapons/sawed_off_shotgun/ElevenLabs_ShotGun_single_shell_reload.mp3" id="6_x2she"]
+[ext_resource type="PackedScene" uid="uid://nyi04k3g41gv" path="res://scenes/weapons/magazine/magazine.tscn" id="7_6ajkl"]
+
+[sub_resource type="Animation" id="Animation_bg414"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Muzzle/CPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_0x8jb"]
+resource_name = "double_shoot"
+length = 1.2549045
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19280751, 0.4556862),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 2, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.04124299, 0.0699761, 1.1242825),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-10.029, -10), Vector2(-50, -50), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.04380927, 0.07690584, 1.1336126),
+"transitions": PackedFloat32Array(1, 1, 0.6155723, 1),
+"update": 0,
+"values": [0.0, -0.18500490071139933, -1.0855947947404727, 0.0]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../../SFX")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_bg414")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
+tracks/4/type = "audio"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../../SFX")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_bg414")
+}],
+"times": PackedFloat32Array(0.022775728)
+}
+tracks/4/use_blend = true
+
+[sub_resource type="Animation" id="Animation_x2she"]
+resource_name = "dry_shoot"
+length = 0.64184743
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3673218),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../../SFX")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("6_bgm0i")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = true
+
+[sub_resource type="Animation" id="Animation_430l1"]
+resource_name = "idle"
+length = 0.31924567
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.01064153),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_bgm0i"]
+resource_name = "reload"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.24389431, 0.35314912, 0.4345522, 0.52659214, 0.59306145, 0.90673494, 0.9942906, 1.0390434, 1.1166832, 1.2263566, 1.3675311, 1.5494454, 1.7147223, 1.8773834, 2.0252929, 2.09379),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [3, 4, 5, 8, 7, 6, 5, 6, 7, 8, 5, 6, 7, 8, 5, 4, 3, 0]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../../SFX")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.2964,
+"start_offset": 1.4198,
+"stream": ExtResource("6_x2she")
+}, {
+"end_offset": 1.5926,
+"start_offset": 0.0,
+"stream": ExtResource("6_x2she")
+}, {
+"end_offset": 1.5926,
+"start_offset": 0.0,
+"stream": ExtResource("6_x2she")
+}, {
+"end_offset": 0.2964,
+"start_offset": 1.4198,
+"stream": ExtResource("6_x2she")
+}],
+"times": PackedFloat32Array(0.044326067, 0.8116831, 1.3089539, 1.9170985)
+}
+tracks/1/use_blend = true
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.46638745, 0.7858099, 1.0029635, 2.125644),
+"transitions": PackedFloat32Array(1, 1.4142135, 1, 1, 1),
+"update": 0,
+"values": [0.0, -1.8116517635701144, -0.9756390518648298, 0.5934119456780721, 0.0]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../../SFX")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.6543,
+"start_offset": 0.0,
+"stream": ExtResource("6_x2she")
+}],
+"times": PackedFloat32Array(0.1436606)
+}
+tracks/3/use_blend = true
+
+[sub_resource type="Animation" id="Animation_xt3a0"]
+resource_name = "shoot"
+length = 1.2549045
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.22081159),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../../SFX")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.51,
+"start_offset": 0.0,
+"stream": ExtResource("2_bg414")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = true
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Muzzle/CPUParticles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.13905515, 0.39826202),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.07690584, 1.1336126),
+"transitions": PackedFloat32Array(1, 0.6155723, 1),
+"update": 0,
+"values": [0.0, -0.5427973973702369, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0x8jb"]
+_data = {
+&"RESET": SubResource("Animation_bg414"),
+&"double_shoot": SubResource("Animation_0x8jb"),
+&"dry_shoot": SubResource("Animation_x2she"),
+&"idle": SubResource("Animation_430l1"),
+&"reload": SubResource("Animation_bgm0i"),
+&"shoot": SubResource("Animation_xt3a0")
+}
+
+[node name="SawedOffShotgun" type="Node2D" unique_id=154239054 node_paths=PackedStringArray("magazine", "muzzle", "_animation_player", "_weapon_root", "shoot_cd", "reload_cd")]
+script = ExtResource("1_cqmou")
+magazine = NodePath("Magazine")
+bullet_scene = ExtResource("2_x2she")
+muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")
+_animation_player = NodePath("AnimationPlayer")
+_weapon_root = NodePath("WeaponRoot")
+shoot_cd = NodePath("ShootCooldown")
+reload_cd = NodePath("ReloadCooldown")
+
+[node name="ShootCooldown" type="Timer" parent="." unique_id=433169706]
+wait_time = 1.2599999999999998
+one_shot = true
+
+[node name="ReloadCooldown" type="Timer" parent="." unique_id=1041562511]
+wait_time = 2.28
+one_shot = true
+
+[node name="SFX" type="AudioStreamPlayer" parent="." unique_id=61368253]
+bus = &"SFX"
+
+[node name="Magazine" parent="." unique_id=1664022930 instance=ExtResource("7_6ajkl")]
+capacity = 100
+
+[node name="WeaponRoot" type="Node2D" parent="." unique_id=566498493]
+
+[node name="FlipContainer" type="Node2D" parent="WeaponRoot" unique_id=109280039]
+
+[node name="Muzzle" type="Node2D" parent="WeaponRoot/FlipContainer" unique_id=496459736]
+position = Vector2(46.59, -4)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="WeaponRoot/FlipContainer/Muzzle" unique_id=1676178449]
+emitting = false
+amount = 10
+explosiveness = 0.9
+direction = Vector2(1, -1)
+spread = 21.0
+gravity = Vector2(0, -50)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+color = Color(1, 0.9647059, 0.7019608, 0.62352943)
+
+[node name="Sprite2D" type="Sprite2D" parent="WeaponRoot/FlipContainer" unique_id=605979813]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_xgd2f")
+offset = Vector2(32.99, 0)
+hframes = 5
+vframes = 2
+frame = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=793700108]
+root_node = NodePath("../WeaponRoot/FlipContainer/Sprite2D")
+libraries/ = SubResource("AnimationLibrary_0x8jb")
+
+[node name="StateMachine" type="Node" parent="." unique_id=807740549 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_7pkqb")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=189492111 node_paths=PackedStringArray("weapon")]
+script = ExtResource("4_gr4y8")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://bxcmy6kulqf43"
+
+[node name="Reloading" type="Node" parent="StateMachine" unique_id=1067373704 node_paths=PackedStringArray("weapon")]
+script = ExtResource("5_cqmou")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://dvvhuve8e1sxn"
+
+[node name="Shooting" type="Node" parent="StateMachine" unique_id=642877385 node_paths=PackedStringArray("weapon")]
+script = ExtResource("6_6ajkl")
+weapon = NodePath("../..")
+metadata/_custom_type_script = "uid://cvph7k10awnt8"
