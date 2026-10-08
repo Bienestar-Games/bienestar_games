@@ -30,8 +30,12 @@ func _update_active_weapon() -> void:
 	for i in _weapons.size():
 		var w: Weapon = _weapons[i]
 		var active: bool = (i == _current_weapon_index)
-		w.process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
-		w.visible = active
+		if active:
+			w.visible = true
+			w.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+		else:
+			w.process_mode = Node.PROCESS_MODE_DISABLED
+			w.visible = false
 
 func switch_weapon(index: int) -> void:
 	if _weapons.is_empty() or index == _current_weapon_index:
