@@ -28,10 +28,10 @@ func _ready() -> void:
 	vision_area.body_exited.connect(_on_vision_body_exited)
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	attack_area.body_exited.connect(_on_attack_area_body_exited)
+	died.connect(queue_free)
 
 func _physics_process(delta: float) -> void:
 	if not _is_alive():
-		queue_free()
 		return
 	_check_line_of_sight(delta)
 	attack_cd_timer -= delta
@@ -58,9 +58,6 @@ func _check_line_of_sight(delta: float) -> void:
 func _update_rotation(area: Area2D, dir: Vector2) -> void:
 	if dir != Vector2.ZERO:
 		area.rotation = dir.angle() - PI / 2
-
-func _is_alive() -> bool:
-	return base_health > 0
 
 func _on_vision_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

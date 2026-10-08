@@ -1,6 +1,9 @@
 class_name BaseCharacter
 extends CharacterBody2D
 
+signal died
+signal damage_taken
+
 @export var MAX_SPEED    : int = 200
 @export var ACCELERATION : int = 1500
 @export var FRICTION: int = 1800
@@ -16,7 +19,15 @@ var base_damage: float = 5
 
 func take_damage(damage: float) -> void:
 	if !immortal:
+		var was_alive := _is_alive()
 		base_health -= damage
+		damage_taken.emit()
+		if was_alive and base_health <= 0:
+			base_health = 0
+			died.emit()
+
+func _is_alive() -> bool:
+	return base_health > 0
 
 func move(input_dir: Vector2, delta: float) -> void:
 	if input_dir != Vector2.ZERO:
