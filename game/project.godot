@@ -27,6 +27,7 @@ buses/default_bus_layout="uid://dkie6v8hpcda4"
 
 Events="*res://scripts/autoload/events.gd"
 GameLoopManager="*res://scripts/autoload/game_loop_manager.gd"
+WaveManager="*res://scripts/autoload/wave_manager.gd"
 
 [display]
 
@@ -139,3 +140,5 @@ aim_down={
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+
+  

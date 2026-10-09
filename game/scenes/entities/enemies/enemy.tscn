@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/entities/enemies/enemy.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/kenney/Spritesheet/spritesheet_characters.png" id="2_chars"]
+[ext_resource type="Script" path="res://scripts/states/state_machine.gd" id="3_fsm"]
+[ext_resource type="Script" path="res://scripts/states/enemy/enemy_idle_state.gd" id="4_idle"]
+[ext_resource type="Script" path="res://scripts/states/enemy/enemy_chasing_state.gd" id="5_chasing"]
+[ext_resource type="Script" path="res://scripts/states/enemy/enemy_attacking_state.gd" id="6_attacking"]
+[ext_resource type="Script" path="res://scripts/states/enemy/enemy_attack_recovery_state.gd" id="7_recovery"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stand"]
+atlas = ExtResource("2_chars")
+region = Rect2(460, 0, 33, 43)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hit"]
+radius = 18.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hold"]
+atlas = ExtResource("2_chars")
+region = Rect2(424, 0, 35, 43)
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_enemy")
+base_health = 30
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_stand")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 8.0
+path_postprocessing = 1
+radius = 14.0
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_hit")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_fsm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_idle")
+
+[node name="Chasing" type="Node" parent="StateMachine"]
+script = ExtResource("5_chasing")
+
+[node name="Attacking" type="Node" parent="StateMachine"]
+script = ExtResource("6_attacking")
+windup_texture = SubResource("AtlasTexture_hold")
+
+[node name="AttackRecovery" type="Node" parent="StateMachine"]
+script = ExtResource("7_recovery")
