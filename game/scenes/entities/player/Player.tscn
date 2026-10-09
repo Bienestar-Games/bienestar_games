@@ -8,8 +8,8 @@
 [ext_resource type="Script" uid="uid://dhijj4cgqwuby" path="res://scripts/states/player/on_inventory_state.gd" id="7_ppr6r"]
 [ext_resource type="Script" uid="uid://ddphrtlthrtol" path="res://scripts/states/player/moving.gd" id="8_rqk8h"]
 [ext_resource type="Texture2D" uid="uid://cq11hks0hvltr" path="res://assets/sprites/player/character.png" id="8_rx1o7"]
-[ext_resource type="Script" path="res://entities/player/states/player_decision_state.gd" id="9_decision"]
-[ext_resource type="Script" path="res://entities/player/states/player_extracting_state.gd" id="10_extract"]
+[ext_resource type="Script" path="res://scripts/states/player/player_decision_state.gd" id="9_decision"]
+[ext_resource type="Script" path="res://scripts/states/player/player_extracting_state.gd" id="10_extract"]
 [ext_resource type="PackedScene" uid="uid://cuuy4bp8vbbwx" path="res://scenes/weapons/revolver.tscn" id="11_revolver"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8lruo"]
