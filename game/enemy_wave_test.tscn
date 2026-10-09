@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/enemy_wave_test/enemy_wave_test.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/maps/shelter/shelter.tscn" id="2_shelter"]
+[ext_resource type="Script" path="res://tests/enemy_wave_test/test_player.gd" id="3_player"]
+[ext_resource type="Texture2D" path="res://assets/kenney/Spritesheet/spritesheet_characters.png" id="4_chars"]
+[ext_resource type="PackedScene" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.tscn" id="5_zone"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kade"]
+atlas = ExtResource("4_chars")
+region = Rect2(426, 132, 33, 43)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
+radius = 48.0
+
+[node name="EnemyWaveTest" type="Node2D"]
+script = ExtResource("1_test")
+
+[node name="Shelter" parent="." instance=ExtResource("2_shelter")]
+
+[node name="TestPlayer" type="CharacterBody2D" parent="Shelter"]
+position = Vector2(-32, -928)
+collision_layer = 4
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("3_player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Shelter/TestPlayer"]
+texture = SubResource("AtlasTexture_kade")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelter/TestPlayer"]
+shape = SubResource("CircleShape2D_body")
+
+[node name="AttackArea" type="Area2D" parent="Shelter/TestPlayer"]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelter/TestPlayer/AttackArea"]
+shape = SubResource("CircleShape2D_attack")
+
+[node name="Camera2D" type="Camera2D" parent="Shelter/TestPlayer"]
+
+[node name="SpawnZoneNorthWest" parent="Shelter" instance=ExtResource("5_zone")]
+position = Vector2(-320, -1600)
+size = Vector2(192, 192)
+
+[node name="SpawnZoneNorthEast" parent="Shelter" instance=ExtResource("5_zone")]
+position = Vector2(224, -1600)
+size = Vector2(192, 192)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 700.0
+offset_bottom = 60.0
