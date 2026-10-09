@@ -2,7 +2,10 @@ extends Node2D
 class_name Magazine
 
 @export var capacity: int
-var count: int = capacity
+var count: int
+
+func _ready() -> void:
+	count = capacity
 
 func consume_bullet() -> void:
 	if count > 0:
@@ -16,4 +19,3 @@ func reload() -> void:
 
 func can_be_reloaded() -> bool:
 	return count < capacity
-	
