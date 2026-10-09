@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://crt2ix1dotv5l"]
 
-[ext_resource type="Script" uid="uid://cy0yhwmjj8h6t" path="res://entities/enemies/enemy.gd" id="1_essrt"]
+[ext_resource type="Script" uid="uid://cy0yhwmjj8h6t" path="res://scenes/entities/enemies/enemy.gd" id="1_essrt"]
 [ext_resource type="Texture2D" uid="uid://dtbrn2edocfdw" path="res://assets/sprites/enemies/coyote.png" id="2_w6k81"]
 [ext_resource type="Script" uid="uid://0p4oioevwwwi" path="res://systems/hit_box.gd" id="3_c8ylr"]
 [ext_resource type="Script" uid="uid://sn6cuh3pac12" path="res://systems/state_machine.gd" id="4_20lqd"]
-[ext_resource type="Script" uid="uid://cd5xqxxqhv2tt" path="res://entities/enemies/states/enemy_idle_state.gd" id="5_j3iiu"]
-[ext_resource type="Script" uid="uid://cqlqmv7osph1v" path="res://entities/enemies/states/enemy_moving_state.gd" id="6_bii57"]
-[ext_resource type="Script" uid="uid://bfb3w6k4ci0aw" path="res://entities/enemies/states/enemy_chasing_state.gd" id="7_j3iiu"]
-[ext_resource type="Script" uid="uid://c4dplwqohm1vp" path="res://entities/enemies/states/enemy_attacking_state.gd" id="8_wyqsp"]
-[ext_resource type="Script" uid="uid://cy3ra6neo2ilx" path="res://entities/enemies/states/enemy_attack_recovery_state.gd" id="9_w6k81"]
-[ext_resource type="Script" uid="uid://opf1skfqrip6" path="res://entities/enemies/states/enemy_searching_state.gd" id="10_fu215"]
+[ext_resource type="Script" uid="uid://cd5xqxxqhv2tt" path="res://scripts/states/enemy/enemy_idle_state.gd" id="5_j3iiu"]
+[ext_resource type="Script" uid="uid://cqlqmv7osph1v" path="res://scripts/states/enemy/enemy_moving_state.gd" id="6_bii57"]
+[ext_resource type="Script" uid="uid://bfb3w6k4ci0aw" path="res://scripts/states/enemy/enemy_chasing_state.gd" id="7_j3iiu"]
+[ext_resource type="Script" uid="uid://c4dplwqohm1vp" path="res://scripts/states/enemy/enemy_attacking_state.gd" id="8_wyqsp"]
+[ext_resource type="Script" uid="uid://cy3ra6neo2ilx" path="res://scripts/states/enemy/enemy_attack_recovery_state.gd" id="9_w6k81"]
+[ext_resource type="Script" uid="uid://opf1skfqrip6" path="res://scripts/states/enemy/enemy_searching_state.gd" id="10_fu215"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j26m1"]
 
