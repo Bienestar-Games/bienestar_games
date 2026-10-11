@@ -243,9 +243,14 @@ _data = {
 &"shoot": SubResource("Animation_uwxth")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hud_icon"]
+atlas = ExtResource("4_x7leg")
+region = Rect2(0, 0, 64, 64)
+
 [node name="Revolver" type="Node2D" unique_id=1687305472 node_paths=PackedStringArray("magazine", "muzzle", "_animation_player", "_weapon_root", "shoot_cd", "reload_cd")]
 y_sort_enabled = true
 script = ExtResource("1_y8ai0")
+icon = SubResource("AtlasTexture_hud_icon")
 magazine = NodePath("Magazine")
 bullet_scene = ExtResource("2_x7leg")
 muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")

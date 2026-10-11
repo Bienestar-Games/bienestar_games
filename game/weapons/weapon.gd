@@ -10,6 +10,7 @@ class_name Weapon extends Node2D
 @export var _weapon_root: Node2D
 @export var shoot_cd: Timer
 @export var reload_cd: Timer
+@export var icon: Texture2D
 
 const ORBIT_RADIUS: float = 30.0
 
