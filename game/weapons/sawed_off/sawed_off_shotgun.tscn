@@ -327,8 +327,13 @@ _data = {
 &"shoot": SubResource("Animation_xt3a0")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hud_icon"]
+atlas = ExtResource("1_xgd2f")
+region = Rect2(0, 0, 128, 64)
+
 [node name="SawedOffShotgun" type="Node2D" unique_id=154239054 node_paths=PackedStringArray("magazine", "muzzle", "_animation_player", "_weapon_root", "shoot_cd", "reload_cd")]
 script = ExtResource("1_cqmou")
+icon = SubResource("AtlasTexture_hud_icon")
 magazine = NodePath("Magazine")
 bullet_scene = ExtResource("2_x2she")
 muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")

@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
 script = ExtResource("1_main")
 
 [node name="PuebloViejo" parent="." instance=ExtResource("2_map")]
+
+[node name="Hud" parent="." instance=ExtResource("3_hud")]
