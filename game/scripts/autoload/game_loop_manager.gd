@@ -16,6 +16,12 @@ func _start_next_wave() -> void:
 	current_state = RunState.WAVE_ACTIVE
 	Events.wave_started.emit(wave_number)
 
+# Called by the death screen before reloading the main scene for a new run
+func restart_run() -> void:
+	wave_number = 0
+	current_state = RunState.WAVE_ACTIVE
+	call_deferred("_start_next_wave")
+
 # Called by UI decision panel when player chooses to continue
 func continue_run() -> void:
 	if current_state != RunState.DECISION:
