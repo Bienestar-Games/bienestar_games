@@ -22,6 +22,9 @@ func update(delta: float) -> void:
 		enemy.has_last_seen = false
 		transitioned.emit(self, "idle")
 		return
+	# While hunting, follow Kade's latest known position.
+	if enemy.hunts_player and enemy.navigation_agent_2d.target_position.distance_to(enemy.last_seen_position) > enemy.REPATH_THRESHOLD:
+		enemy.navigation_agent_2d.target_position = enemy.last_seen_position
 	# Fase 1: ir al último punto visto
 	if not enemy.navigation_agent_2d.is_navigation_finished():
 		enemy.handle_animations("moving")

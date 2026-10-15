@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://crt2ix1dotv5l" path="res://scenes/entities/enemies/enemy.tscn" id="1_enemy"]
+
+[node name="MeleeBasic" instance=ExtResource("1_enemy")]
+MAX_SPEED = 90
+base_health = 100.0
+base_damage = 10.0

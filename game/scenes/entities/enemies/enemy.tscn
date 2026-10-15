@@ -166,6 +166,7 @@ graph_offset = Vector2(-13, -28)
 [node name="Enemy" type="CharacterBody2D" unique_id=1853723933 node_paths=PackedStringArray("vision_area", "vision_ray", "attack_area", "navigation_agent_2d", "animation_tree", "entity_sprite")]
 collision_layer = 4
 script = ExtResource("1_essrt")
+MAX_SPEED = 150
 vision_area = NodePath("VisionArea")
 vision_ray = NodePath("VisionRay")
 attack_area = NodePath("AttackArea")
