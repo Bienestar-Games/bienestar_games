@@ -72,7 +72,7 @@ func _update_hunt(delta: float) -> void:
 		return
 	_hunt_timer = HUNT_UPDATE_INTERVAL
 	var player := get_tree().get_first_node_in_group("player") as BaseCharacter
-	if player == null or not player._is_alive():
+	if player == null or player.base_health <= 0:
 		return
 	last_seen_position = player.global_position
 	has_last_seen = true
