@@ -1,6 +1,8 @@
 class_name Player
 extends BaseCharacter
 
+signal active_weapon_changed(weapon: Weapon)
+
 @onready var f_arm_2 = %f_arm_2
 @onready var b_arm_2 = %b_arm_2
 @onready var player_sprite = $Body
@@ -36,6 +38,12 @@ func _update_active_weapon() -> void:
 		else:
 			w.process_mode = Node.PROCESS_MODE_DISABLED
 			w.visible = false
+	active_weapon_changed.emit(get_active_weapon())
+
+func get_active_weapon() -> Weapon:
+	if _weapons.is_empty():
+		return null
+	return _weapons[_current_weapon_index]
 
 func switch_weapon(index: int) -> void:
 	if _weapons.is_empty() or index == _current_weapon_index:
