@@ -13,6 +13,23 @@ signal active_weapon_changed(weapon: Weapon)
 
 var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
+var inventario: Array[String] = []
+var inventario_max_slots: int = 9
+
+func add_item(item_type: String) -> bool:
+	if item_type == "heal":
+		print("Jugador curado")
+		return true
+
+	if item_type == "resource":
+		if inventario.size() >= inventario_max_slots:
+			print("Inventario lleno")
+			return false
+		inventario.append(item_type)
+		print(inventario)
+		return true
+
+	return false
 
 func _ready() -> void:
 	died.connect(_on_died)

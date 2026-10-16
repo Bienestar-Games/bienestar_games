@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://d485krls5fmk"]
+
+[ext_resource type="Script" uid="uid://dqaopib3quan" path="res://scenes/entities/item_drop.gd" id="1_item_drop"]
+[ext_resource type="Texture2D" uid="uid://dyb2djib33yks" path="res://assets/sprites/consumables/consumables.png" id="2_cd4ao"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_item_drop"]
+radius = 32.140316
+
+[node name="ItemDrop" type="Area2D" unique_id=814022501]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_item_drop")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=274361709]
+shape = SubResource("CircleShape2D_item_drop")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1830164028]
+texture = ExtResource("2_cd4ao")
+region_enabled = true
+region_rect = Rect2(0, 0, 66.663086, 64)
