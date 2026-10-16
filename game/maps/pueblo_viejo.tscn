@@ -2,9 +2,8 @@
 
 [ext_resource type="TileSet" uid="uid://dxenuna7gvi5s" path="res://tile_sets/dungeon.tres" id="1_v8luu"]
 [ext_resource type="PackedScene" uid="uid://wsbq46vhfxa7" path="res://scenes/entities/player/Player.tscn" id="2_v8luu"]
-[ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/enemy_spawn_zone/enemy_spawn_zone.gd" id="3_paraq"]
+[ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="3_paraq"]
 [ext_resource type="Script" uid="uid://b456l13pc3b8s" path="res://scripts/interior_zone.gd" id="4_n2j2q"]
-[ext_resource type="PackedScene" uid="uid://crt2ix1dotv5l" path="res://scenes/entities/enemies/enemy.tscn" id="4_paraq"]
 [ext_resource type="NavigationPolygon" uid="uid://bb8s4bep0504f" path="res://resources/navigation_polygons/map_navigation_polygon.tres" id="5_urdq7"]
 
 [node name="PuebloViejo" type="Node2D" unique_id=297036221]
@@ -31,15 +30,19 @@ z_index = 1
 y_sort_enabled = true
 scale = Vector2(2, 2)
 
-[node name="EnemySpawnZone" type="Node2D" parent="." unique_id=529647785]
-y_sort_enabled = true
+[node name="EnemySpawnZoneWest" type="Node2D" parent="." unique_id=529647785]
+position = Vector2(-1800, 0)
 script = ExtResource("3_paraq")
+size = Vector2(600, 600)
+enemy_scale = Vector2(2, 2)
+enemy_z_index = 1
 
-[node name="Enemy" parent="EnemySpawnZone" unique_id=1853723933 instance=ExtResource("4_paraq")]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(-131.825, -0.01)
-scale = Vector2(2, 2)
+[node name="EnemySpawnZoneEast" type="Node2D" parent="." unique_id=1745093218]
+position = Vector2(1800, 0)
+script = ExtResource("3_paraq")
+size = Vector2(600, 600)
+enemy_scale = Vector2(2, 2)
+enemy_z_index = 1
 
 [node name="Buildings" type="Node2D" parent="." unique_id=1332161748 groups=["navigation"]]
 y_sort_enabled = true

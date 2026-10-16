@@ -15,6 +15,9 @@ func update(delta: float) -> void:
 	if enemy.target:
 		transitioned.emit(self, "chasing")
 		return
+	if enemy.hunts_player and enemy.has_last_seen:
+		transitioned.emit(self, "searching")
+		return
 	_timer -= delta
 	if _timer <= 0.0:
 		transitioned.emit(self, "moving")

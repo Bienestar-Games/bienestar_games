@@ -7,15 +7,15 @@ signal damage_taken
 @export var MAX_SPEED    : int = 200
 @export var ACCELERATION : int = 1500
 @export var FRICTION: int = 1800
+@export var base_health: float = 100
+@export var base_damage: float = 5
 
 @export var animation_tree: AnimationTree
 @export var entity_sprite: Sprite2D
 
 var move_direction: Vector2 = Vector2.ZERO
 var _last_move_direction: Vector2 = Vector2.DOWN
-var base_health: float = 100
 var immortal: bool = false
-var base_damage: float = 5
 
 func take_damage(damage: float) -> void:
 	if !immortal:
