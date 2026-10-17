@@ -1,6 +1,8 @@
 class_name Player
 extends BaseCharacter
 
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
+
 signal active_weapon_changed(weapon: Weapon)
 
 @onready var f_arm_2 = %f_arm_2
@@ -13,20 +15,20 @@ signal active_weapon_changed(weapon: Weapon)
 
 var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
-var inventario: Array[String] = []
-var inventario_max_slots: int = 9
+var inventory: Array[String] = []
 
 func add_item(item_type: String) -> bool:
 	if item_type == "heal":
-		print("Jugador curado")
+		# TODO: Apply the healing amount defined by the balance configuration.
+		print("Player healed")
 		return true
 
 	if item_type == "resource":
-		if inventario.size() >= inventario_max_slots:
-			print("Inventario lleno")
+		if inventory.size() >= BALANCE_CONFIG.max_inventory_slots:
+			print("Inventory full")
 			return false
-		inventario.append(item_type)
-		print(inventario)
+		inventory.append(item_type)
+		print(inventory)
 		return true
 
 	return false
