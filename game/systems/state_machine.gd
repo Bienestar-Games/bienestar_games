@@ -16,12 +16,15 @@ func _ready() -> void:
 		current_state = initial_state
 
 func _process(delta: float) -> void:
-	if current_state:
+	if _can_update():
 		current_state.update(delta)
 
 func _physics_process(delta: float) -> void:
-	if current_state:
+	if _can_update():
 		current_state.phyisics_update(delta)
+
+func _can_update() -> bool:
+	return current_state != null and (not get_tree().paused or current_state.runs_while_paused())
 
 func on_child_transition(state, new_state_name):
 	if state != current_state:
