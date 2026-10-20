@@ -13,3 +13,8 @@ func update(_delta) -> void:
 	
 func phyisics_update(_delta) -> void:
 	pass
+
+# The StateMachine always processes; only states that drive their own pause
+# (e.g. inventory) should keep updating while the tree is paused.
+func runs_while_paused() -> bool:
+	return false
