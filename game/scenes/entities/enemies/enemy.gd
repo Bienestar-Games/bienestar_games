@@ -1,5 +1,7 @@
 class_name Enemy extends BaseCharacter
 
+const ITEM_DROP_SCENE: PackedScene = preload("res://scenes/world/loot_pickup/item_drop.tscn")
+
 @export var vision_area: Area2D
 @export var vision_ray: RayCast2D
 @export var attack_area: Area2D
@@ -34,7 +36,17 @@ func _ready() -> void:
 	vision_area.body_exited.connect(_on_vision_body_exited)
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	attack_area.body_exited.connect(_on_attack_area_body_exited)
-	died.connect(queue_free)
+	died.connect(_on_died)
+
+func _on_died() -> void:
+	spawn_loot()
+	queue_free()
+
+func spawn_loot() -> void:
+	var drop := ITEM_DROP_SCENE.instantiate() as ItemDrop
+	drop.item_type = "heal" if randi_range(0, 1) == 0 else "resource"
+	get_parent().add_child(drop)
+	drop.global_position = global_position
 
 func _physics_process(delta: float) -> void:
 	if not _is_alive():
