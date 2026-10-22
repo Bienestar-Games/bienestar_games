@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cy0yhwmjj8h6t" path="res://scenes/entities/enemies/enemy.gd" id="1_essrt"]
 [ext_resource type="Texture2D" uid="uid://dtbrn2edocfdw" path="res://assets/sprites/enemies/coyote.png" id="2_w6k81"]
-[ext_resource type="Script" uid="uid://0p4oioevwwwi" path="res://systems/hit_box.gd" id="3_c8ylr"]
-[ext_resource type="Script" uid="uid://sn6cuh3pac12" path="res://systems/state_machine.gd" id="4_20lqd"]
+[ext_resource type="Script" uid="uid://0p4oioevwwwi" path="res://scripts/components/hit_box.gd" id="3_c8ylr"]
+[ext_resource type="Script" uid="uid://sn6cuh3pac12" path="res://scripts/states/state_machine.gd" id="4_20lqd"]
 [ext_resource type="Script" uid="uid://cd5xqxxqhv2tt" path="res://scripts/states/enemy/enemy_idle_state.gd" id="5_j3iiu"]
 [ext_resource type="Script" uid="uid://cqlqmv7osph1v" path="res://scripts/states/enemy/enemy_moving_state.gd" id="6_bii57"]
 [ext_resource type="Script" uid="uid://bfb3w6k4ci0aw" path="res://scripts/states/enemy/enemy_chasing_state.gd" id="7_j3iiu"]
