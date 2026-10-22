@@ -58,7 +58,7 @@ game/
 │   ├── environment/{tiles,tilesheets,props,textures}/
 │   ├── effects/
 │   ├── ui/{icons,elements,buttons,art}/
-│   ├── audio/{sfx,music}/
+│   ├── audio/{sfx,music}/           # sfx/weapons/<arma>/; créditos en sfx/CREDITS.md
 │   ├── fonts/
 │   └── kenney/                      # packs de Kenney tal cual se descargan + licencia (B02)
 │
@@ -76,7 +76,8 @@ game/
 ├── scenes/
 │   ├── main/                        # main.tscn: escena raíz que instancia mapa + HUD + managers (B38)
 │   ├── maps/
-│   │   └── shelter/                 # shelter.tscn (refugio): TileMap, colisiones, NavigationRegion2D (B03)
+│   │   ├── shelter/                 # shelter.tscn (refugio): TileMap, colisiones, NavigationRegion2D (B03)
+│   │   └── pueblo_viejo/            # pueblo_viejo.tscn: mapa que instancia main.tscn hoy
 │   ├── entities/
 │   │   ├── base_character.gd        # class_name BaseCharacter (base_health, daño, muerte)
 │   │   ├── player/                  # Kade: player.tscn/.gd, sprite frames
@@ -98,6 +99,7 @@ game/
 │   ├── inventory/                   # InventoryController + InventorySlot (9 slots)
 │   └── ui/
 │       ├── hud/                     # B10, B11, B26: salud, munición, arma, oleada, barrera
+│       ├── interaction/             # InteractionController (recoger ítems al tocarlos)
 │       ├── death_border/            # B35: vignette + icono no numérico
 │       ├── decision_panel/          # B25, B34: panel de extracción + preview de oleada
 │       ├── extraction_progress/     # B33: barra del canalizado
@@ -113,6 +115,7 @@ game/
 │   │   └── events.gd                # bus de señales globales (run_ended, wave_started, barrier_opened…)
 │   ├── components/                  # nodos reutilizables: hit_box.gd, hurt_box.gd, interior_zone.gd
 │   ├── data/                        # clases Resource: item_data.gd, balance_config.gd, loot_table.gd
+│   │   └── actions/                 # ActionData y sus subclases (consumible, equipable, inspeccionable)
 │   └── states/
 │       ├── state.gd
 │       ├── state_machine.gd
