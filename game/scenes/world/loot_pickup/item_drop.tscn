@@ -1,20 +1,22 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bgd8oi2e1kls7"]
 
-[ext_resource type="Script" path="res://scenes/world/loot_pickup/item_drop.gd" id="1_item_drop"]
-[ext_resource type="Texture2D" path="res://assets/sprites/consumables/consumables.png" id="2_consumables"]
+[ext_resource type="Script" uid="uid://c1j5lvttr7c85" path="res://scenes/world/loot_pickup/item_drop.gd" id="1_item_drop"]
+[ext_resource type="Texture2D" uid="uid://dyb2djib33yks" path="res://assets/sprites/consumables/consumables.png" id="2_consumables"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_item_drop"]
 radius = 16.0
 
-[node name="ItemDrop" type="Area2D"]
+[node name="ItemDrop" type="Area2D" unique_id=592350507]
+z_index = 1
+y_sort_enabled = true
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_item_drop")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1165445228]
 texture = ExtResource("2_consumables")
 region_enabled = true
 region_rect = Rect2(0, 0, 64, 64)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1069402169]
 shape = SubResource("CircleShape2D_item_drop")
