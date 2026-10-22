@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cux3eeswk47kl"]
+
+[ext_resource type="Script" uid="uid://cir8lfuowg" path="res://scenes/world/barrier/interactive_barrier.gd" id="1_hmu41"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmu41"]
+size = Vector2(28, 20)
+
+[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar")]
+script = ExtResource("1_hmu41")
+progress_bar = NodePath("ProgressBar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1242837280]
+position = Vector2(2, 14)
+shape = SubResource("RectangleShape2D_hmu41")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=996927005]
+offset_right = 4.0
+offset_bottom = 27.0
