@@ -8,6 +8,7 @@ const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_co
 
 @export var interaction_action: StringName = &"interact"
 @export var progress_bar: ProgressBar
+@export var spawn_zone: EnemySpawnZone
 
 var _player_in_range: Player
 var _interaction_elapsed: float = 0.0
@@ -16,6 +17,8 @@ var _is_open: bool = false
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	if spawn_zone != null and spawn_zone.spawn_parent == null:
+		spawn_zone.spawn_parent = get_parent()
 	if progress_bar != null:
 		progress_bar.hide()
 
@@ -34,10 +37,20 @@ func _process(delta: float) -> void:
 	_update_progress_bar(progress)
 
 	if progress >= 1.0:
-		_is_open = true
-		barrier_opened.emit()
-		if progress_bar != null:
-			progress_bar.hide()
+		_open_barrier()
+
+func _open_barrier() -> void:
+	if _is_open:
+		return
+	_is_open = true
+	if spawn_zone != null:
+		spawn_zone.set_enabled(true)
+	else:
+		push_warning("InteractiveBarrier: no spawn zone is assigned.")
+	barrier_opened.emit()
+	Events.barrier_opened.emit()
+	if progress_bar != null:
+		progress_bar.hide()
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:

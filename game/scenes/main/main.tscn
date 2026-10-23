@@ -1,15 +1,22 @@
 [gd_scene format=3 uid="uid://bnpugrgd547nj"]
 
-[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://c1vj5w6o6ufto" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/decision_panel/decision_panel.tscn" id="4_decision"]
+[ext_resource type="PackedScene" uid="uid://cux3eeswk47kl" path="res://interactive_barrier.tscn" id="5_6q06x"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
 script = ExtResource("1_main")
 
-[node name="PuebloViejo" parent="." instance=ExtResource("2_map")]
+[node name="PuebloViejo" parent="." unique_id=831324195 instance=ExtResource("2_map")]
+position = Vector2(1195, 43)
 
-[node name="Hud" parent="." instance=ExtResource("3_hud")]
+[node name="Hud" parent="." unique_id=679187626 instance=ExtResource("3_hud")]
 
-[node name="DecisionPanel" parent="." instance=ExtResource("4_decision")]
+[node name="DecisionPanel" parent="." unique_id=493962515 instance=ExtResource("4_decision")]
+
+[node name="InteractiveBarrier" parent="." unique_id=1850086153 instance=ExtResource("5_6q06x")]
+position = Vector2(424, -122)
+
+[connection signal="barrier_opened" from="InteractiveBarrier" to="." method="_on_interactive_barrier_barrier_opened"]
