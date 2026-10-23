@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cux3eeswk47kl"]
+
+[ext_resource type="Script" uid="uid://cir8lfuowg" path="res://scenes/world/barrier/interactive_barrier.gd" id="1_hmu41"]
+[ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="2_spawn_zone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmu41"]
+size = Vector2(28, 20)
+
+[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "spawn_zone")]
+script = ExtResource("1_hmu41")
+progress_bar = NodePath("ProgressBar")
+spawn_zone = NodePath("SpawnZone")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1242837280]
+position = Vector2(2, 14)
+shape = SubResource("RectangleShape2D_hmu41")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=996927005]
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="SpawnZone" type="Node2D" parent="." unique_id=271003849]
+script = ExtResource("2_spawn_zone")
+size = Vector2(128, 128)
+enabled = false

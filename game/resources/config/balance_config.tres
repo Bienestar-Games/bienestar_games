@@ -5,3 +5,4 @@
 [resource]
 script = ExtResource("1_balance_config")
 max_inventory_slots = 9
+barrier_interaction_duration = 2.0
