@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="4_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="6_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/decision_panel/decision_panel.tscn" id="4_decision"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
 script = ExtResource("1_main")
@@ -12,4 +13,6 @@ script = ExtResource("1_main")
 
 [node name="Hud" parent="." instance=ExtResource("3_hud")]
 
-[node name="PauseMenu" parent="." instance=ExtResource("4_pause")]
+[node name="PauseMenu" parent="." instance=ExtResource("6_pause")]
+
+[node name="DecisionPanel" parent="." instance=ExtResource("4_decision")]
