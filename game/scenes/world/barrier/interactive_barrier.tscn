@@ -2,9 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cir8lfuowg" path="res://scenes/world/barrier/interactive_barrier.gd" id="1_hmu41"]
 [ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="2_spawn_zone"]
+[ext_resource type="Texture2D" uid="uid://ct3u32gsfj56o" path="res://assets/environment/tiles/barrelsStacked_S.png" id="3_8mytt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hmu41"]
-size = Vector2(28, 20)
+size = Vector2(131, 137)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdrn8"]
+size = Vector2(128, 130)
 
 [node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "spawn_zone")]
 collision_layer = 0
@@ -14,14 +18,28 @@ progress_bar = NodePath("ProgressBar")
 spawn_zone = NodePath("SpawnZone")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1242837280]
-position = Vector2(2, 14)
+position = Vector2(0.5, 4.5)
 shape = SubResource("RectangleShape2D_hmu41")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=996927005]
+offset_top = -39.999996
 offset_right = 4.0
-offset_bottom = 27.0
+offset_bottom = -12.999996
+scale = Vector2(3.0285485, 1.1147301)
 
 [node name="SpawnZone" type="Node2D" parent="." unique_id=271003849]
 script = ExtResource("2_spawn_zone")
 size = Vector2(128, 128)
 enabled = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=884310955]
+collision_layer = 15
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1662378348]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_wdrn8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=906541802]
+scale = Vector2(0.7769613, 0.3363651)
+texture = ExtResource("3_8mytt")

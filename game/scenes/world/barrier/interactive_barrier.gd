@@ -7,10 +7,12 @@ signal barrier_opened
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 @export var interaction_action: StringName = &"interact"
+@export var player_group: StringName = &"player"
 @export var progress_bar: ProgressBar
 @export var spawn_zone: EnemySpawnZone
 
-var _player_in_range: Player
+# The player scene does not need to expose `class_name Player` for this to work.
+var _player_in_range: Node2D = null
 var _interaction_elapsed: float = 0.0
 var _is_open: bool = false
 
@@ -19,6 +21,7 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	if spawn_zone != null and spawn_zone.spawn_parent == null:
 		spawn_zone.spawn_parent = get_parent()
+	_update_progress_bar(0.0)
 	if progress_bar != null:
 		progress_bar.hide()
 
@@ -43,6 +46,10 @@ func _open_barrier() -> void:
 	if _is_open:
 		return
 	_is_open = true
+
+	# Desactiva la colisión física para que el jugador pueda cruzar
+	$StaticBody2D/CollisionShape2D.set_deferred("disabled", true)
+
 	if spawn_zone != null:
 		spawn_zone.set_enabled(true)
 	else:
@@ -53,17 +60,22 @@ func _open_barrier() -> void:
 		progress_bar.hide()
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
-		_player_in_range = body
-		if progress_bar != null and not _is_open:
-			progress_bar.show()
+	if not _is_player(body):
+		return
+
+	_player_in_range = body
+	if not _is_open and progress_bar != null:
+		progress_bar.show()
 
 func _on_body_exited(body: Node2D) -> void:
 	if body == _player_in_range:
 		_player_in_range = null
 		_reset_interaction()
-		if progress_bar != null:
+		if not _is_open and progress_bar != null:
 			progress_bar.hide()
+
+func _is_player(body: Node2D) -> bool:
+	return body.is_in_group(player_group) or body.name == &"Player"
 
 func _reset_interaction() -> void:
 	if _interaction_elapsed == 0.0:
