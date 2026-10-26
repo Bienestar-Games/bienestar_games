@@ -11,10 +11,3 @@ func _on_run_ended(extracted: bool) -> void:
 		return
 	# TODO B36: load results screen
 	print("Run ended — extracted: ", extracted)
-
-
-func _on_interactive_barrier_barrier_opened() -> void:
-	# Desactiva la colisión de forma segura para permitir el paso
-	$CollisionShape2D.set_deferred("disabled", true)
-	# Libera el nodo de la memoria (o puedes usar hide() si prefieres ocultarla)
-	queue_free()
