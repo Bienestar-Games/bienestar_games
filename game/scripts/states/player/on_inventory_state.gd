@@ -7,6 +7,9 @@ func enter() -> void:
 	inventory_controller.visible = true
 	#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
+func runs_while_paused() -> bool:
+	return true
+
 func update(_delta) -> void:
 	if Input.is_action_just_pressed("inventory"):
 		get_tree().paused = false
