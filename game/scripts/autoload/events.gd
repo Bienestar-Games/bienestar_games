@@ -9,6 +9,7 @@ signal decision_phase_started
 
 # Extraction
 signal extraction_started
+signal extraction_progress_updated(progress: float)
 signal extraction_cancelled
 signal extraction_completed
 
