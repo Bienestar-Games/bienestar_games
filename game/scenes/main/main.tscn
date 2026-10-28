@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/decision_panel/decision_panel.tscn" id="4_decision"]
+[ext_resource type="PackedScene" path="res://scenes/ui/death_border/death_border.tscn" id="8_death_border"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
 script = ExtResource("1_main")
@@ -13,3 +14,5 @@ script = ExtResource("1_main")
 [node name="Hud" parent="." instance=ExtResource("3_hud")]
 
 [node name="DecisionPanel" parent="." instance=ExtResource("4_decision")]
+
+[node name="DeathBorder" parent="." instance=ExtResource("8_death_border")]
