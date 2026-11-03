@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/ui/death_border/death_border.tscn" id="8_death_border"]
 [ext_resource type="Script" uid="uid://c1vj5w6o6ufto" path="res://scenes/main/main.gd" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://maps/pueblo_viejo.tscn" id="2_map"]
+[ext_resource type="PackedScene" uid="uid://bfjny0gf5bx4r" path="res://scenes/maps/pueblo_viejo/pueblo_viejo.tscn" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="6_pause"]
 [ext_resource type="PackedScene" path="res://scenes/ui/decision_panel/decision_panel.tscn" id="4_decision"]
