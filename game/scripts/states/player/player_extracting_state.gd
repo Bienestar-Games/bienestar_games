@@ -8,8 +8,6 @@ const CHANNEL_TIME: float = 5.0
 
 var _timer: float = 0.0
 
-signal extraction_progress_updated(progress: float)
-
 func enter() -> void:
 	_timer = CHANNEL_TIME
 	player.stop_moving()
@@ -24,7 +22,7 @@ func exit() -> void:
 
 func update(delta: float) -> void:
 	_timer -= delta
-	extraction_progress_updated.emit(1.0 - (_timer / CHANNEL_TIME))
+	Events.extraction_progress_updated.emit(clampf(1.0 - (_timer / CHANNEL_TIME), 0.0, 1.0))
 	if _timer <= 0.0:
 		Events.extraction_completed.emit()
 		transitioned.emit(self, "idle")
