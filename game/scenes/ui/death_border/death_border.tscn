@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/death_border/death_border.gd" id="1_death_border"]
+[ext_resource type="Script" path="res://scenes/ui/death_border/death_border_icon.gd" id="2_icon"]
+
+[sub_resource type="Shader" id="Shader_vignette"]
+code = "shader_type canvas_item;
+
+// Death Border vignette: the darkness closes in from the edges as the run risk grows.
+uniform vec4 vignette_color : source_color = vec4(0.12, 0.0, 0.0, 1.0);
+uniform float risk : hint_range(0.0, 1.0) = 0.0;
+// Clear radius at minimum and maximum risk (0.5 = edge of the screen).
+uniform float radius_low = 0.8;
+uniform float radius_high = 0.35;
+uniform float softness = 0.35;
+uniform float max_alpha = 0.85;
+
+void fragment() {
+	float dist = length(UV - vec2(0.5));
+	float radius = mix(radius_low, radius_high, risk);
+	float shade = smoothstep(radius, radius + softness, dist);
+	COLOR = vec4(vignette_color.rgb, shade * max_alpha * smoothstep(0.0, 0.15, risk));
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vignette"]
+shader = SubResource("Shader_vignette")
+shader_parameter/vignette_color = Color(0.12, 0, 0, 1)
+shader_parameter/risk = 0.0
+shader_parameter/radius_low = 0.8
+shader_parameter/radius_high = 0.35
+shader_parameter/softness = 0.35
+shader_parameter/max_alpha = 0.85
+
+[node name="DeathBorder" type="CanvasLayer"]
+script = ExtResource("1_death_border")
+
+[node name="Vignette" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_vignette")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Icon" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_top = 64.0
+offset_right = -24.0
+offset_bottom = 104.0
+grow_horizontal = 0
+mouse_filter = 2
+script = ExtResource("2_icon")

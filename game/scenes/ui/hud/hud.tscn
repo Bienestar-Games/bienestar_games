@@ -18,6 +18,28 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 0)
 
+[sub_resource type="Shader" id="Shader_barrier_border"]
+code = "shader_type canvas_item;
+
+// Red edge glow shown while the barrier is open. HUD drives 'intensity' to pulse it.
+uniform vec4 border_color : source_color = vec4(0.85, 0.2, 0.2, 1.0);
+uniform float border_width : hint_range(0.0, 0.5) = 0.12;
+uniform float intensity : hint_range(0.0, 1.0) = 0.0;
+
+void fragment() {
+	vec2 edge = min(UV, 1.0 - UV);
+	float dist = min(edge.x, edge.y);
+	float alpha = 1.0 - smoothstep(0.0, border_width, dist);
+	COLOR = vec4(border_color.rgb, border_color.a * alpha * alpha * intensity);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_barrier_border"]
+shader = SubResource("Shader_barrier_border")
+shader_parameter/border_color = Color(0.85, 0.2, 0.2, 1)
+shader_parameter/border_width = 0.12
+shader_parameter/intensity = 0.0
+
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -29,6 +51,49 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="BarrierBorder" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_barrier_border")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BarrierIndicator" type="HBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -284.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 52.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="BarrierSwatch" type="ColorRect" parent="Root/BarrierIndicator"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(0.3, 0.8, 0.3, 1)
+
+[node name="BarrierLabel" type="Label" parent="Root/BarrierIndicator"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "Barrier: CLOSED"
+vertical_alignment = 1
 
 [node name="HealthBar" type="ProgressBar" parent="Root"]
 unique_name_in_owner = true
