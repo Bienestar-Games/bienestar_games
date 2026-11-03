@@ -17,11 +17,23 @@ extends Node2D
 @export var enemy_scale: Vector2 = Vector2.ONE
 ## z_index applied to every spawned enemy, to match the player's.
 @export var enemy_z_index: int = 0
+@export var enabled: bool = true
 
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
+		set_enabled(enabled)
+
+
+## Enables or disables this zone in the group used by WaveManager.
+func set_enabled(value: bool) -> void:
+	enabled = value
+	if Engine.is_editor_hint():
+		return
+	if enabled and not is_in_group("enemy_spawn_zones"):
 		add_to_group("enemy_spawn_zones")
+	elif not enabled and is_in_group("enemy_spawn_zones"):
+		remove_from_group("enemy_spawn_zones")
 
 
 ## Returns a random global position inside the zone, snapped to the navmesh when possible.

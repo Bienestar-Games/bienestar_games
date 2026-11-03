@@ -59,6 +59,20 @@ func _update_active_weapon() -> void:
 			w.visible = false
 	active_weapon_changed.emit(get_active_weapon())
 
+## Disables the active weapon (no shooting or reloading) while `enabled` is false.
+func set_weapons_enabled(enabled: bool) -> void:
+	if enabled:
+		_update_active_weapon()
+	elif not _weapons.is_empty():
+		_weapons[_current_weapon_index].process_mode = Node.PROCESS_MODE_DISABLED
+
+## Returns the barrier the player can start opening right now, or null.
+func get_interactable_barrier() -> InteractiveBarrier:
+	for barrier: InteractiveBarrier in get_tree().get_nodes_in_group(&"barriers"):
+		if barrier.can_interact(self):
+			return barrier
+	return null
+
 func get_active_weapon() -> Weapon:
 	if _weapons.is_empty():
 		return null

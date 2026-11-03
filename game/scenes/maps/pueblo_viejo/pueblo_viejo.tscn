@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="3_paraq"]
 [ext_resource type="Script" uid="uid://b456l13pc3b8s" path="res://scripts/components/interior_zone.gd" id="4_n2j2q"]
 [ext_resource type="NavigationPolygon" uid="uid://bb8s4bep0504f" path="res://resources/navigation_polygons/map_navigation_polygon.tres" id="5_urdq7"]
+[ext_resource type="PackedScene" uid="uid://cux3eeswk47kl" path="res://scenes/world/barrier/interactive_barrier.tscn" id="6_barrier"]
 
 [node name="PuebloViejo" type="Node2D" unique_id=297036221]
 y_sort_enabled = true
@@ -43,6 +44,10 @@ script = ExtResource("3_paraq")
 size = Vector2(600, 600)
 enemy_scale = Vector2(2, 2)
 enemy_z_index = 1
+
+[node name="InteractiveBarrier" parent="." unique_id=1850086153 instance=ExtResource("6_barrier")]
+z_index = 1
+position = Vector2(-771, -165)
 
 [node name="Buildings" type="Node2D" parent="." unique_id=1332161748 groups=["navigation"]]
 y_sort_enabled = true
