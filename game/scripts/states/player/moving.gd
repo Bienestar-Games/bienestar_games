@@ -12,5 +12,7 @@ func update(delta: float) -> void:
 		player.switch_weapon(1)
 	elif Input.is_action_just_pressed("weapon_next"):
 		player.switch_to_next_weapon()
+	if Input.is_action_pressed("interact") and player.get_interactable_barrier() != null:
+		transitioned.emit(self, "InteractingBarrier")
 	if player.is_idle():
 		transitioned.emit(self, "idle")

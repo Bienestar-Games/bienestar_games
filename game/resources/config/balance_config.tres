@@ -8,3 +8,4 @@ death_border_barrier_open_step = 0.4
 death_border_open_wave_step = 0.12
 max_inventory_slots = 9
 barrier_interaction_duration = 2.0
+barrier_unlock_wave = 2

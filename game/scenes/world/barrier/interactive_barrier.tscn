@@ -10,12 +10,14 @@ size = Vector2(131, 137)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdrn8"]
 size = Vector2(128, 130)
 
-[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "spawn_zone")]
+[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "spawn_zone", "sprite", "blocker_shape")]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_hmu41")
 progress_bar = NodePath("ProgressBar")
 spawn_zone = NodePath("SpawnZone")
+sprite = NodePath("Sprite2D")
+blocker_shape = NodePath("StaticBody2D/CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1242837280]
 position = Vector2(0.5, 4.5)
@@ -30,6 +32,8 @@ scale = Vector2(3.0285485, 1.1147301)
 [node name="SpawnZone" type="Node2D" parent="." unique_id=271003849]
 script = ExtResource("2_spawn_zone")
 size = Vector2(128, 128)
+enemy_scale = Vector2(2, 2)
+enemy_z_index = 1
 enabled = false
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=884310955]
