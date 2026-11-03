@@ -3,11 +3,10 @@ extends CanvasLayer
 ## Death Border (GDD §4, §8 Nivel 3, §15.11): accumulated run risk shown as a screen
 ## vignette that closes in from the edges, plus a minimal non-numeric HUD icon.
 ## Risk rises when the barrier opens and with every wave fought while it stays open.
+## The risk steps live in balance_config.tres.
 
-## Risk added the moment the barrier opens.
-@export_range(0.0, 1.0) var barrier_open_step: float = 0.4
-## Risk added for every wave that starts with the barrier open.
-@export_range(0.0, 1.0) var open_wave_step: float = 0.12
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
+
 ## Seconds the vignette and icon take to catch up with a risk change.
 @export var transition_time: float = 1.5
 
@@ -28,11 +27,11 @@ func _on_barrier_opened() -> void:
 	if _barrier_open:
 		return
 	_barrier_open = true
-	_raise_risk(barrier_open_step)
+	_raise_risk(BALANCE_CONFIG.death_border_barrier_open_step)
 
 func _on_wave_started(_wave_number: int) -> void:
 	if _barrier_open:
-		_raise_risk(open_wave_step)
+		_raise_risk(BALANCE_CONFIG.death_border_open_wave_step)
 
 func _raise_risk(amount: float) -> void:
 	_risk = minf(_risk + amount, 1.0)
