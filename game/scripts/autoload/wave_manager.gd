@@ -3,6 +3,7 @@ extends Node
 ## Listens to Events.wave_started (emitted by GameLoopManager), spawns a fixed number of
 ## enemies across every EnemySpawnZone of the current map and emits Events.wave_ended
 ## when all of them are dead. It never decides when a wave starts: that is GameLoopManager (B22).
+## While a barrier is open, its zone adds extra enemies on top of the base wave (B17).
 ## TODO(B17): scale enemy_count with the wave number / threat.
 ## TODO(B20): read enemy_count and spawn_interval from balance_config.tres.
 
@@ -15,6 +16,7 @@ const MAX_ENEMY_COUNT: int = 8
 const NAVIGATION_WAIT_MAX_FRAMES: int = 120
 ## Safety limit while waiting for the map to enter the tree (~1 s at 60 fps).
 const MAP_WAIT_MAX_FRAMES: int = 60
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 const MELEE_BASIC_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_basic/melee_basic.tscn")
 
 ## Fixed enemy count per wave (GDD §8, level 1: 5–8 enemies).
@@ -60,7 +62,7 @@ func _on_wave_started(wave_number: int) -> void:
 		await get_tree().process_frame
 		if run_id != _run_id:
 			return
-		zones = get_tree().get_nodes_in_group("enemy_spawn_zones")
+		zones = get_tree().get_nodes_in_group(EnemySpawnZone.GROUP)
 		if not zones.is_empty():
 			break
 	if zones.is_empty():
@@ -76,22 +78,38 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 	await _wait_for_navigation(zones[0])
 	if run_id != _run_id:
 		return
-	enemies_remaining = enemy_count
+	var plan := _build_spawn_plan(zones)
+	enemies_remaining = plan.size()
 	enemies_remaining_changed.emit(enemies_remaining)
 
-	for i in enemy_count:
-		# Round-robin across zones so all of them are used.
-		var zone := zones[i % zones.size()] as EnemySpawnZone
+	for i in plan.size():
+		var zone := plan[i] as EnemySpawnZone
 		if is_instance_valid(zone):
 			_spawn_enemy(zone)
 		else:
 			_on_enemy_died()
-		if spawn_interval > 0.0 and i < enemy_count - 1:
+		if spawn_interval > 0.0 and i < plan.size() - 1:
 			await get_tree().create_timer(spawn_interval, false).timeout
 			if run_id != _run_id:
 				return
 	_is_spawning = false
 	_check_wave_end()
+
+
+## Returns the zone of every enemy of the wave, in spawn order. The base wave is spread
+## round-robin across `zones`; open barriers add their bonus enemies interleaved with it,
+## so the extra pressure through the barrier starts right away.
+func _build_spawn_plan(zones: Array[Node]) -> Array[Node]:
+	var plan: Array[Node] = []
+	for i in enemy_count:
+		plan.append(zones[i % zones.size()])
+	var barrier_zones := get_tree().get_nodes_in_group(EnemySpawnZone.BARRIER_GROUP)
+	if barrier_zones.is_empty():
+		return plan
+	var extra := ceili(enemy_count * BALANCE_CONFIG.barrier_open_enemy_bonus)
+	for i in extra:
+		plan.insert(mini(i * 2 + 1, plan.size()), barrier_zones[i % barrier_zones.size()])
+	return plan
 
 
 ## The navigation map syncs a few frames after the map loads; spawning before that

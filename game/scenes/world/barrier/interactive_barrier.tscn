@@ -1,33 +1,67 @@
 [gd_scene format=3 uid="uid://cux3eeswk47kl"]
 
 [ext_resource type="Script" uid="uid://cir8lfuowg" path="res://scenes/world/barrier/interactive_barrier.gd" id="1_hmu41"]
+[ext_resource type="TileSet" uid="uid://dxenuna7gvi5s" path="res://resources/tilesets/dungeon.tres" id="2_8mytt"]
 [ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="2_spawn_zone"]
-[ext_resource type="Texture2D" uid="uid://ct3u32gsfj56o" path="res://assets/environment/tiles/barrelsStacked_S.png" id="3_8mytt"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmu41"]
-size = Vector2(131, 137)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.08, 0.08, 0.08, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdrn8"]
-size = Vector2(128, 130)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.95, 0.7, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "spawn_zone", "sprite", "blocker_shape")]
+[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "prompt_label", "spawn_zone", "barrels")]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_hmu41")
 progress_bar = NodePath("ProgressBar")
+prompt_label = NodePath("PromptLabel")
 spawn_zone = NodePath("SpawnZone")
-sprite = NodePath("Sprite2D")
-blocker_shape = NodePath("StaticBody2D/CollisionShape2D")
+y_sort_enabled = true
+barrels = NodePath("Barrels")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1242837280]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_hmu41")
+[node name="Barrels" type="TileMapLayer" parent="." unique_id=416555280]
+position = Vector2(-128, -64)
+y_sort_enabled = true
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0)
+tile_set = ExtResource("2_8mytt")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=996927005]
-offset_top = -39.999996
-offset_right = 4.0
-offset_bottom = -12.999996
-scale = Vector2(3.0285485, 1.1147301)
+z_index = 10
+offset_left = -64.0
+offset_top = -116.0
+offset_right = 64.0
+offset_bottom = -102.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+max_value = 1.0
+show_percentage = false
+
+[node name="PromptLabel" type="Label" parent="." unique_id=2003108586]
+z_index = 10
+offset_left = -96.0
+offset_top = -124.0
+offset_right = 96.0
+offset_bottom = -96.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+text = "Open [F]"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SpawnZone" type="Node2D" parent="." unique_id=271003849]
 script = ExtResource("2_spawn_zone")
@@ -35,15 +69,4 @@ size = Vector2(128, 128)
 enemy_scale = Vector2(2, 2)
 enemy_z_index = 1
 enabled = false
-
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=884310955]
-collision_layer = 15
-collision_mask = 15
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1662378348]
-position = Vector2(1, 2)
-shape = SubResource("RectangleShape2D_wdrn8")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=906541802]
-scale = Vector2(0.7769613, 0.3363651)
-texture = ExtResource("3_8mytt")
+spawn_group = &"barrier_spawn_zones"
