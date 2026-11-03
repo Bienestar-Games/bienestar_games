@@ -5,6 +5,10 @@ extends CanvasLayer
 @onready var _resume_button: Button = %ResumeButton
 @onready var _quit_button: Button = %QuitButton
 
+## Control that had focus before pausing (e.g. a decision panel button), restored on resume
+## so gamepad navigation keeps working.
+var _focus_before_pause: Control
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
@@ -22,6 +26,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func _pause() -> void:
+	_focus_before_pause = get_viewport().gui_get_focus_owner()
 	get_tree().paused = true
 	visible = true
 	_resume_button.grab_focus()
@@ -29,6 +34,9 @@ func _pause() -> void:
 func _resume() -> void:
 	visible = false
 	get_tree().paused = false
+	if is_instance_valid(_focus_before_pause) and _focus_before_pause.is_visible_in_tree():
+		_focus_before_pause.grab_focus()
+	_focus_before_pause = null
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
