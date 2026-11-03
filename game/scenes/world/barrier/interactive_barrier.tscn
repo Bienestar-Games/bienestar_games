@@ -69,3 +69,4 @@ size = Vector2(128, 128)
 enemy_scale = Vector2(2, 2)
 enemy_z_index = 1
 enabled = false
+spawn_group = &"barrier_spawn_zones"

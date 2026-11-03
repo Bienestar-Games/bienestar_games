@@ -18,6 +18,12 @@ extends Node2D
 ## z_index applied to every spawned enemy, to match the player's.
 @export var enemy_z_index: int = 0
 @export var enabled: bool = true
+## Group WaveManager reads this zone from. Zones in BARRIER_GROUP spawn extra enemies on top
+## of the base wave instead of taking a share of it.
+@export var spawn_group: StringName = GROUP
+
+const GROUP: StringName = &"enemy_spawn_zones"
+const BARRIER_GROUP: StringName = &"barrier_spawn_zones"
 
 
 func _ready() -> void:
@@ -30,10 +36,10 @@ func set_enabled(value: bool) -> void:
 	enabled = value
 	if Engine.is_editor_hint():
 		return
-	if enabled and not is_in_group("enemy_spawn_zones"):
-		add_to_group("enemy_spawn_zones")
-	elif not enabled and is_in_group("enemy_spawn_zones"):
-		remove_from_group("enemy_spawn_zones")
+	if enabled and not is_in_group(spawn_group):
+		add_to_group(spawn_group)
+	elif not enabled and is_in_group(spawn_group):
+		remove_from_group(spawn_group)
 
 
 ## Returns a random global position inside the zone, snapped to the navmesh when possible.

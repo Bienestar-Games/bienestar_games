@@ -10,3 +10,6 @@ extends Resource
 @export var barrier_interaction_duration: float = 2.0
 ## First wave in which the barrier can be opened (GDD §8: wave 1 keeps it locked).
 @export var barrier_unlock_wave: int = 2
+## Extra enemies per wave that come in through an open barrier, as a fraction of the
+## base wave (GDD §8: +50%). Fixed bonus, not compounded wave after wave (GDD §4).
+@export var barrier_open_enemy_bonus: float = 0.5
