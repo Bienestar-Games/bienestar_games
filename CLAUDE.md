@@ -169,6 +169,13 @@ Todas las acciones se definen en el **InputMap**, nunca con teclas directas en e
   - Ejemplo: `feat: hold F to open barrier (#15)`.
 - Para evitar conflictos en `.tscn`, no editen la misma escena en dos ramas a la vez. Coordinen en la issue quién toca `main.tscn` y `shelter.tscn`.
 
+### Alcance de un PR: una issue
+Cada rama y su PR contienen **solo** cambios que pertenecen a la issue/task asignada (la `B<nn>` del nombre de la rama).
+- Si durante el trabajo aparece algo de otra issue (otro sistema, otro responsable o una mejora "de paso"), **no se mete en el PR**: se anota en esa issue o se abre una nueva, y se hace en su propia rama.
+- No se rehace ni se revierte trabajo de otra issue (abierta o cerrada) sin el visto bueno de su responsable.
+- Si la issue necesita algo que contradice el GDD o una issue abierta, se para y se decide con el equipo antes de implementarlo; la decisión se refleja en el GDD.
+- Si una tarea depende de otra que aún no está en `dev`, se indica en el PR (`Depends on #NN`) en lugar de copiar ese trabajo.
+
 ### Git y Godot
 - `.gitignore` dentro de `game/`: `.godot/`, `*.translation`, `export_credentials.cfg`; en la raíz: `builds/`.
 - Sí se versionan los `.import` y los `.uid`.
