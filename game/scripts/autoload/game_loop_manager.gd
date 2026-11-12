@@ -8,6 +8,7 @@ var wave_number: int = 0
 func _ready() -> void:
 	Events.wave_ended.connect(_on_wave_ended)
 	Events.extraction_completed.connect(_on_extraction_completed)
+	Events.extraction_cancelled.connect(_on_extraction_cancelled)
 	# Defer so all scene nodes are ready before the first wave starts
 	call_deferred("_start_next_wave")
 
@@ -50,3 +51,19 @@ func _on_wave_ended() -> void:
 
 func _on_extraction_completed() -> void:
 	end_run(true)
+
+# A cancelled channel costs time and risk, not the run (GDD §15): go back to the
+# decision so the player can choose again between extracting and continuing.
+func _on_extraction_cancelled() -> void:
+	if current_state != RunState.EXTRACTING:
+		return
+	current_state = RunState.DECISION
+	# Deferred: player.gd and PlayerExtractingState force "idle" on the same signal,
+	# so emitting now would leave the player in idle instead of decision.
+	call_deferred("_resume_decision_phase")
+
+func _resume_decision_phase() -> void:
+	# A lethal hit cancels the channel and kills the player in the same frame
+	if current_state != RunState.DECISION:
+		return
+	Events.decision_phase_started.emit()
