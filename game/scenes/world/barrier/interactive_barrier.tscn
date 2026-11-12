@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cir8lfuowg" path="res://scenes/world/barrier/interactive_barrier.gd" id="1_hmu41"]
 [ext_resource type="TileSet" uid="uid://dxenuna7gvi5s" path="res://resources/tilesets/dungeon.tres" id="2_8mytt"]
-[ext_resource type="Script" uid="uid://kxbisbb23rua" path="res://scenes/world/enemy_spawn_zone/enemy_spawn_zone.gd" id="2_spawn_zone"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
 bg_color = Color(0.08, 0.08, 0.08, 0.8)
@@ -23,13 +22,12 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "prompt_label", "spawn_zone", "barrels")]
+[node name="InteractiveBarrier" type="Area2D" unique_id=1850086153 node_paths=PackedStringArray("progress_bar", "prompt_label", "barrels")]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_hmu41")
 progress_bar = NodePath("ProgressBar")
 prompt_label = NodePath("PromptLabel")
-spawn_zone = NodePath("SpawnZone")
 y_sort_enabled = true
 barrels = NodePath("Barrels")
 
@@ -62,10 +60,3 @@ theme_override_constants/outline_size = 6
 text = "Open [F]"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="SpawnZone" type="Node2D" parent="." unique_id=271003849]
-script = ExtResource("2_spawn_zone")
-size = Vector2(128, 128)
-enemy_scale = Vector2(2, 2)
-enemy_z_index = 1
-enabled = false

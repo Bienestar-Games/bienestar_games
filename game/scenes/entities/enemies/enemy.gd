@@ -27,6 +27,8 @@ const SIGHT_LOSS_GRACE: float = 2.0
 const REPATH_THRESHOLD: float = 8.0
 ## Seconds between updates of Kade's position while hunting.
 const HUNT_UPDATE_INTERVAL: float = 1.0
+## Max distance (px) between the end of a path and the target for it to count as reachable.
+const REACHABLE_TOLERANCE: float = 16.0
 
 var _hunt_timer: float = 0.0
 
@@ -86,8 +88,21 @@ func _update_hunt(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player") as BaseCharacter
 	if player == null or player.base_health <= 0:
 		return
+	# Sealed in (e.g. behind a closed barrier): stop hunting and fall back to idle/wander
+	if not _can_reach(player.global_position):
+		has_last_seen = false
+		return
 	last_seen_position = player.global_position
 	has_last_seen = true
+
+## True when the navmesh has a path from this enemy to `point`.
+func _can_reach(point: Vector2) -> bool:
+	var map := navigation_agent_2d.get_navigation_map()
+	var path := NavigationServer2D.map_get_path(map, global_position, point, true)
+	if path.is_empty():
+		return false
+	var goal := NavigationServer2D.map_get_closest_point(map, point)
+	return path[path.size() - 1].distance_to(goal) <= REACHABLE_TOLERANCE
 
 func _update_rotation(area: Area2D, dir: Vector2) -> void:
 	if dir != Vector2.ZERO:

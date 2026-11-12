@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b456l13pc3b8s" path="res://scripts/components/interior_zone.gd" id="4_n2j2q"]
 [ext_resource type="NavigationPolygon" uid="uid://bb8s4bep0504f" path="res://resources/navigation_polygons/map_navigation_polygon.tres" id="5_urdq7"]
 [ext_resource type="PackedScene" uid="uid://cux3eeswk47kl" path="res://scenes/world/barrier/interactive_barrier.tscn" id="6_barrier"]
+[ext_resource type="Script" uid="uid://n4nlm0ixg2ev" path="res://scripts/components/barrier_navigation_region.gd" id="7_nav_region"]
 
 [node name="PuebloViejo" type="Node2D" unique_id=297036221]
 y_sort_enabled = true
@@ -45,10 +46,6 @@ size = Vector2(600, 600)
 enemy_scale = Vector2(2, 2)
 enemy_z_index = 1
 
-[node name="InteractiveBarrier" parent="." unique_id=1850086153 instance=ExtResource("6_barrier")]
-z_index = 1
-position = Vector2(-771, -165)
-
 [node name="Buildings" type="Node2D" parent="." unique_id=1332161748 groups=["navigation"]]
 y_sort_enabled = true
 
@@ -76,10 +73,14 @@ polygon = PackedVector2Array(-158.90738, -52.869545, 5.6608543, -303.91553, 170.
 [node name="Buidling2" type="Node2D" parent="Buildings" unique_id=142307874]
 y_sort_enabled = true
 
+[node name="InteractiveBarrier" parent="Buildings/Buidling2" unique_id=1850086153 instance=ExtResource("6_barrier")]
+z_index = 1
+position = Vector2(-713, -154)
+
 [node name="Walls" type="TileMapLayer" parent="Buildings/Buidling2" unique_id=1949830621 groups=["walls_building_2"]]
 z_index = 1
 y_sort_enabled = true
-tile_map_data = PackedByteArray("AAD9//j/EQAAAAAAAAD7//v/EQACAAEAAAD8//n/EQAAAAEAAAD8//r/EQAAAAEAAAD9//f/EQAKAAAAAAD9////EQACAAEAAAD+//j/EQACAAEAAAD+//n/EQACAAEAAAD+//3/EQADAAEAAAD+//7/EQADAAEAAAD///r/EQACAAEAAAD///v/EQALAAAAAAD///z/EQADAAAAAAA=")
+tile_map_data = PackedByteArray("AAD9//j/EQAAAAAAAAD7//v/EQACAAEAAAD8//n/EQAAAAEAAAD8//r/EQAAAAEAAAD9//f/EQAKAAAAAAD9////EQACAAEAAAD+//j/EQACAAEAAAD+//n/EQACAAEAAAD+//3/EQADAAEAAAD+//7/EQADAAEAAAD///r/EQACAAEAAAD///v/EQALAAAAAAD///z/EQADAAAAAAD8//z/EQACAAEAAAD9//7/EQACAAEAAAA=")
 tile_set = ExtResource("1_v8luu")
 
 [node name="Interior" type="Area2D" parent="Buildings/Buidling2" unique_id=1433194030]
@@ -97,3 +98,4 @@ polygon = PackedVector2Array(-134.83052, -83.08075, 7.223068, -309.6646, 173.353
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1481119433]
 navigation_polygon = ExtResource("5_urdq7")
+script = ExtResource("7_nav_region")

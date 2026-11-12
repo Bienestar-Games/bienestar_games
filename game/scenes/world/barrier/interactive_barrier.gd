@@ -2,8 +2,9 @@ class_name InteractiveBarrier
 extends Area2D
 ## Shelter barrier (B15, B16). The player opens it by holding `interact` inside its area,
 ## driven by PlayerInteractingBarrierState. The barrier is drawn with the barrel tiles of the
-## dungeon TileSet, which also provide its collision. Opening is irreversible: the barrels go
-## away, Events.barrier_opened fires and its own EnemySpawnZone joins the next waves.
+## dungeon TileSet, which also provide its collision. It works as a door: while closed it blocks
+## bodies and (through BarrierNavigationRegion) navigation. Opening is irreversible: the
+## barrels go away and Events.barrier_opened fires.
 ## While the player can open it, a prompt shows the `interact` key; while holding, a bar
 ## shows how much of the hold is left.
 
@@ -11,7 +12,6 @@ const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_co
 
 @export var progress_bar: ProgressBar
 @export var prompt_label: Label
-@export var spawn_zone: EnemySpawnZone
 ## Barrel tiles that block the opening. Paint more barrels here to make the barrier wider.
 @export var barrels: TileMapLayer
 ## Distance (px) around the barrels' collision from where the player can start opening it.
@@ -25,9 +25,6 @@ var _player: Node2D
 func _ready() -> void:
 	add_to_group(&"barriers")
 	_build_interaction_area()
-	# Spawned enemies must join the map (Y-sorted), not the barrier itself
-	if spawn_zone != null and spawn_zone.spawn_parent == null:
-		spawn_zone.spawn_parent = get_parent()
 	if progress_bar != null:
 		progress_bar.hide()
 	if prompt_label != null:
@@ -80,15 +77,11 @@ func _open() -> void:
 	set_process(false)
 	if prompt_label != null:
 		prompt_label.hide()
-	# Let the player and enemies walk through the opening
-	barrels.set_deferred("collision_enabled", false)
-	barrels.hide()
+	# Remove the barrels right away (not deferred) so the navmesh re-bake triggered by
+	# Events.barrier_opened no longer sees them and enemies can path through the opening
+	barrels.clear()
 	if progress_bar != null:
 		progress_bar.hide()
-	if spawn_zone != null:
-		spawn_zone.set_enabled(true)
-	else:
-		push_warning("InteractiveBarrier: no spawn zone is assigned.")
 	Events.barrier_opened.emit()
 
 ## Builds the interaction area from the barrels' tile collision, grown by `interaction_margin`,
