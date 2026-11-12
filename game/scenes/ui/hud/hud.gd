@@ -1,7 +1,7 @@
 class_name Hud
 extends CanvasLayer
 ## HUD layer (GDD §4). Permanent: health bar, ammo counter and active weapon icon.
-## Situational: current wave, enemies left alive and barrier state (pulsing screen border while open).
+## Situational: current wave, enemies left alive and barrier state.
 
 @export_range(0.0, 1.0) var warning_threshold: float = 0.5
 @export_range(0.0, 1.0) var critical_threshold: float = 0.25
@@ -10,10 +10,6 @@ extends CanvasLayer
 @export var critical_color: Color = Color(0.85, 0.2, 0.2)
 @export var barrier_closed_color: Color = Color(0.3, 0.8, 0.3)
 @export var barrier_open_color: Color = Color(0.85, 0.2, 0.2)
-## Border intensity range and duration of one pulse (seconds) while the barrier is open.
-@export var border_pulse_min: float = 0.35
-@export var border_pulse_max: float = 0.85
-@export var border_pulse_time: float = 0.6
 
 @onready var _health_bar: ProgressBar = %HealthBar
 @onready var _health_label: Label = %HealthLabel
@@ -23,13 +19,11 @@ extends CanvasLayer
 @onready var _enemies_label: Label = %EnemiesLabel
 @onready var _barrier_swatch: ColorRect = %BarrierSwatch
 @onready var _barrier_label: Label = %BarrierLabel
-@onready var _barrier_border: ColorRect = %BarrierBorder
 
 var _player: Player
 var _magazine: Magazine
 var _health_fill: StyleBoxFlat
 var _alive_enemies: Array[Enemy] = []
-var _border_tween: Tween
 
 func _ready() -> void:
 	_health_fill = _health_bar.get_theme_stylebox("fill") as StyleBoxFlat
@@ -119,17 +113,7 @@ func _bind_barrier() -> void:
 	Events.barrier_opened.connect(_on_barrier_opened)
 	_barrier_swatch.color = barrier_closed_color
 	_barrier_label.text = "Barrier: CLOSED"
-	_barrier_border.visible = false
 
 func _on_barrier_opened() -> void:
 	_barrier_swatch.color = barrier_open_color
 	_barrier_label.text = "Barrier: OPEN"
-	_barrier_border.visible = true
-	if _border_tween != null:
-		return
-	_border_tween = create_tween().set_loops().set_trans(Tween.TRANS_SINE)
-	_border_tween.tween_method(_set_border_intensity, border_pulse_min, border_pulse_max, border_pulse_time)
-	_border_tween.tween_method(_set_border_intensity, border_pulse_max, border_pulse_min, border_pulse_time)
-
-func _set_border_intensity(value: float) -> void:
-	(_barrier_border.material as ShaderMaterial).set_shader_parameter("intensity", value)
