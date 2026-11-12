@@ -16,6 +16,8 @@ const NAVIGATION_WAIT_MAX_FRAMES: int = 120
 ## Safety limit while waiting for the map to enter the tree (~1 s at 60 fps).
 const MAP_WAIT_MAX_FRAMES: int = 60
 const MELEE_BASIC_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_basic/melee_basic.tscn")
+const MELEE_FAST_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_fast/melee_fast.tscn")
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 ## Fixed enemy count per wave (GDD §8, level 1: 5–8 enemies).
 var enemy_count: int = 6:
@@ -78,12 +80,13 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 		return
 	enemies_remaining = enemy_count
 	enemies_remaining_changed.emit(enemies_remaining)
+	var fast_count := _get_fast_enemy_count(wave_number)
 
 	for i in enemy_count:
 		# Round-robin across zones so all of them are used.
 		var zone := zones[i % zones.size()] as EnemySpawnZone
 		if is_instance_valid(zone):
-			_spawn_enemy(zone)
+			_spawn_enemy(zone, _is_fast_slot(i, fast_count))
 		else:
 			_on_enemy_died()
 		if spawn_interval > 0.0 and i < enemy_count - 1:
@@ -105,8 +108,21 @@ func _wait_for_navigation(zone: EnemySpawnZone) -> void:
 		await get_tree().physics_frame
 
 
-func _spawn_enemy(zone: EnemySpawnZone) -> void:
-	var enemy := enemy_scene.instantiate() as Enemy
+## How many enemies of this wave are fast melee enemies (B19, GDD §8 level 3).
+func _get_fast_enemy_count(wave_number: int) -> int:
+	if wave_number < BALANCE_CONFIG.melee_fast_first_wave:
+		return 0
+	return clampi(roundi(enemy_count * BALANCE_CONFIG.melee_fast_wave_share), 0, enemy_count)
+
+
+## Spreads the fast enemies evenly through the spawn order so they mix with the basic ones.
+func _is_fast_slot(index: int, fast_count: int) -> bool:
+	return floori((index + 1) * fast_count / float(enemy_count)) > floori(index * fast_count / float(enemy_count))
+
+
+func _spawn_enemy(zone: EnemySpawnZone, fast: bool) -> void:
+	var scene := MELEE_FAST_SCENE if fast else enemy_scene
+	var enemy := scene.instantiate() as Enemy
 	enemy.hunts_player = true
 	enemy.died.connect(_on_enemy_died, CONNECT_ONE_SHOT)
 	zone.spawn(enemy)

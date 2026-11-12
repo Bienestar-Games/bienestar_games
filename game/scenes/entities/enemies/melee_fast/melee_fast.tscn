@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/entities/enemies/melee_basic/melee_basic.tscn" id="1_melee_basic"]
+[ext_resource type="Script" uid="uid://ckbi5kfye6iwj" path="res://scenes/entities/enemies/melee_fast/melee_fast.gd" id="2_melee_fast"]
+
+[node name="MeleeFast" instance=ExtResource("1_melee_basic")]
+script = ExtResource("2_melee_fast")
+
+[node name="Sprite2D" parent="." index="0"]
+self_modulate = Color(1, 0.45, 0.45, 1)
