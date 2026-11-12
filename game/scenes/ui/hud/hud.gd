@@ -5,6 +5,11 @@ extends CanvasLayer
 
 @export_range(0.0, 1.0) var warning_threshold: float = 0.5
 @export_range(0.0, 1.0) var critical_threshold: float = 0.25
+## Health ratio under which the health bar blinks (GDD §4), and duration of one blink half (seconds).
+@export_range(0.0, 1.0) var low_health_blink_threshold: float = 0.3
+@export var low_health_blink_time: float = 0.25
+## Health bar opacity at the dim point of each blink.
+@export_range(0.0, 1.0) var low_health_blink_alpha: float = 0.25
 @export var healthy_color: Color = Color(0.3, 0.8, 0.3)
 @export var warning_color: Color = Color(0.95, 0.8, 0.2)
 @export var critical_color: Color = Color(0.85, 0.2, 0.2)
@@ -23,6 +28,7 @@ extends CanvasLayer
 var _player: Player
 var _magazine: Magazine
 var _health_fill: StyleBoxFlat
+var _low_health_tween: Tween
 var _alive_enemies: Array[Enemy] = []
 
 func _ready() -> void:
@@ -57,6 +63,20 @@ func _update_health() -> void:
 		_health_fill.bg_color = warning_color
 	else:
 		_health_fill.bg_color = healthy_color
+	_update_low_health_blink(ratio < low_health_blink_threshold)
+
+# Blinking is a non-color cue on top of the bar color (GDD §14, color blindness).
+func _update_low_health_blink(low: bool) -> void:
+	if low == (_low_health_tween != null):
+		return
+	if low:
+		_low_health_tween = create_tween().set_loops()
+		_low_health_tween.tween_property(_health_bar, "modulate:a", low_health_blink_alpha, low_health_blink_time)
+		_low_health_tween.tween_property(_health_bar, "modulate:a", 1.0, low_health_blink_time)
+	else:
+		_low_health_tween.kill()
+		_low_health_tween = null
+		_health_bar.modulate.a = 1.0
 
 func _on_active_weapon_changed(weapon: Weapon) -> void:
 	if _magazine != null:
