@@ -5,7 +5,7 @@ extends Control
 const MAIN_SCENE := "res://scenes/main/main.tscn"
 
 ## Items Kade was carrying when he died. Set it before loading this scene.
-static var lost_items: Array[ItemData] = []
+static var lost_items: Array[String] = []
 
 @onready var _loot_label: Label = %LootLabel
 @onready var _retry_button: Button = %RetryButton
@@ -20,9 +20,12 @@ func _ready() -> void:
 func _build_loot_text() -> String:
 	if lost_items.is_empty():
 		return "You had no loot to lose."
-	var lines: PackedStringArray = ["Loot lost:"]
+	var counts: Dictionary[String, int] = {}
 	for item in lost_items:
-		lines.append("- " + item.item_name)
+		counts[item] = counts.get(item, 0) + 1
+	var lines: PackedStringArray = ["Loot lost: %d" % lost_items.size()]
+	for item in counts:
+		lines.append("- %s x%d" % [item.capitalize(), counts[item]])
 	return "\n".join(lines)
 
 func _on_retry_pressed() -> void:

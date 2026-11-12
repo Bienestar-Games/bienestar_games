@@ -7,10 +7,13 @@ func _ready() -> void:
 	Events.run_ended.connect(_on_run_ended)
 
 func _on_run_ended(extracted: bool) -> void:
+	var player := get_tree().get_first_node_in_group("player") as Player
 	if not extracted:
+		DeathScreen.lost_items.clear()
+		if player != null:
+			DeathScreen.lost_items.assign(player.inventory)
 		get_tree().change_scene_to_file.call_deferred(DEATH_SCREEN)
 		return
-	var player := get_tree().get_first_node_in_group("player") as Player
 	ResultsScreen.kept_items.clear()
 	if player != null:
 		ResultsScreen.kept_items.assign(player.inventory)
