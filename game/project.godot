@@ -28,6 +28,7 @@ buses/default_bus_layout="uid://dkie6v8hpcda4"
 Events="*res://scripts/autoload/events.gd"
 GameLoopManager="*res://scripts/autoload/game_loop_manager.gd"
 WaveManager="*res://scripts/autoload/wave_manager.gd"
+ThreatManager="*res://scripts/autoload/threat_manager.gd"
 
 [display]
 

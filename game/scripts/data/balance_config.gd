@@ -40,3 +40,12 @@ extends Resource
 @export_group("Extraction")
 ## Seconds Kade must stay undisturbed in the extraction channel (GDD §8: 5 s).
 @export var extraction_channel_duration: float = 5.0
+
+@export_group("Threat")
+## Threat multiplier added per wave after the first (base escalation, GDD §15.4). Wave 1 is 1.0.
+@export var threat_wave_step: float = 0.25
+## Threat added to every wave that mixes in fast melee enemies (from melee_fast_first_wave on).
+@export var threat_fast_enemies_bonus: float = 0.25
+## Fixed threat added per open barrier, on top of each wave's base threat (not compounded, GDD §4).
+## It raises the threat (and the loot that reads it) but never adds enemies.
+@export var threat_barrier_open_bonus: float = 0.5

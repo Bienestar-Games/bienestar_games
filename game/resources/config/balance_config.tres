@@ -22,3 +22,6 @@ melee_basic_damage = 10.0
 player_speed = 200
 player_health = 100.0
 extraction_channel_duration = 5.0
+threat_wave_step = 0.25
+threat_fast_enemies_bonus = 0.25
+threat_barrier_open_bonus = 0.5
