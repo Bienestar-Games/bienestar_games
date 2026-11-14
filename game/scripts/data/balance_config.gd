@@ -49,3 +49,11 @@ extends Resource
 ## Fixed threat added per open barrier, on top of each wave's base threat (not compounded, GDD §4).
 ## It raises the threat (and the loot that reads it) but never adds enemies.
 @export var threat_barrier_open_bonus: float = 0.5
+
+@export_group("Risk")
+## Lowest threat multiplier shown as "medium" risk (GDD §10). Below it the risk is "low".
+@export var risk_medium_threshold: float = 1.5
+## Lowest threat multiplier shown as "high" risk.
+@export var risk_high_threshold: float = 2.0
+## Lowest threat multiplier shown as "extreme" risk.
+@export var risk_extreme_threshold: float = 2.75

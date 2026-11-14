@@ -10,8 +10,12 @@ extends Node
 ## - `ThreatManager.multiplier`: threat of the current wave, or of the upcoming wave
 ##   while the player is deciding between waves.
 ## - `ThreatManager.threat_type`: enemy mix of that same wave.
+## - `ThreatManager.risk_level`: the multiplier as a RiskLevel word (B30), the only form
+##   of the threat the player may see.
 ## - `Events.threat_changed(multiplier)`: emitted every time the multiplier changes.
-## - `get_multiplier_for_wave(n)` / `get_threat_type_for_wave(n)`: same values for any wave.
+## - `Events.risk_level_changed(risk_level)`: emitted every time the risk level changes.
+## - `get_multiplier_for_wave(n)` / `get_threat_type_for_wave(n)`: same values for any wave,
+##   and `get_risk_level_for_multiplier(m)`.
 
 ## General kind of enemies in a wave, for the next-wave preview (GDD §10).
 enum ThreatType {
@@ -21,12 +25,16 @@ enum ThreatType {
 	FAST_HORDE,
 }
 
+## Estimated risk of a wave (GDD §10): low / medium / high / extreme, never a number.
+enum RiskLevel { LOW, MEDIUM, HIGH, EXTREME }
+
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 ## Wave the current threat refers to (the upcoming one during the decision phase).
 var wave_number: int = 0
 var multiplier: float = 1.0
 var threat_type: ThreatType = ThreatType.SLOW_HORDE
+var risk_level: RiskLevel = RiskLevel.LOW
 ## Barriers opened this run. Opening is irreversible, so this only grows.
 var open_barriers: int = 0
 
@@ -62,6 +70,17 @@ func get_threat_type_for_wave(wave: int) -> ThreatType:
 	return ThreatType.SLOW_HORDE
 
 
+## Risk level of a threat multiplier, using the thresholds in balance_config.tres (B30).
+func get_risk_level_for_multiplier(value: float) -> RiskLevel:
+	if value >= BALANCE_CONFIG.risk_extreme_threshold:
+		return RiskLevel.EXTREME
+	if value >= BALANCE_CONFIG.risk_high_threshold:
+		return RiskLevel.HIGH
+	if value >= BALANCE_CONFIG.risk_medium_threshold:
+		return RiskLevel.MEDIUM
+	return RiskLevel.LOW
+
+
 func _on_wave_started(wave: int) -> void:
 	# A new run starts at wave 1: forget the barriers of the previous run
 	if wave <= 1:
@@ -88,7 +107,10 @@ func _on_run_ended(_extracted: bool) -> void:
 func _update_threat() -> void:
 	var new_multiplier := get_multiplier_for_wave(maxi(wave_number, 1))
 	threat_type = get_threat_type_for_wave(maxi(wave_number, 1))
-	if is_equal_approx(new_multiplier, multiplier):
-		return
-	multiplier = new_multiplier
-	Events.threat_changed.emit(multiplier)
+	if not is_equal_approx(new_multiplier, multiplier):
+		multiplier = new_multiplier
+		Events.threat_changed.emit(multiplier)
+	var new_risk_level := get_risk_level_for_multiplier(multiplier)
+	if new_risk_level != risk_level:
+		risk_level = new_risk_level
+		Events.risk_level_changed.emit(risk_level)
