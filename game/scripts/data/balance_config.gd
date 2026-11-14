@@ -1,6 +1,12 @@
 class_name BalanceConfig
 extends Resource
 
+@export_group("Loot")
+## Waves per loot threat tier (low / medium / high / extreme) until ThreatManager's risk
+## level is available (B31 fallback, see LootManager.get_threat_tier). An open barrier adds one tier.
+@export_range(1, 10) var loot_fallback_waves_per_threat_tier: int = 2
+@export_group("")
+
 ## Death Border risk (0–1, never shown as a number) added the moment the barrier opens.
 @export_range(0.0, 1.0) var death_border_barrier_open_step: float = 0.4
 ## Death Border risk added for every wave that starts with the barrier open.

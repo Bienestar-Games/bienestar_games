@@ -12,6 +12,17 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 @export var rarity: Rarity = Rarity.COMMON
 var item_model_prefab: PackedScene
 
+## Border color of each rarity on ground pickups and inventory slots (GDD §4, §8 level 3).
+const RARITY_COLORS: Dictionary[Rarity, Color] = {
+	Rarity.COMMON: Color(0.85, 0.85, 0.85),
+	Rarity.UNCOMMON: Color(0.3, 0.85, 0.3),
+	Rarity.RARE: Color(0.25, 0.55, 1.0),
+}
+
+## Border color of `value`.
+static func get_rarity_color(value: Rarity) -> Color:
+	return RARITY_COLORS.get(value, Color.WHITE)
+
 ## Display name of `value`, e.g. "Uncommon".
 static func get_rarity_name(value: Rarity) -> String:
 	return String(Rarity.find_key(value)).capitalize()

@@ -19,6 +19,13 @@ func _ready() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Player
 	if player != null:
 		player.pickup_rejected.connect(_on_pickup_rejected)
+		player.inventory_changed.connect(_on_inventory_changed)
+		_on_inventory_changed(player.inventory)
+
+## Shows each carried item in its slot, with its rarity border (B31).
+func _on_inventory_changed(items: Array[ItemData]) -> void:
+	for i in inventory_slots.size():
+		inventory_slots[i].set_item(items[i] if i < items.size() else null)
 
 func _on_pickup_rejected() -> void:
 	if _blink_tween != null and _blink_tween.is_valid():

@@ -6,6 +6,8 @@ const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_co
 signal active_weapon_changed(weapon: Weapon)
 ## Emitted when an item can't be picked up because the inventory is full.
 signal pickup_rejected
+## Emitted after an item is added to the inventory.
+signal inventory_changed(inventory: Array[ItemData])
 
 @onready var f_arm_2 = %f_arm_2
 @onready var b_arm_2 = %b_arm_2
@@ -31,6 +33,7 @@ func add_item(item: ItemData) -> bool:
 			pickup_rejected.emit()
 			return false
 		inventory.append(item)
+		inventory_changed.emit(inventory)
 		print(inventory.map(func(i: ItemData) -> String: return i.item_name))
 		return true
 
