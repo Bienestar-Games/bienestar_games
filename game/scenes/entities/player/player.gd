@@ -37,6 +37,8 @@ func add_item(item_type: String) -> bool:
 	return false
 
 func _ready() -> void:
+	MAX_SPEED = BALANCE_CONFIG.player_speed
+	base_health = BALANCE_CONFIG.player_health
 	died.connect(_on_died)
 	Events.decision_phase_started.connect(_on_decision_phase_started)
 	Events.wave_started.connect(_on_wave_started)
