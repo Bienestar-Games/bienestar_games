@@ -3,8 +3,9 @@ extends Node
 ## Listens to Events.wave_started (emitted by GameLoopManager), spawns the wave's
 ## enemies across every EnemySpawnZone of the current map and emits Events.wave_ended
 ## when all of them are dead. It never decides when a wave starts: that is GameLoopManager (B22).
-## Enemy count and spawn interval live in balance_config.tres (B20).
-## TODO(B17): scale enemy_count with the wave number / threat.
+## Enemy count and spawn interval live in balance_config.tres (B20). Each wave adds a
+## fixed number of enemies to the previous one (B17). The barrier is only a door: opening
+## it never changes how many enemies a wave has or where they spawn.
 
 ## Emitted every time the number of alive enemies of the current wave changes.
 signal enemies_remaining_changed(enemies_remaining: int)
@@ -73,7 +74,7 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 	await _wait_for_navigation(zones[0])
 	if run_id != _run_id:
 		return
-	enemy_count = BALANCE_CONFIG.wave_base_enemy_count
+	enemy_count = get_enemy_count(wave_number)
 	enemies_remaining = enemy_count
 	enemies_remaining_changed.emit(enemies_remaining)
 	var fast_count := _get_fast_enemy_count(wave_number)
@@ -91,6 +92,11 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 				return
 	_is_spawning = false
 	_check_wave_end()
+
+
+## Enemies in `wave_number` (1-based): the base count plus a fixed increment per wave (B17).
+func get_enemy_count(wave_number: int) -> int:
+	return BALANCE_CONFIG.wave_base_enemy_count + BALANCE_CONFIG.wave_enemy_increment * maxi(wave_number - 1, 0)
 
 
 ## The navigation map syncs a few frames after the map loads; spawning before that

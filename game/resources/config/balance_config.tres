@@ -14,6 +14,7 @@ melee_fast_wave_share = 0.33
 melee_fast_speed_multiplier = 1.6
 melee_fast_damage_multiplier = 1.5
 wave_base_enemy_count = 6
+wave_enemy_increment = 2
 wave_spawn_interval = 0.4
 melee_basic_speed = 90
 melee_basic_health = 100.0
