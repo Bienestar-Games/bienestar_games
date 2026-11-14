@@ -6,7 +6,7 @@ extends Control
 const MAIN_SCENE := "res://scenes/main/main.tscn"
 
 ## Items Kade extracted with. Set it before loading this scene.
-static var kept_items: Array[String] = []
+static var kept_items: Array[ItemData] = []
 ## Waves cleared before extracting. Set it before loading this scene.
 static var waves_survived: int = 0
 
@@ -25,12 +25,8 @@ func _ready() -> void:
 func _build_loot_text() -> String:
 	if kept_items.is_empty():
 		return "You extracted with no loot."
-	var counts: Dictionary[String, int] = {}
-	for item in kept_items:
-		counts[item] = counts.get(item, 0) + 1
 	var lines: PackedStringArray = ["Loot kept: %d" % kept_items.size()]
-	for item in counts:
-		lines.append("- %s x%d" % [item.capitalize(), counts[item]])
+	lines.append_array(ItemData.summarize(kept_items))
 	return "\n".join(lines)
 
 func _on_play_again_pressed() -> void:

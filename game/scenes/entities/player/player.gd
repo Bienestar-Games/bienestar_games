@@ -17,21 +17,21 @@ signal pickup_rejected
 
 var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
-var inventory: Array[String] = []
+var inventory: Array[ItemData] = []
 
-func add_item(item_type: String) -> bool:
-	if item_type == "heal":
+func add_item(item: ItemData) -> bool:
+	if item.item_type == "heal":
 		# TODO: Apply the healing amount defined by the balance configuration.
 		print("Player healed")
 		return true
 
-	if item_type == "resource":
+	if item.item_type == "resource":
 		if inventory.size() >= BALANCE_CONFIG.max_inventory_slots:
 			print("Inventory full")
 			pickup_rejected.emit()
 			return false
-		inventory.append(item_type)
-		print(inventory)
+		inventory.append(item)
+		print(inventory.map(func(i: ItemData) -> String: return i.item_name))
 		return true
 
 	return false
