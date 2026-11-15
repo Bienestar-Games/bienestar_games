@@ -18,3 +18,25 @@ extends Resource
 @export var melee_fast_speed_multiplier: float = 1.6
 ## Fast melee enemy damage relative to melee_basic.
 @export var melee_fast_damage_multiplier: float = 1.5
+
+@export_group("Waves")
+## Enemies in wave 1 (GDD §8 level 1: 5–8 enemies).
+@export_range(1, 50) var wave_base_enemy_count: int = 6
+## Enemies added to every wave after the first (GDD §8 level 2: +2 per wave, not compounded).
+@export_range(0, 20) var wave_enemy_increment: int = 2
+## Seconds between two spawns of the same wave, so enemies do not appear all at once.
+@export var wave_spawn_interval: float = 0.4
+
+@export_group("Melee basic enemy")
+@export var melee_basic_speed: int = 90
+@export var melee_basic_health: float = 100.0
+## Damage of one melee_basic attack.
+@export var melee_basic_damage: float = 10.0
+
+@export_group("Player")
+@export var player_speed: int = 200
+@export var player_health: float = 100.0
+
+@export_group("Extraction")
+## Seconds Kade must stay undisturbed in the extraction channel (GDD §8: 5 s).
+@export var extraction_channel_duration: float = 5.0

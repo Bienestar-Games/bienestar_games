@@ -3,13 +3,15 @@ extends State
 
 @export var player: Player
 
-# Seconds the player must remain undisturbed to complete extraction (§8 MVP)
-const CHANNEL_TIME: float = 5.0
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 var _timer: float = 0.0
+# Seconds the player must remain undisturbed to complete extraction (§8 MVP)
+var _channel_time: float = 0.0
 
 func enter() -> void:
-	_timer = CHANNEL_TIME
+	_channel_time = maxf(BALANCE_CONFIG.extraction_channel_duration, 0.001)
+	_timer = _channel_time
 	player.stop_moving()
 	player.damage_taken.connect(_on_damage_taken)
 	Events.extraction_cancelled.connect(_on_cancelled)
@@ -22,7 +24,7 @@ func exit() -> void:
 
 func update(delta: float) -> void:
 	_timer -= delta
-	Events.extraction_progress_updated.emit(clampf(1.0 - (_timer / CHANNEL_TIME), 0.0, 1.0))
+	Events.extraction_progress_updated.emit(clampf(1.0 - (_timer / _channel_time), 0.0, 1.0))
 	if _timer <= 0.0:
 		Events.extraction_completed.emit()
 		transitioned.emit(self, "idle")

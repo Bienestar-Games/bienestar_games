@@ -1,16 +1,15 @@
 extends Node
 ## Autoload "WaveManager" (B08).
-## Listens to Events.wave_started (emitted by GameLoopManager), spawns a fixed number of
+## Listens to Events.wave_started (emitted by GameLoopManager), spawns the wave's
 ## enemies across every EnemySpawnZone of the current map and emits Events.wave_ended
 ## when all of them are dead. It never decides when a wave starts: that is GameLoopManager (B22).
-## TODO(B17): scale enemy_count with the wave number / threat.
-## TODO(B20): read enemy_count and spawn_interval from balance_config.tres.
+## Enemy count and spawn interval live in balance_config.tres (B20). Each wave adds a
+## fixed number of enemies to the previous one (B17). The barrier is only a door: opening
+## it never changes how many enemies a wave has or where they spawn.
 
 ## Emitted every time the number of alive enemies of the current wave changes.
 signal enemies_remaining_changed(enemies_remaining: int)
 
-const MIN_ENEMY_COUNT: int = 5
-const MAX_ENEMY_COUNT: int = 8
 ## Safety limit while waiting for the navigation map to sync (~2 s at 60 fps).
 const NAVIGATION_WAIT_MAX_FRAMES: int = 120
 ## Safety limit while waiting for the map to enter the tree (~1 s at 60 fps).
@@ -19,12 +18,8 @@ const MELEE_BASIC_SCENE: PackedScene = preload("res://scenes/entities/enemies/me
 const MELEE_FAST_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_fast/melee_fast.tscn")
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
-## Fixed enemy count per wave (GDD §8, level 1: 5–8 enemies).
-var enemy_count: int = 6:
-	set(value):
-		enemy_count = clampi(value, MIN_ENEMY_COUNT, MAX_ENEMY_COUNT)
-## Seconds between spawns, so enemies do not appear all at once.
-var spawn_interval: float = 0.4
+## Enemies spawned in the current wave.
+var enemy_count: int = 0
 var enemy_scene: PackedScene = MELEE_BASIC_SCENE
 
 var current_wave: int = 0
@@ -45,6 +40,7 @@ func _ready() -> void:
 func reset() -> void:
 	_run_id += 1
 	current_wave = 0
+	enemy_count = 0
 	enemies_remaining = 0
 	is_wave_active = false
 	_is_spawning = false
@@ -78,6 +74,7 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 	await _wait_for_navigation(zones[0])
 	if run_id != _run_id:
 		return
+	enemy_count = get_enemy_count(wave_number)
 	enemies_remaining = enemy_count
 	enemies_remaining_changed.emit(enemies_remaining)
 	var fast_count := _get_fast_enemy_count(wave_number)
@@ -89,12 +86,17 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 			_spawn_enemy(zone, _is_fast_slot(i, fast_count))
 		else:
 			_on_enemy_died()
-		if spawn_interval > 0.0 and i < enemy_count - 1:
-			await get_tree().create_timer(spawn_interval, false).timeout
+		if BALANCE_CONFIG.wave_spawn_interval > 0.0 and i < enemy_count - 1:
+			await get_tree().create_timer(BALANCE_CONFIG.wave_spawn_interval, false).timeout
 			if run_id != _run_id:
 				return
 	_is_spawning = false
 	_check_wave_end()
+
+
+## Enemies in `wave_number` (1-based): the base count plus a fixed increment per wave (B17).
+func get_enemy_count(wave_number: int) -> int:
+	return BALANCE_CONFIG.wave_base_enemy_count + BALANCE_CONFIG.wave_enemy_increment * maxi(wave_number - 1, 0)
 
 
 ## The navigation map syncs a few frames after the map loads; spawning before that
