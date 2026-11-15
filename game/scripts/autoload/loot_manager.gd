@@ -1,12 +1,17 @@
 extends Node
-## Autoload "LootManager" (B21).
+## Autoload "LootManager" (B21, B31).
 ## Decides which items drop and places them in the map as LootPickups:
-## - every enemy drops one Common item when it dies (B09);
+## - every enemy drops one item when it dies (B09), its rarity rolled on ENEMY_LOOT_TABLE
+##   with the current threat tier (B31): the higher the threat, the better the loot;
 ## - every wave that ends with the barrier open drops one guaranteed Uncommon item
 ##   (GDD §8 level 2), next to the drop of the wave's last enemy.
 ## The barrier stays a door: it only reports Events.barrier_opened, the reward lives here.
 
 const LOOT_PICKUP_SCENE: PackedScene = preload("res://scenes/world/loot_pickup/loot_pickup.tscn")
+const ENEMY_LOOT_TABLE: LootTable = preload("res://resources/loot_tables/enemy_drop.tres")
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
+## Threat tiers of LootTable: low / medium / high / extreme.
+const THREAT_TIER_COUNT: int = 4
 ## Every item that can drop. Add new ItemData .tres from resources/items/ here.
 const ITEM_POOL: Array[ItemData] = [
 	preload("res://resources/items/bandage.tres"),
@@ -33,7 +38,18 @@ func _ready() -> void:
 func drop_enemy_loot(parent: Node, position: Vector2) -> void:
 	_last_drop_parent = parent
 	_last_drop_position = position
-	drop_item(pick_item(ItemData.Rarity.COMMON), parent, position)
+	drop_item(pick_item(ENEMY_LOOT_TABLE.roll_rarity(get_threat_tier())), parent, position)
+
+
+## Threat tier (0 = low … 3 = extreme) that weights the loot rarity.
+## Hook point for B29/B30: once ThreatManager is merged this returns ThreatManager.risk_level,
+## whose values use the same order. Until then it is derived from the wave number, plus one
+## tier while the barrier is open (the same two factors as the threat multiplier, GDD §15.4).
+func get_threat_tier() -> int:
+	var tier := floori((GameLoopManager.wave_number - 1) / float(BALANCE_CONFIG.loot_fallback_waves_per_threat_tier))
+	if _barrier_open:
+		tier += 1
+	return clampi(tier, 0, THREAT_TIER_COUNT - 1)
 
 
 ## Adds a LootPickup with `item` to `parent` at the global `position`.
