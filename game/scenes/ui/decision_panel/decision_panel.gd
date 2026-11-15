@@ -33,12 +33,8 @@ func _build_loot_text() -> String:
 	var player := get_tree().get_first_node_in_group("player") as Player
 	if player == null or player.inventory.is_empty():
 		return "No loot yet."
-	var counts: Dictionary[String, int] = {}
-	for item in player.inventory:
-		counts[item] = counts.get(item, 0) + 1
 	var lines: PackedStringArray = ["Loot secured: %d / %d" % [player.inventory.size(), Player.BALANCE_CONFIG.max_inventory_slots]]
-	for item in counts:
-		lines.append("- %s x%d" % [item.capitalize(), counts[item]])
+	lines.append_array(ItemData.summarize(player.inventory))
 	return "\n".join(lines)
 
 func _on_continue_pressed() -> void:
