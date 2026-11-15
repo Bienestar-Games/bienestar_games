@@ -18,3 +18,8 @@ signal run_ended(extracted: bool)
 
 # Barrier
 signal barrier_opened
+
+# Threat (B29): hidden multiplier of the current or upcoming wave. Never shown as a number.
+signal threat_changed(multiplier: float)
+# Risk level (B30): ThreatManager.RiskLevel derived from the threat multiplier.
+signal risk_level_changed(risk_level: int)
