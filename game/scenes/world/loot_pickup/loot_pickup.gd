@@ -30,5 +30,9 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body is Player or item == null:
 		return
 
-	body.add_item(item)
-	queue_free()
+	if body.add_item(item):
+		Events.item_picked_up.emit(item)
+		queue_free()
+	else:
+		# Rejected (e.g. walls full): the pickup stays on the ground for later.
+		Events.item_pickup_rejected.emit(item)

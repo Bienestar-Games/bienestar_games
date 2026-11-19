@@ -14,3 +14,7 @@ signal run_ended
 signal threat_changed(multiplier: float)
 # Risk level (B30): ThreatManager.RiskLevel derived from the threat multiplier.
 signal risk_level_changed(risk_level: int)
+
+# Loot pickups: emitted by LootPickup once Player.add_item() accepts or rejects the item.
+signal item_picked_up(item: ItemData)
+signal item_pickup_rejected(item: ItemData)
