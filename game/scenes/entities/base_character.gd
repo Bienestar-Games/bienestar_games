@@ -4,9 +4,9 @@ extends CharacterBody2D
 signal died
 signal damage_taken
 
-@export var MAX_SPEED    : int = 200
-@export var ACCELERATION : int = 1500
-@export var FRICTION: int = 1800
+@export var MAX_SPEED    : int = 300
+@export var ACCELERATION : int = 2250
+@export var FRICTION: int = 2700
 @export var base_health: float = 100
 @export var base_damage: float = 5
 

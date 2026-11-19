@@ -37,13 +37,13 @@ extends Resource
 @export var wave_spawn_interval: float = 0.4
 
 @export_group("Melee basic enemy")
-@export var melee_basic_speed: int = 90
+@export var melee_basic_speed: int = 135
 @export var melee_basic_health: float = 100.0
 ## Damage of one melee_basic attack.
 @export var melee_basic_damage: float = 10.0
 
 @export_group("Player")
-@export var player_speed: int = 200
+@export var player_speed: int = 300
 @export var player_health: float = 100.0
 ## Starting max-health ceiling; "heal" items cannot push base_health above it until
 ## a "max_health_up" buff raises the player's current cap. Defaults to player_health.
