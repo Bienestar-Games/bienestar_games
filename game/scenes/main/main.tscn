@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="6_pause"]
 [ext_resource type="PackedScene" path="res://scenes/ui/decision_panel/decision_panel.tscn" id="4_decision"]
-[ext_resource type="PackedScene" path="res://scenes/ui/extraction_progress/extraction_progress.tscn" id="7_extraction_progress"]
 [ext_resource type="PackedScene" path="res://scenes/ui/damage_flash/damage_flash.tscn" id="9_damage_flash"]
 
 [node name="Main" type="Node2D" unique_id=1926789006]
@@ -23,5 +22,3 @@ script = ExtResource("1_main")
 [node name="PauseMenu" parent="." instance=ExtResource("6_pause")]
 
 [node name="DecisionPanel" parent="." unique_id=622314643 instance=ExtResource("4_decision")]
-
-[node name="ExtractionProgress" parent="." instance=ExtResource("7_extraction_progress")]

@@ -144,5 +144,5 @@ func _check_wave_end() -> void:
 		Events.wave_ended.emit()
 
 
-func _on_run_ended(_extracted: bool) -> void:
+func _on_run_ended() -> void:
 	reset()
