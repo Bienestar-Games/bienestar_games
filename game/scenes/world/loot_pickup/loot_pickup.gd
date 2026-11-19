@@ -8,6 +8,9 @@ extends Area2D
 @export var border_padding: float = 4.0
 ## Opacity of the rarity-colored backdrop behind the icon.
 @export_range(0.0, 1.0) var backdrop_alpha: float = 0.25
+## Size (px) of the longest side of every icon on the ground, so big textures such as the
+## wall don't drop larger than the 64x64 consumable icons.
+@export var icon_size: float = 64.0
 
 ## Blinks per second while the item is about to disappear.
 @export var despawn_blink_rate: float = 4.0
@@ -25,7 +28,15 @@ func _ready() -> void:
 	if item != null and item.item_icon != null:
 		_sprite.region_enabled = false
 		_sprite.texture = item.item_icon
+	_fit_icon()
 	queue_redraw()
+
+## Scales the sprite so its longest side is icon_size, whatever the icon's texture size.
+func _fit_icon() -> void:
+	var size: Vector2 = _sprite.get_rect().size
+	var longest: float = maxf(size.x, size.y)
+	if longest > 0.0:
+		_sprite.scale = Vector2.ONE * (icon_size / longest)
 
 func _process(delta: float) -> void:
 	_time_left -= delta
@@ -41,7 +52,8 @@ func _draw() -> void:
 	if item == null:
 		return
 	var color := ItemData.get_rarity_color(item.rarity)
-	var rect := _sprite.get_rect().grow(border_padding)
+	var icon_rect: Rect2 = _sprite.get_rect()
+	var rect := Rect2(icon_rect.position * _sprite.scale, icon_rect.size * _sprite.scale).grow(border_padding)
 	draw_rect(rect, Color(color, backdrop_alpha))
 	draw_rect(rect, color, false, border_width)
 
