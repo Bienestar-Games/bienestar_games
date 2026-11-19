@@ -97,6 +97,6 @@ func _drop_open_barrier_reward() -> void:
 	drop_item(pick_item(ItemData.Rarity.UNCOMMON), parent, position)
 
 
-func _on_run_ended(_extracted: bool) -> void:
+func _on_run_ended() -> void:
 	_barrier_open = false
 	_last_drop_parent = null

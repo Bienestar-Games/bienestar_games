@@ -100,7 +100,7 @@ func _on_barrier_opened() -> void:
 	_update_threat()
 
 
-func _on_run_ended(_extracted: bool) -> void:
+func _on_run_ended() -> void:
 	reset()
 
 

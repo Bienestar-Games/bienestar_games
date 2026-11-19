@@ -43,10 +43,7 @@ func _ready() -> void:
 	MAX_SPEED = BALANCE_CONFIG.player_speed
 	base_health = BALANCE_CONFIG.player_health
 	died.connect(_on_died)
-	Events.decision_phase_started.connect(_on_decision_phase_started)
 	Events.wave_started.connect(_on_wave_started)
-	Events.extraction_started.connect(_on_extraction_started)
-	Events.extraction_cancelled.connect(_on_extraction_cancelled)
 	_init_weapons()
 
 func _init_weapons() -> void:
@@ -99,18 +96,9 @@ func switch_to_next_weapon() -> void:
 	_update_active_weapon()
 
 func _on_died() -> void:
-	GameLoopManager.end_run(false)
-
-func _on_decision_phase_started() -> void:
-	_state_machine.force_transition("decision")
+	GameLoopManager.end_run()
 
 func _on_wave_started(_wave_number: int) -> void:
-	_state_machine.force_transition("idle")
-
-func _on_extraction_started() -> void:
-	_state_machine.force_transition("extracting")
-
-func _on_extraction_cancelled() -> void:
 	_state_machine.force_transition("idle")
 
 func aim(pos: Vector2):
