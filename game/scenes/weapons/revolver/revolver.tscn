@@ -12,6 +12,10 @@
 [ext_resource type="Script" uid="uid://cvph7k10awnt8" path="res://scripts/states/weapon/weapon_shooting_state.gd" id="12_x7leg"]
 [ext_resource type="Script" uid="uid://dvvhuve8e1sxn" path="res://scripts/states/weapon/weapon_reloading_state.gd" id="13_wd8iu"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hud_icon"]
+atlas = ExtResource("4_x7leg")
+region = Rect2(0, 0, 64, 64)
+
 [sub_resource type="Animation" id="Animation_6iuvm"]
 length = 0.001
 tracks/0/type = "value"
@@ -169,46 +173,34 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("WeaponRoot/FlipContainer:position")
+tracks/0/path = NodePath("WeaponRoot/FlipContainer:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0972, 0.16242962, 0.3, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-20, -20), Vector2(-10, -10), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WeaponRoot/FlipContainer:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0.0972, 0.14990614, 0.18371071, 0.2629928, 0.48785204, 0.8158144),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, -1.0663961729685358, -0.3839724354387525, -0.5829399701661057, -0.28274333882308117, 0.0]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("WeaponRoot/FlipContainer/Sprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponRoot/FlipContainer/Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.075, 0.09),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 0]
 }
-tracks/3/type = "audio"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("SFX")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SFX")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "clips": [{
 "end_offset": 0.4357,
 "start_offset": 0.045,
@@ -220,14 +212,14 @@ tracks/3/keys = {
 }],
 "times": PackedFloat32Array(0.024, 0.15738346)
 }
-tracks/3/use_blend = true
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("WeaponRoot/FlipContainer/Muzzle/CPUParticles2D:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WeaponRoot/FlipContainer/Muzzle/CPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0.3, 0.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
@@ -243,15 +235,9 @@ _data = {
 &"shoot": SubResource("Animation_uwxth")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hud_icon"]
-atlas = ExtResource("4_x7leg")
-region = Rect2(0, 0, 64, 64)
-
 [node name="Revolver" type="Node2D" unique_id=1687305472 node_paths=PackedStringArray("magazine", "muzzle", "_animation_player", "_weapon_root", "shoot_cd", "reload_cd")]
 y_sort_enabled = true
 script = ExtResource("1_y8ai0")
-icon = SubResource("AtlasTexture_hud_icon")
-display_name = "Revolver"
 magazine = NodePath("Magazine")
 bullet_scene = ExtResource("2_x7leg")
 muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")
@@ -259,6 +245,8 @@ _animation_player = NodePath("AnimationPlayer")
 _weapon_root = NodePath("WeaponRoot")
 shoot_cd = NodePath("ShootCooldown")
 reload_cd = NodePath("ReloadCooldown")
+icon = SubResource("AtlasTexture_hud_icon")
+display_name = "Revolver"
 
 [node name="ShootCooldown" type="Timer" parent="." unique_id=298395638]
 one_shot = true

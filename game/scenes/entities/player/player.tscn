@@ -274,17 +274,16 @@ vframes = 3
 frame = 12
 
 [node name="SawedOffShotgun" parent="Body/UpperBody/f_arm_2" unique_id=154239054 node_paths=PackedStringArray("pivot_node") instance=ExtResource("5_rx1o7")]
+visible = false
 y_sort_enabled = true
 position = Vector2(10.666667, -0.33333206)
 scale = Vector2(0.37401003, 0.37401003)
 pivot_node = NodePath("../../WeaponPivot")
 
 [node name="Revolver" parent="Body/UpperBody/f_arm_2" unique_id=1687305472 node_paths=PackedStringArray("pivot_node") instance=ExtResource("11_revolver")]
-y_sort_enabled = true
-position = Vector2(10.666667, -0.33333206)
+position = Vector2(14, -0.99999994)
 scale = Vector2(0.37401003, 0.37401003)
 pivot_node = NodePath("../../WeaponPivot")
-visible = false
 
 [node name="Hand" type="Marker2D" parent="Body/UpperBody/f_arm_2" unique_id=66412415]
 position = Vector2(11.000001, -1.1920929e-06)
@@ -316,6 +315,7 @@ player = NodePath("../..")
 unique_name_in_owner = true
 root_node = NodePath("../AnimationTree")
 libraries/ = SubResource("AnimationLibrary_20ow7")
+speed_scale = 0.0
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1346269984]
 root_node = NodePath(".")

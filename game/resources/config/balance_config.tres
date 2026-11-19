@@ -1,38 +1,6 @@
-[gd_resource type="Resource" script_class="BalanceConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BalanceConfig" format=3 uid="uid://1g1t3mpnbucl"]
 
-[ext_resource type="Script" path="res://scripts/data/balance_config.gd" id="1_balance_config"]
+[ext_resource type="Script" uid="uid://cjsh2q6dmkwnp" path="res://scripts/data/balance_config.gd" id="1_balance_config"]
 
 [resource]
 script = ExtResource("1_balance_config")
-loot_fallback_waves_per_threat_tier = 2
-death_border_barrier_open_step = 0.4
-death_border_open_wave_step = 0.12
-barrier_interaction_duration = 2.0
-barrier_unlock_wave = 2
-melee_fast_first_wave = 3
-melee_fast_wave_share = 0.33
-melee_fast_speed_multiplier = 1.6
-melee_fast_damage_multiplier = 1.5
-wave_base_enemy_count = 6
-wave_enemy_increment = 2
-wave_spawn_interval = 0.4
-melee_basic_speed = 135
-melee_basic_health = 100.0
-melee_basic_damage = 10.0
-player_speed = 300
-player_health = 100.0
-player_max_health = 100.0
-player_max_health_cap = 300.0
-consumable_damage_up_step = 0.25
-consumable_damage_multiplier_cap = 3.0
-consumable_bullets_up_cap = 6
-decision_phase_duration = 3.0
-threat_wave_step = 0.25
-threat_fast_enemies_bonus = 0.25
-threat_barrier_open_bonus = 0.5
-wall_health = 120.0
-wall_throw_distance = 72.0
-max_throwable_walls = 5
-risk_medium_threshold = 1.5
-risk_high_threshold = 2.0
-risk_extreme_threshold = 2.75
