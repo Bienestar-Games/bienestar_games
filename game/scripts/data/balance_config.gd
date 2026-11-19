@@ -45,6 +45,20 @@ extends Resource
 @export_group("Player")
 @export var player_speed: int = 200
 @export var player_health: float = 100.0
+## Starting max-health ceiling; "heal" items cannot push base_health above it until
+## a "max_health_up" buff raises the player's current cap. Defaults to player_health.
+@export var player_max_health: float = 100.0
+## Hard runtime ceiling: "max_health_up" buffs can never raise the player's cap past this.
+@export var player_max_health_cap: float = 300.0
+
+@export_group("Consumable Buffs")
+## Damage multiplier added to the player per "damage_up" stack (modifier_value = stacks).
+## Example: 0.25 with a Rare drop of modifier_value = 1 raises damage from x1.00 to x1.25.
+@export var consumable_damage_up_step: float = 0.25
+## Hard cap for the player's damage multiplier, so stacks never go past it.
+@export var consumable_damage_multiplier_cap: float = 3.0
+## Hard cap for extra bullets per shot added by "bullets_up" stacks.
+@export var consumable_bullets_up_cap: int = 6
 
 @export_group("Extraction")
 ## Seconds Kade must stay undisturbed in the extraction channel (GDD §8: 5 s).

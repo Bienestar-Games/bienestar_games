@@ -7,9 +7,11 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 @export var item_name: String
 @export var item_icon: Texture2D
 @export var action_data: ActionData
-## "heal" is applied the moment it is picked up; "resource" takes an inventory slot (GDD §15.7);
+## Consumable buff items ("heal", "damage_up", "bullets_up", "max_health_up") are applied the
+## moment they are picked up and never enter the inventory. "resource" takes an inventory slot
+## (GDD §15.7). Each buff reads its amount from the item's ConsumableAction.modifier_value.
 ## "throwable_wall" fills a separate wall carrier the player deploys with `interact`.
-@export_enum("heal", "resource", "throwable_wall") var item_type: String = "resource"
+@export_enum("heal", "damage_up", "bullets_up", "max_health_up", "resource", "throwable_wall") var item_type: String = "resource"
 @export var rarity: Rarity = Rarity.COMMON
 var item_model_prefab: PackedScene
 
