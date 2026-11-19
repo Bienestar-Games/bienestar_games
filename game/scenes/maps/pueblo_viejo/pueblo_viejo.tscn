@@ -99,3 +99,9 @@ polygon = PackedVector2Array(-134.83052, -83.08075, 7.223068, -309.6646, 173.353
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1481119433]
 navigation_polygon = ExtResource("5_urdq7")
 script = ExtResource("7_nav_region")
+
+[node name="MapBoundary" type="StaticBody2D" parent="." unique_id=2100000001]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MapBoundary" unique_id=2100000002]
+build_mode = 1
+polygon = PackedVector2Array(1152, -2624, 4992, -704, -1152, 2368, -4992, 448, 1152, -2624)
