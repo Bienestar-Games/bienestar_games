@@ -3,7 +3,7 @@ class_name Bullet
 
 @export var ray: RayCast2D
 
-@export var SPEED: float = 1000.0
+@export var SPEED: float = 1500.0
 @export var LIFETIME: float = 2.0
 @export var DAMAGE: float = 50.0
 
