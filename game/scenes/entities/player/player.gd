@@ -86,6 +86,16 @@ func get_active_weapon() -> Weapon:
 		return null
 	return _weapons[_current_weapon_index]
 
+## Number of weapons the player carries (GDD §8: Kade starts with 2).
+func get_weapon_count() -> int:
+	return _weapons.size()
+
+## Weapon at `index`, or null when out of range.
+func get_weapon(index: int) -> Weapon:
+	if index < 0 or index >= _weapons.size():
+		return null
+	return _weapons[index]
+
 func switch_weapon(index: int) -> void:
 	if _weapons.is_empty() or index == _current_weapon_index:
 		return

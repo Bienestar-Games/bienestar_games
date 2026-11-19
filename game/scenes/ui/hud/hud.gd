@@ -1,7 +1,7 @@
 class_name Hud
 extends CanvasLayer
-## HUD layer (GDD §4). Permanent: health bar, ammo counter and active weapon icon.
-## Situational: current wave, enemies left alive and barrier state.
+## HUD layer (GDD §4). Permanent: health bar, ammo counter, active weapon (icon + name),
+## weapon switch hint. Situational: current wave and enemies left alive.
 
 @export_range(0.0, 1.0) var warning_threshold: float = 0.5
 @export_range(0.0, 1.0) var critical_threshold: float = 0.25
@@ -13,17 +13,15 @@ extends CanvasLayer
 @export var healthy_color: Color = Color(0.3, 0.8, 0.3)
 @export var warning_color: Color = Color(0.95, 0.8, 0.2)
 @export var critical_color: Color = Color(0.85, 0.2, 0.2)
-@export var barrier_closed_color: Color = Color(0.3, 0.8, 0.3)
-@export var barrier_open_color: Color = Color(0.85, 0.2, 0.2)
 
 @onready var _health_bar: ProgressBar = %HealthBar
 @onready var _health_label: Label = %HealthLabel
 @onready var _weapon_icon: TextureRect = %WeaponIcon
+@onready var _weapon_name_label: Label = %WeaponNameLabel
+@onready var _weapon_switch_hint: Label = %WeaponSwitchHint
 @onready var _ammo_label: Label = %AmmoLabel
 @onready var _wave_label: Label = %WaveLabel
 @onready var _enemies_label: Label = %EnemiesLabel
-@onready var _barrier_swatch: ColorRect = %BarrierSwatch
-@onready var _barrier_label: Label = %BarrierLabel
 
 var _player: Player
 var _magazine: Magazine
@@ -34,7 +32,6 @@ var _alive_enemies: Array[Enemy] = []
 func _ready() -> void:
 	_health_fill = _health_bar.get_theme_stylebox("fill") as StyleBoxFlat
 	_bind_waves()
-	_bind_barrier()
 	var player := get_tree().get_first_node_in_group("player") as Player
 	if player == null:
 		push_warning("Hud: no Player found in group 'player'.")
@@ -51,6 +48,7 @@ func _bind_player(player: Player) -> void:
 	_player.active_weapon_changed.connect(_on_active_weapon_changed)
 	_update_health()
 	_on_active_weapon_changed(_player.get_active_weapon())
+	_update_switch_hint()
 
 func _update_health() -> void:
 	var health: float = clampf(_player.base_health, 0.0, _health_bar.max_value)
@@ -84,9 +82,11 @@ func _on_active_weapon_changed(weapon: Weapon) -> void:
 		_magazine = null
 	if weapon == null:
 		_weapon_icon.texture = null
+		_weapon_name_label.text = ""
 		_ammo_label.text = ""
 		return
 	_weapon_icon.texture = weapon.icon
+	_weapon_name_label.text = weapon.get_display_name()
 	_magazine = weapon.magazine
 	_magazine.ammo_changed.connect(_on_ammo_changed)
 	_on_ammo_changed(_magazine.count, _magazine.capacity)
@@ -94,6 +94,52 @@ func _on_active_weapon_changed(weapon: Weapon) -> void:
 func _on_ammo_changed(count: int, capacity: int) -> void:
 	_ammo_label.text = "%d / %d" % [count, capacity]
 	_ammo_label.modulate = critical_color if count <= 0 else Color.WHITE
+
+# Builds "1 Revolver · 2 Sawed-off · Next [Q]" from the player's weapons and the InputMap,
+# so key bindings are never hardcoded (GDD §11).
+func _update_switch_hint() -> void:
+	if _player == null:
+		_weapon_switch_hint.text = ""
+		return
+	var parts: PackedStringArray = []
+	var slot_actions: Array[StringName] = [&"weapon_1", &"weapon_2"]
+	for i in _player.get_weapon_count():
+		var weapon := _player.get_weapon(i)
+		if weapon == null:
+			continue
+		var weapon_label := weapon.get_display_name()
+		if i < slot_actions.size():
+			var key := _get_action_key_label(slot_actions[i])
+			parts.append("%s %s" % [key, weapon_label])
+		else:
+			parts.append(weapon_label)
+	var next_key := _get_action_key_label(&"weapon_next")
+	if not next_key.is_empty():
+		parts.append("Next [%s]" % next_key)
+	_weapon_switch_hint.text = " · ".join(parts)
+
+## Name of the first keyboard key or mouse button bound to `action` in the InputMap.
+func _get_action_key_label(action: StringName) -> String:
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey:
+			var key_event := event as InputEventKey
+			if key_event.physical_keycode != KEY_NONE:
+				return key_event.as_text_physical_keycode()
+			return key_event.as_text_keycode()
+		if event is InputEventMouseButton:
+			var mouse_event := event as InputEventMouseButton
+			match mouse_event.button_index:
+				MOUSE_BUTTON_WHEEL_UP:
+					return "Wheel Up"
+				MOUSE_BUTTON_WHEEL_DOWN:
+					return "Wheel Down"
+				MOUSE_BUTTON_LEFT:
+					return "LMB"
+				MOUSE_BUTTON_RIGHT:
+					return "RMB"
+				_:
+					return "Mouse %d" % mouse_event.button_index
+	return ""
 
 func _bind_waves() -> void:
 	Events.wave_started.connect(_on_wave_started)
@@ -127,13 +173,3 @@ func _untrack_enemy(enemy: Enemy) -> void:
 
 func _update_enemy_count() -> void:
 	_enemies_label.text = "Enemies left: %d" % _alive_enemies.size()
-
-# The barrier is irreversible (GDD §12): it starts closed every run and only ever opens.
-func _bind_barrier() -> void:
-	Events.barrier_opened.connect(_on_barrier_opened)
-	_barrier_swatch.color = barrier_closed_color
-	_barrier_label.text = "Barrier: CLOSED"
-
-func _on_barrier_opened() -> void:
-	_barrier_swatch.color = barrier_open_color
-	_barrier_label.text = "Barrier: OPEN"

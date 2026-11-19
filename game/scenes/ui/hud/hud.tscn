@@ -30,37 +30,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="BarrierIndicator" type="HBoxContainer" parent="Root"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -284.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = 52.0
-grow_horizontal = 0
-mouse_filter = 2
-theme_override_constants/separation = 10
-alignment = 2
-
-[node name="BarrierSwatch" type="ColorRect" parent="Root/BarrierIndicator"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-color = Color(0.3, 0.8, 0.3, 1)
-
-[node name="BarrierLabel" type="Label" parent="Root/BarrierIndicator"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 22
-text = "Barrier: CLOSED"
-vertical_alignment = 1
-
 [node name="HealthBar" type="ProgressBar" parent="Root"]
 unique_name_in_owner = true
 layout_mode = 0
@@ -88,24 +57,30 @@ text = "100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WeaponPanel" type="HBoxContainer" parent="Root"]
+[node name="WeaponPanel" type="VBoxContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -324.0
-offset_top = -88.0
+offset_left = -340.0
+offset_top = -140.0
 offset_right = -24.0
 offset_bottom = -24.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 2
+
+[node name="ActiveWeapon" type="HBoxContainer" parent="Root/WeaponPanel"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 alignment = 2
 
-[node name="WeaponIcon" type="TextureRect" parent="Root/WeaponPanel"]
+[node name="WeaponIcon" type="TextureRect" parent="Root/WeaponPanel/ActiveWeapon"]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(128, 64)
@@ -114,14 +89,38 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="AmmoLabel" type="Label" parent="Root/WeaponPanel"]
+[node name="WeaponInfo" type="VBoxContainer" parent="Root/WeaponPanel/ActiveWeapon"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="WeaponNameLabel" type="Label" parent="Root/WeaponPanel/ActiveWeapon/WeaponInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = ""
+horizontal_alignment = 2
+
+[node name="AmmoLabel" type="Label" parent="Root/WeaponPanel/ActiveWeapon/WeaponInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 28
 text = "0 / 0"
-vertical_alignment = 1
+horizontal_alignment = 2
+
+[node name="WeaponSwitchHint" type="Label" parent="Root/WeaponPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = ""
+horizontal_alignment = 2
 
 [node name="WaveCounter" type="VBoxContainer" parent="Root"]
 layout_mode = 1
