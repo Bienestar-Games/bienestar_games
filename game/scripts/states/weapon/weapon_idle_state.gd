@@ -6,16 +6,16 @@ func enter() -> void:
 	weapon._animation_player.play("idle")
 
 func update(delta: float) -> void:
+	# An empty magazine reloads on its own, without pressing `reload`.
+	if weapon.magazine.is_empty():
+		transitioned.emit(self, "reloading")
+		return
+
 	# Holding `shoot` fires automatically, paced by the weapon's ShootCooldown.
 	if Input.is_action_pressed("shoot"):
-		if weapon.magazine.is_empty():
-			# Only click once on an empty magazine instead of every frame while held.
-			if Input.is_action_just_pressed("shoot"):
-				weapon._animation_player.play("dry_shoot")
-		else:
-			transitioned.emit(self, "shooting")
-			return
+		transitioned.emit(self, "shooting")
+		return
 
-	# Holding `reload` reloads as soon as the magazine can be reloaded.
+	# Holding `reload` reloads a partially used magazine.
 	if Input.is_action_pressed("reload") and weapon.magazine.can_be_reloaded():
 		transitioned.emit(self, "reloading")
