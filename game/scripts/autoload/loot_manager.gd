@@ -12,9 +12,6 @@ const THREAT_TIER_COUNT: int = 4
 ## Every item that can drop. Add new ItemData .tres from resources/items/ here.
 const ITEM_POOL: Array[ItemData] = [
 	preload("res://resources/items/bandage.tres"),
-	preload("res://resources/items/scrap.tres"),
-	preload("res://resources/items/spare_parts.tres"),
-	preload("res://resources/items/weapon_parts.tres"),
 	preload("res://resources/items/damage_boost.tres"),
 	preload("res://resources/items/max_health_boost.tres"),
 	preload("res://resources/items/bullet_boost.tres"),

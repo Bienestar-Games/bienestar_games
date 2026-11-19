@@ -44,7 +44,7 @@ bienestar_games/
 
 El proyecto Godot vive en `game/` para no mezclarse con las carpetas personales. Abrir siempre `game/project.godot`. Todas las rutas `res://` de abajo son relativas a `game/`.
 
-> El proyecto se empieza **desde cero**. Las clases que el GDD marca como "ya implementadas" (`BaseCharacter`, `Weapon`, `Magazine`, `InventoryController`, `EnemySpawnZone`, estados del jugador) vienen de otro proyecto y aquí hay que construirlas. Para mover archivos usa siempre el editor de Godot (FileSystem → arrastrar), así se actualizan las referencias y los UIDs.
+> El proyecto se empieza **desde cero**. Las clases que el GDD marca como "ya implementadas" (`BaseCharacter`, `Weapon`, `Magazine`, `EnemySpawnZone`, estados del jugador) vienen de otro proyecto y aquí hay que construirlas. Para mover archivos usa siempre el editor de Godot (FileSystem → arrastrar), así se actualizan las referencias y los UIDs.
 
 ## Estructura del proyecto Godot (`game/`)
 
@@ -96,7 +96,6 @@ game/
 │   │   ├── extraction_zone/         # B32: zona física de extracción
 │   │   ├── enemy_spawn_zone/        # EnemySpawnZone
 │   │   └── loot_pickup/             # B09: ítem en el suelo con borde por rareza
-│   ├── inventory/                   # InventoryController + InventorySlot (9 slots)
 │   └── ui/
 │       ├── hud/                     # B10, B11, B26: salud, munición, arma, oleada, barrera
 │       ├── interaction/             # InteractionController (recoger ítems al tocarlos)
@@ -119,7 +118,7 @@ game/
 │   └── states/
 │       ├── state.gd
 │       ├── state_machine.gd
-│       ├── player/                  # idle, moving, on_inventory, decision (B23),
+│       ├── player/                  # idle, moving, decision (B23),
 │       │                            # extracting (B32), interacting_barrier (B15)
 │       ├── enemy/                   # idle, moving, chasing, searching, attacking, attack_recovery
 │       └── weapon/                  # idle, shooting, reloading
@@ -157,7 +156,7 @@ game/
 - La escena principal (`run/main_scene`) es `scenes/main/main.tscn`.
 
 ### Input
-Todas las acciones se definen en el **InputMap**, nunca con teclas directas en el código. Los nombres siguen la §11 del GDD: `move_*`, `aim_*`, `shoot`, `reload`, `weapon_next`, `weapon_1`, `weapon_2`, `inventory`, `interact` (mantener), `pause`. Cada acción debe tener su equivalente de mando (B24).
+Todas las acciones se definen en el **InputMap**, nunca con teclas directas en el código. Los nombres siguen la §11 del GDD: `move_*`, `aim_*`, `shoot`, `reload`, `weapon_next`, `weapon_1`, `weapon_2`, `interact` (mantener), `pause`. Cada acción debe tener su equivalente de mando (B24).
 
 ### Ramas y commits
 - `main`: solo versiones estables y entregas (etiquetas `v0.1-prototipo`…).
