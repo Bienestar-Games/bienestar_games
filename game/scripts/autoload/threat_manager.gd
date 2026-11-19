@@ -85,7 +85,7 @@ func _on_decision_phase_started() -> void:
 	_update_threat()
 
 
-func _on_run_ended(_extracted: bool) -> void:
+func _on_run_ended() -> void:
 	reset()
 
 

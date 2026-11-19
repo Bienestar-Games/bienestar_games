@@ -4,17 +4,11 @@ extends Node
 signal wave_started(wave_number: int)
 signal wave_ended
 
-# Decision phase
+# Decision phase (B34): short pause between waves so the next-wave preview can show.
 signal decision_phase_started
 
-# Extraction
-signal extraction_started
-signal extraction_progress_updated(progress: float)
-signal extraction_cancelled
-signal extraction_completed
-
-# Run end — extracted=true means successful extraction, false means death
-signal run_ended(extracted: bool)
+# Run end — only the player's death ends the run (waves escalate forever).
+signal run_ended
 
 # Threat (B29): hidden multiplier of the current or upcoming wave. Never shown as a number.
 signal threat_changed(multiplier: float)

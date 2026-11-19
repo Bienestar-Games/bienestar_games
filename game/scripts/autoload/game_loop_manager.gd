@@ -1,14 +1,19 @@
 extends Node
+## Autoload "GameLoopManager" (B22).
+## Drives the only loop the game has: wave → short pause → next wave, forever. The run
+## ends only when the player dies (end_run), so there is no extraction and no win screen.
+## The pause between waves exists so the next-wave preview (B34) can show; its length lives
+## in balance_config.decision_phase_duration.
 
-enum RunState { WAVE_ACTIVE, DECISION, EXTRACTING, DEAD }
+enum RunState { WAVE_ACTIVE, DECISION, DEAD }
+
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 var current_state: RunState = RunState.WAVE_ACTIVE
 var wave_number: int = 0
 
 func _ready() -> void:
 	Events.wave_ended.connect(_on_wave_ended)
-	Events.extraction_completed.connect(_on_extraction_completed)
-	Events.extraction_cancelled.connect(_on_extraction_cancelled)
 	# Defer so all scene nodes are ready before the first wave starts
 	call_deferred("_start_next_wave")
 
@@ -23,47 +28,22 @@ func restart_run() -> void:
 	current_state = RunState.WAVE_ACTIVE
 	call_deferred("_start_next_wave")
 
-# Called by UI decision panel when player chooses to continue
-func continue_run() -> void:
-	if current_state != RunState.DECISION:
-		return
-	_start_next_wave()
-
-# Called by UI decision panel when player chooses to extract
-func request_extraction() -> void:
-	if current_state != RunState.DECISION:
-		return
-	current_state = RunState.EXTRACTING
-	Events.extraction_started.emit()
-
-# Called by extracting_state on completion or by player on death
-func end_run(extracted: bool) -> void:
+# Called by player.gd on death — the only path out of a run.
+func end_run() -> void:
 	if current_state == RunState.DEAD:
 		return
 	current_state = RunState.DEAD
-	Events.run_ended.emit(extracted)
+	Events.run_ended.emit()
 
 func _on_wave_ended() -> void:
 	if current_state != RunState.WAVE_ACTIVE:
 		return
 	current_state = RunState.DECISION
 	Events.decision_phase_started.emit()
-
-func _on_extraction_completed() -> void:
-	end_run(true)
-
-# A cancelled channel costs time and risk, not the run (GDD §15): go back to the
-# decision so the player can choose again between extracting and continuing.
-func _on_extraction_cancelled() -> void:
-	if current_state != RunState.EXTRACTING:
-		return
-	current_state = RunState.DECISION
-	# Deferred: player.gd and PlayerExtractingState force "idle" on the same signal,
-	# so emitting now would leave the player in idle instead of decision.
-	call_deferred("_resume_decision_phase")
-
-func _resume_decision_phase() -> void:
-	# A lethal hit cancels the channel and kills the player in the same frame
+	var duration := maxf(BALANCE_CONFIG.decision_phase_duration, 0.0)
+	if duration > 0.0:
+		await get_tree().create_timer(duration, false).timeout
+	# The player may have died during the pause
 	if current_state != RunState.DECISION:
 		return
-	Events.decision_phase_started.emit()
+	_start_next_wave()

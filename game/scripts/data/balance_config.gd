@@ -60,9 +60,10 @@ extends Resource
 ## Hard cap for extra bullets per shot added by "bullets_up" stacks.
 @export var consumable_bullets_up_cap: int = 6
 
-@export_group("Extraction")
-## Seconds Kade must stay undisturbed in the extraction channel (GDD §8: 5 s).
-@export var extraction_channel_duration: float = 5.0
+@export_group("Decision phase")
+## Seconds of pause between a wave ending and the next one starting so the next-wave
+## preview (B34) has time to read.
+@export var decision_phase_duration: float = 3.0
 
 @export_group("Threat")
 ## Threat multiplier added per wave after the first (base escalation, GDD §15.4). Wave 1 is 1.0.
