@@ -10,6 +10,10 @@ class_name Enemy extends BaseCharacter
 ## When true the enemy always knows roughly where Kade is and walks toward him even
 ## without line of sight (WaveManager turns it on). It still needs to see him to chase and attack.
 @export var hunts_player: bool = false
+## Seconds the sprite takes to fade back from white after being hit.
+@export var hit_flash_duration: float = 0.15
+
+const HIT_FLASH_SHADER: Shader = preload("res://resources/shaders/hit_flash.gdshader")
 
 # Percepción — compartida entre estados
 var player_in_range: Node2D = null
@@ -31,6 +35,8 @@ const REACHABLE_TOLERANCE: float = 16.0
 const WALL_AGGRO_RANGE: float = 480.0
 
 var _hunt_timer: float = 0.0
+var _hit_flash_material: ShaderMaterial
+var _hit_flash_tween: Tween
 ## The wall this enemy is currently chasing, if any. Takes priority over `player_in_range`.
 var wall_target: Wall = null
 ## Players touching the attack area; counted so simultaneous overlaps are handled correctly.
@@ -46,6 +52,25 @@ func _ready() -> void:
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	attack_area.body_exited.connect(_on_attack_area_body_exited)
 	died.connect(_on_died)
+	_setup_hit_flash()
+
+## Gives this enemy its own flash material so only the enemy that was shot turns white.
+func _setup_hit_flash() -> void:
+	if entity_sprite == null:
+		return
+	_hit_flash_material = ShaderMaterial.new()
+	_hit_flash_material.shader = HIT_FLASH_SHADER
+	entity_sprite.material = _hit_flash_material
+	damage_taken.connect(_flash_white)
+
+func _flash_white() -> void:
+	if _hit_flash_tween != null:
+		_hit_flash_tween.kill()
+	_hit_flash_material.set_shader_parameter("flash_amount", 1.0)
+	_hit_flash_tween = create_tween()
+	_hit_flash_tween.tween_method(
+		func(amount: float) -> void: _hit_flash_material.set_shader_parameter("flash_amount", amount),
+		1.0, 0.0, hit_flash_duration)
 
 func _on_died() -> void:
 	spawn_loot()
