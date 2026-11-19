@@ -9,14 +9,33 @@ extends Area2D
 ## Opacity of the rarity-colored backdrop behind the icon.
 @export_range(0.0, 1.0) var backdrop_alpha: float = 0.25
 
+## Blinks per second while the item is about to disappear.
+@export var despawn_blink_rate: float = 4.0
+
+const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
+
 @onready var _sprite: Sprite2D = $Sprite2D
 
+## Seconds left before the item disappears. Counted in _process, so it stops while paused.
+var _time_left: float = 0.0
+
 func _ready() -> void:
+	_time_left = BALANCE_CONFIG.loot_despawn_time
 	body_entered.connect(_on_body_entered)
 	if item != null and item.item_icon != null:
 		_sprite.region_enabled = false
 		_sprite.texture = item.item_icon
 	queue_redraw()
+
+func _process(delta: float) -> void:
+	_time_left -= delta
+	if _time_left <= 0.0:
+		queue_free()
+		return
+	if _time_left <= BALANCE_CONFIG.loot_despawn_warning_time:
+		# Square-wave blink: visible half of each cycle, faded the other half.
+		var phase: float = fmod(_time_left * despawn_blink_rate, 1.0)
+		modulate.a = 1.0 if phase < 0.5 else 0.25
 
 func _draw() -> void:
 	if item == null:

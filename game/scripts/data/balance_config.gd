@@ -5,6 +5,10 @@ extends Resource
 ## Waves per loot threat tier (low / medium / high / extreme) until ThreatManager's risk
 ## level is available (B31 fallback, see LootManager.get_threat_tier).
 @export_range(1, 10) var loot_fallback_waves_per_threat_tier: int = 2
+## Seconds a dropped item stays on the ground before it disappears.
+@export var loot_despawn_time: float = 10.0
+## Last seconds of loot_despawn_time during which the item blinks to warn it is about to vanish.
+@export var loot_despawn_warning_time: float = 3.0
 @export_group("")
 
 ## Death Border risk (0–1, never shown as a number) added the moment the barrier opens.
