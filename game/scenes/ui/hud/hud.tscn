@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pickup_notification/pickup_notification.tscn" id="2_pickup"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_bg"]
 bg_color = Color(0.08, 0.08, 0.08, 0.75)
@@ -174,3 +175,6 @@ theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 18
 text = "Enemies left: 0"
 horizontal_alignment = 1
+
+[node name="PickupNotification" parent="Root" instance=ExtResource("2_pickup")]
+layout_mode = 1
