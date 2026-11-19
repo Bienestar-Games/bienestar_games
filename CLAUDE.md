@@ -103,6 +103,7 @@ game/
 │       ├── decision_panel/          # B25, B34: panel de extracción + preview de oleada
 │       ├── extraction_progress/     # B33: barra del canalizado
 │       ├── pause_menu/              # B27
+│       ├── stats_menu/              # stats de Kade (Tab / Y)
 │       ├── death_screen/            # B12
 │       └── results_screen/          # B36
 │
@@ -156,7 +157,7 @@ game/
 - La escena principal (`run/main_scene`) es `scenes/main/main.tscn`.
 
 ### Input
-Todas las acciones se definen en el **InputMap**, nunca con teclas directas en el código. Los nombres siguen la §11 del GDD: `move_*`, `aim_*`, `shoot`, `reload`, `weapon_next`, `weapon_1`, `weapon_2`, `interact` (mantener), `pause`. Cada acción debe tener su equivalente de mando (B24).
+Todas las acciones se definen en el **InputMap**, nunca con teclas directas en el código. Los nombres siguen la §11 del GDD: `move_*`, `aim_*`, `shoot`, `reload`, `weapon_next`, `weapon_1`, `weapon_2`, `interact` (mantener), `pause`, `stats`. Cada acción debe tener su equivalente de mando (B24).
 
 ### Ramas y commits
 - `main`: solo versiones estables y entregas (etiquetas `v0.1-prototipo`…).
