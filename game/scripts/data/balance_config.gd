@@ -3,18 +3,21 @@ extends Resource
 
 @export_group("Loot")
 ## Waves per loot threat tier (low / medium / high / extreme) until ThreatManager's risk
-## level is available (B31 fallback, see LootManager.get_threat_tier). An open barrier adds one tier.
+## level is available (B31 fallback, see LootManager.get_threat_tier).
 @export_range(1, 10) var loot_fallback_waves_per_threat_tier: int = 2
 @export_group("")
 
 ## Death Border risk (0–1, never shown as a number) added the moment the barrier opens.
+## DEPRECATED: the barrier was removed; kept so existing .tres files still load.
 @export_range(0.0, 1.0) var death_border_barrier_open_step: float = 0.4
-## Death Border risk added for every wave that starts with the barrier open.
+## Death Border risk added for every wave that starts.
 @export_range(0.0, 1.0) var death_border_open_wave_step: float = 0.12
 @export var max_inventory_slots: int = 9
 ## Seconds the player must hold `interact` to open a barrier.
+## DEPRECATED: the barrier was removed; kept so existing .tres files still load.
 @export var barrier_interaction_duration: float = 2.0
 ## First wave in which the barrier can be opened (GDD §8: wave 1 keeps it locked).
+## DEPRECATED: the barrier was removed; kept so existing .tres files still load.
 @export var barrier_unlock_wave: int = 2
 ## First wave that mixes fast melee enemies in with the basic ones (GDD §8 level 3).
 @export var melee_fast_first_wave: int = 3
@@ -54,6 +57,7 @@ extends Resource
 @export var threat_fast_enemies_bonus: float = 0.25
 ## Fixed threat added per open barrier, on top of each wave's base threat (not compounded, GDD §4).
 ## It raises the threat (and the loot that reads it) but never adds enemies.
+## DEPRECATED: the barrier was removed; kept so existing .tres files still load.
 @export var threat_barrier_open_bonus: float = 0.5
 
 @export_group("Risk")

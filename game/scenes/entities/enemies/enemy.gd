@@ -83,7 +83,7 @@ func _update_hunt(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player") as BaseCharacter
 	if player == null or player.base_health <= 0:
 		return
-	# Sealed in (e.g. behind a closed barrier): stop hunting and fall back to idle/wander
+	# Unreachable (e.g. no navmesh path to the player): stop hunting and fall back to idle/wander
 	if not _can_reach(player.global_position):
 		has_last_seen = false
 		return

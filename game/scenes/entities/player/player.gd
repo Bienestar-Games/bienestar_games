@@ -74,13 +74,6 @@ func set_weapons_enabled(enabled: bool) -> void:
 	elif not _weapons.is_empty():
 		_weapons[_current_weapon_index].process_mode = Node.PROCESS_MODE_DISABLED
 
-## Returns the barrier the player can start opening right now, or null.
-func get_interactable_barrier() -> InteractiveBarrier:
-	for barrier: InteractiveBarrier in get_tree().get_nodes_in_group(&"barriers"):
-		if barrier.can_interact(self):
-			return barrier
-	return null
-
 func get_active_weapon() -> Weapon:
 	if _weapons.is_empty():
 		return null

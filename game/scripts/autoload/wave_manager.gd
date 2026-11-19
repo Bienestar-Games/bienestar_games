@@ -4,8 +4,7 @@ extends Node
 ## enemies across every EnemySpawnZone of the current map and emits Events.wave_ended
 ## when all of them are dead. It never decides when a wave starts: that is GameLoopManager (B22).
 ## Enemy count and spawn interval live in balance_config.tres (B20). Each wave adds a
-## fixed number of enemies to the previous one (B17). The barrier is only a door: opening
-## it never changes how many enemies a wave has or where they spawn.
+## fixed number of enemies to the previous one (B17).
 
 ## Emitted every time the number of alive enemies of the current wave changes.
 signal enemies_remaining_changed(enemies_remaining: int)
