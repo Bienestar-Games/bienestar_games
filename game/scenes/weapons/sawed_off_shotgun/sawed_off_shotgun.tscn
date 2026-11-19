@@ -355,7 +355,7 @@ one_shot = true
 bus = &"SFX"
 
 [node name="Magazine" parent="." unique_id=1664022930 instance=ExtResource("7_6ajkl")]
-capacity = 100
+capacity = 2
 
 [node name="WeaponRoot" type="Node2D" parent="." unique_id=566498493]
 
