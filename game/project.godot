@@ -31,6 +31,8 @@ LootManager="*res://scripts/autoload/loot_manager.gd"
 WaveManager="*res://scripts/autoload/wave_manager.gd"
 ThreatManager="*res://scripts/autoload/threat_manager.gd"
 SaveManager="*res://scripts/autoload/save_manager.gd"
+DifficultyManager="*res://scripts/autoload/difficulty_manager.gd"
+TelemetryManager="*res://scripts/autoload/telemetry_manager.gd"
 
 [display]
 

@@ -33,6 +33,24 @@ func mark_tutorial_completed() -> void:
 	_save()
 
 
+## Reads any other persistent value (e.g. DifficultyManager's difficulty).
+func get_value(section: String, key: String, default: Variant) -> Variant:
+	var config := ConfigFile.new()
+	if config.load(SAVE_PATH) != OK:
+		return default
+	return config.get_value(section, key, default)
+
+
+## Writes any other persistent value, keeping the rest of the file.
+func set_value(section: String, key: String, value: Variant) -> void:
+	var config := ConfigFile.new()
+	config.load(SAVE_PATH)
+	config.set_value(section, key, value)
+	var error := config.save(SAVE_PATH)
+	if error != OK:
+		push_warning("SaveManager: could not write %s (error %d)." % [SAVE_PATH, error])
+
+
 ## True when the current (or just finished) run reached a wave higher than the
 ## previous record.
 func is_new_record() -> bool:

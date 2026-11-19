@@ -4,7 +4,8 @@ extends Node
 ## enemies across every EnemySpawnZone of the current map and emits Events.wave_ended
 ## when all of them are dead. It never decides when a wave starts: that is GameLoopManager (B22).
 ## Enemy count and spawn interval live in balance_config.tres (B20). Each wave adds a
-## fixed number of enemies to the previous one (B17).
+## fixed number of enemies to the previous one (B17). DifficultyManager's adaptive
+## difficulty then scales the count, spawn rate and each enemy's health and speed.
 
 ## Emitted every time the number of alive enemies of the current wave changes.
 signal enemies_remaining_changed(enemies_remaining: int)
@@ -85,17 +86,27 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 			_spawn_enemy(zone, _is_fast_slot(i, fast_count))
 		else:
 			_on_enemy_died()
-		if BALANCE_CONFIG.wave_spawn_interval > 0.0 and i < enemy_count - 1:
-			await get_tree().create_timer(BALANCE_CONFIG.wave_spawn_interval, false).timeout
+		var spawn_interval := _get_spawn_interval()
+		if spawn_interval > 0.0 and i < enemy_count - 1:
+			await get_tree().create_timer(spawn_interval, false).timeout
 			if run_id != _run_id:
 				return
 	_is_spawning = false
 	_check_wave_end()
 
 
-## Enemies in `wave_number` (1-based): the base count plus a fixed increment per wave (B17).
+## Enemies in `wave_number` (1-based): the base count plus a fixed increment per wave (B17),
+## scaled by the adaptive difficulty.
 func get_enemy_count(wave_number: int) -> int:
-	return BALANCE_CONFIG.wave_base_enemy_count + BALANCE_CONFIG.wave_enemy_increment * maxi(wave_number - 1, 0)
+	var base := BALANCE_CONFIG.wave_base_enemy_count + BALANCE_CONFIG.wave_enemy_increment * maxi(wave_number - 1, 0)
+	var scale := DifficultyManager.get_scale(BALANCE_CONFIG.difficulty_enemy_count_influence)
+	return maxi(roundi(base * scale), 1)
+
+
+## Seconds between spawns: harder runs spawn enemies closer together.
+func _get_spawn_interval() -> float:
+	var scale := DifficultyManager.get_scale(BALANCE_CONFIG.difficulty_spawn_interval_influence)
+	return BALANCE_CONFIG.wave_spawn_interval / maxf(scale, 0.01)
 
 
 ## The navigation map syncs a few frames after the map loads; spawning before that
@@ -127,6 +138,9 @@ func _spawn_enemy(zone: EnemySpawnZone, fast: bool) -> void:
 	enemy.hunts_player = true
 	enemy.died.connect(_on_enemy_died, CONNECT_ONE_SHOT)
 	zone.spawn(enemy)
+	# After spawn: the enemy's _ready has already loaded its stats from balance_config
+	enemy.base_health *= DifficultyManager.get_scale(BALANCE_CONFIG.difficulty_enemy_health_influence)
+	enemy.MAX_SPEED = roundi(enemy.MAX_SPEED * DifficultyManager.get_scale(BALANCE_CONFIG.difficulty_enemy_speed_influence))
 
 
 func _on_enemy_died() -> void:

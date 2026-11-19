@@ -86,6 +86,35 @@ extends Resource
 ## Max walls Kade can carry at once. A pickup over this limit is rejected.
 @export_range(1, 20) var max_throwable_walls: int = 5
 
+@export_group("Adaptive difficulty")
+## When false the difficulty stays at 1.0 and telemetry is only recorded.
+@export var adaptive_difficulty_enabled: bool = true
+## Lowest and highest difficulty the director can reach (1.0 = balance_config as is).
+@export var difficulty_min: float = 0.7
+@export var difficulty_max: float = 1.4
+## Difficulty added after a wave scored at or above difficulty_good_score.
+@export var difficulty_step_up: float = 0.05
+## Difficulty removed after a wave scored at or below difficulty_bad_score.
+@export var difficulty_step_down: float = 0.08
+## Difficulty removed when the player dies, applied to the next run.
+@export var difficulty_death_step: float = 0.1
+## Wave performance score (0–1) from which the next waves get harder.
+@export_range(0.0, 1.0) var difficulty_good_score: float = 0.7
+## Wave performance score (0–1) under which the next waves get easier.
+@export_range(0.0, 1.0) var difficulty_bad_score: float = 0.4
+## Seconds per enemy a wave is expected to take; clearing faster scores higher.
+@export var difficulty_seconds_per_enemy: float = 2.5
+## Weights of the wave performance score: health kept, clear speed and accuracy.
+@export var difficulty_health_weight: float = 0.6
+@export var difficulty_speed_weight: float = 0.25
+@export var difficulty_accuracy_weight: float = 0.15
+## How much of the difficulty reaches each knob (0 = ignores it, 1 = fully scaled).
+## Example: difficulty 1.2 with count influence 1.0 spawns 20% more enemies.
+@export_range(0.0, 1.0) var difficulty_enemy_count_influence: float = 1.0
+@export_range(0.0, 1.0) var difficulty_enemy_health_influence: float = 0.5
+@export_range(0.0, 1.0) var difficulty_enemy_speed_influence: float = 0.3
+@export_range(0.0, 1.0) var difficulty_spawn_interval_influence: float = 0.5
+
 @export_group("Risk")
 ## Lowest threat multiplier shown as "medium" risk (GDD §10). Below it the risk is "low".
 @export var risk_medium_threshold: float = 1.5
