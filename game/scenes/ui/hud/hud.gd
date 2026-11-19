@@ -22,6 +22,7 @@ extends CanvasLayer
 @onready var _ammo_label: Label = %AmmoLabel
 @onready var _wave_label: Label = %WaveLabel
 @onready var _enemies_label: Label = %EnemiesLabel
+@onready var _wall_label: Label = %WallLabel
 
 var _player: Player
 var _magazine: Magazine
@@ -46,8 +47,10 @@ func _bind_player(player: Player) -> void:
 	_player.damage_taken.connect(_update_health)
 	_player.died.connect(_update_health)
 	_player.active_weapon_changed.connect(_on_active_weapon_changed)
+	_player.throwable_wall_count_changed.connect(_on_throwable_wall_count_changed)
 	_update_health()
 	_on_active_weapon_changed(_player.get_active_weapon())
+	_on_throwable_wall_count_changed(_player.get_throwable_wall_count())
 	_update_switch_hint()
 
 func _update_health() -> void:
@@ -94,6 +97,13 @@ func _on_active_weapon_changed(weapon: Weapon) -> void:
 func _on_ammo_changed(count: int, capacity: int) -> void:
 	_ammo_label.text = "%d / %d" % [count, capacity]
 	_ammo_label.modulate = critical_color if count <= 0 else Color.WHITE
+
+func _on_throwable_wall_count_changed(count: int) -> void:
+	var throw_key := _get_action_key_label(&"interact")
+	if throw_key.is_empty():
+		_wall_label.text = "Walls: %d" % count
+	else:
+		_wall_label.text = "Walls: %d  [%s]" % [count, throw_key]
 
 # Builds "1 Revolver · 2 Sawed-off · Next [Q]" from the player's weapons and the InputMap,
 # so key bindings are never hardcoded (GDD §11).

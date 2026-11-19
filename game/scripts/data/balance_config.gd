@@ -60,6 +60,14 @@ extends Resource
 ## DEPRECATED: the barrier was removed; kept so existing .tres files still load.
 @export var threat_barrier_open_bonus: float = 0.5
 
+@export_group("Throwable wall")
+## Health of a deployed throwable wall before it breaks. Enemies chip at it from attack range.
+@export var wall_health: float = 120.0
+## Distance (px) in front of Kade at which the wall spawns when thrown.
+@export var wall_throw_distance: float = 72.0
+## Max walls Kade can carry at once. A pickup over this limit is rejected.
+@export_range(1, 20) var max_throwable_walls: int = 5
+
 @export_group("Risk")
 ## Lowest threat multiplier shown as "medium" risk (GDD §10). Below it the risk is "low".
 @export var risk_medium_threshold: float = 1.5

@@ -15,6 +15,7 @@ const ITEM_POOL: Array[ItemData] = [
 	preload("res://resources/items/scrap.tres"),
 	preload("res://resources/items/spare_parts.tres"),
 	preload("res://resources/items/weapon_parts.tres"),
+	preload("res://resources/items/throwable_wall.tres"),
 ]
 
 

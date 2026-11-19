@@ -17,7 +17,7 @@ func _physics_process(delta: float) -> void:
 	if ray.is_colliding():
 		global_position = ray.get_collision_point()
 		var collider: Object = ray.get_collider()
-		if collider is Area2D and collider.has_method("take_damage"):
+		if collider != null and collider.has_method("take_damage"):
 			collider.take_damage(DAMAGE)
 		queue_free()
 		return

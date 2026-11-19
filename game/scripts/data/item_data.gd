@@ -7,8 +7,9 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 @export var item_name: String
 @export var item_icon: Texture2D
 @export var action_data: ActionData
-## "heal" is applied the moment it is picked up; "resource" takes an inventory slot (GDD §15.7).
-@export_enum("heal", "resource") var item_type: String = "resource"
+## "heal" is applied the moment it is picked up; "resource" takes an inventory slot (GDD §15.7);
+## "throwable_wall" fills a separate wall carrier the player deploys with `interact`.
+@export_enum("heal", "resource", "throwable_wall") var item_type: String = "resource"
 @export var rarity: Rarity = Rarity.COMMON
 var item_model_prefab: PackedScene
 
