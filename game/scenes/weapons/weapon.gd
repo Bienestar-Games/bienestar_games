@@ -28,11 +28,30 @@ func _update_orbit_and_aim() -> void:
 	rotation = direction.angle()
 	_weapon_root.scale.y = -1.0 if direction.x < 0.0 else 1.0
 
+## Spawns the shot's bullets at the muzzle, applying the owner's consumable buffs
+## (damage multiplier and extra bullets per shot). Falls back to a single x1 bullet
+## when the weapon has no Player ancestor (e.g. isolated test scenes).
 func _spawn_bullet() -> void:
-	var bullet: Bullet = bullet_scene.instantiate()
-	get_tree().current_scene.add_child(bullet)
-	bullet.global_position = muzzle.global_position
-	bullet.global_rotation = global_rotation + _get_weapon_inaccuracy()
+	var player := _find_owner_player()
+	var damage_multiplier: float = 1.0
+	var total_bullets: int = 1
+	if player != null:
+		damage_multiplier = player.damage_multiplier
+		total_bullets += player.extra_bullets_per_shot
+	for i in total_bullets:
+		var bullet: Bullet = bullet_scene.instantiate()
+		get_tree().current_scene.add_child(bullet)
+		bullet.global_position = muzzle.global_position
+		bullet.global_rotation = global_rotation + _get_weapon_inaccuracy()
+		bullet.DAMAGE *= damage_multiplier
 
 func _get_weapon_inaccuracy() -> float:
 	return randf_range(-40,40)/360
+
+func _find_owner_player() -> Player:
+	var node: Node = get_parent()
+	while node != null:
+		if node is Player:
+			return node
+		node = node.get_parent()
+	return null

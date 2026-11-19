@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3]
+
+[ext_resource type="Script" uid="uid://btxfpoa22ofmv" path="res://scripts/data/item_data.gd" id="1_item_data"]
+[ext_resource type="Texture2D" uid="uid://dyb2djib33yks" path="res://assets/sprites/loot/consumables.png" id="2_consumables"]
+[ext_resource type="Script" uid="uid://dn70l7hhh7lpa" path="res://scripts/data/actions/consumable_action.gd" id="3_consumable_action"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("2_consumables")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="Resource" id="Resource_action"]
+script = ExtResource("3_consumable_action")
+modifier_name = "bullets_up"
+modifier_value = 1
+
+[resource]
+script = ExtResource("1_item_data")
+item_name = "Bullet Boost"
+item_icon = SubResource("AtlasTexture_icon")
+action_data = SubResource("Resource_action")
+item_type = "bullets_up"
+rarity = 2
