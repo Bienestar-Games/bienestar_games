@@ -21,27 +21,76 @@ var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
 var inventory: Array[ItemData] = []
 
+## Run-scoped consumable buffs. Weapons read these when they shoot.
+var max_health: float = 0.0
+var damage_multiplier: float = 1.0
+var extra_bullets_per_shot: int = 0
+
 func add_item(item: ItemData) -> bool:
-	if item.item_type == "heal":
-		# TODO: Apply the healing amount defined by the balance configuration.
-		print("Player healed")
-		return true
-
-	if item.item_type == "resource":
-		if inventory.size() >= BALANCE_CONFIG.max_inventory_slots:
-			print("Inventory full")
-			pickup_rejected.emit()
-			return false
-		inventory.append(item)
-		inventory_changed.emit(inventory)
-		print(inventory.map(func(i: ItemData) -> String: return i.item_name))
-		return true
-
+	match item.item_type:
+		"heal":
+			_apply_heal(item)
+			return true
+		"damage_up":
+			_apply_damage_up(item)
+			return true
+		"bullets_up":
+			_apply_bullets_up(item)
+			return true
+		"max_health_up":
+			_apply_max_health_up(item)
+			return true
+		"resource":
+			if inventory.size() >= BALANCE_CONFIG.max_inventory_slots:
+				print("Inventory full")
+				pickup_rejected.emit()
+				return false
+			inventory.append(item)
+			inventory_changed.emit(inventory)
+			print(inventory.map(func(i: ItemData) -> String: return i.item_name))
+			return true
 	return false
+
+## Reads `modifier_value` from the item's ConsumableAction, or 0 when the item has none.
+func _get_modifier_value(item: ItemData) -> int:
+	if item.action_data is ConsumableAction:
+		return (item.action_data as ConsumableAction).modifier_value
+	push_warning("Player: consumable '%s' has no ConsumableAction, buff is ignored." % item.item_name)
+	return 0
+
+func _apply_heal(item: ItemData) -> void:
+	var amount := _get_modifier_value(item)
+	if amount <= 0:
+		return
+	base_health = minf(base_health + float(amount), max_health)
+
+func _apply_damage_up(item: ItemData) -> void:
+	var stacks := _get_modifier_value(item)
+	if stacks <= 0:
+		return
+	var step := BALANCE_CONFIG.consumable_damage_up_step
+	damage_multiplier = minf(damage_multiplier + step * float(stacks), BALANCE_CONFIG.consumable_damage_multiplier_cap)
+
+func _apply_bullets_up(item: ItemData) -> void:
+	var extra := _get_modifier_value(item)
+	if extra <= 0:
+		return
+	extra_bullets_per_shot = clampi(extra_bullets_per_shot + extra, 0, BALANCE_CONFIG.consumable_bullets_up_cap)
+
+func _apply_max_health_up(item: ItemData) -> void:
+	var amount := _get_modifier_value(item)
+	if amount <= 0:
+		return
+	var new_max := minf(max_health + float(amount), BALANCE_CONFIG.player_max_health_cap)
+	var raised_by := new_max - max_health
+	max_health = new_max
+	# Also grants the same amount of current HP as a shield-like bonus, clamped to the new cap.
+	base_health = minf(base_health + raised_by, max_health)
 
 func _ready() -> void:
 	MAX_SPEED = BALANCE_CONFIG.player_speed
 	base_health = BALANCE_CONFIG.player_health
+	max_health = BALANCE_CONFIG.player_max_health
 	died.connect(_on_died)
 	Events.decision_phase_started.connect(_on_decision_phase_started)
 	Events.wave_started.connect(_on_wave_started)
