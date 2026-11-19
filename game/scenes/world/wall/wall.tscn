@@ -11,6 +11,8 @@ points = PackedVector2Array(42.666668, -42.666668, -85.333336, 21.333334, -42.66
 points = PackedVector2Array(85.333336, 21.333334, -42.666668, -42.666668, -85.333336, -21.333334, 42.666668, 42.666668)
 
 [node name="Wall" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
 collision_layer = 5
 collision_mask = 0
 script = ExtResource("1_wall")
@@ -22,6 +24,7 @@ falling_offset = Vector2(42.666668, -203.33333)
 falling_shape = SubResource("ConvexPolygonShape2D_falling")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.7, 0.85, 1, 1)
 texture = ExtResource("3_walls")
 offset = Vector2(42.666668, -160.66667)
 region_enabled = true

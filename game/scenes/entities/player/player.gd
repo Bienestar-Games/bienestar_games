@@ -110,7 +110,8 @@ func try_throw_wall() -> bool:
 		return false
 	var dir: Vector2 = to_mouse.normalized()
 	var wall: Wall = WALL_SCENE.instantiate()
-	get_tree().current_scene.add_child(wall)
+	# Sibling of Kade, so the map's y-sorted parent draws it in front of or behind him.
+	get_parent().add_child(wall)
 	wall.global_position = global_position + dir * BALANCE_CONFIG.wall_throw_distance
 	# The rectangle shape is wider than tall; rotate so its long side blocks the throw direction.
 	wall.rotation = dir.angle() + PI / 2
