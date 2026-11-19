@@ -38,7 +38,6 @@ El HUD refuerza la tensión núcleo del juego: **cada decisión tiene un costo v
 |---|---|---|
 | **Preview de siguiente oleada** | Tipo general de amenaza + indicador de riesgo (bajo / medio / alto / extremo). Sin números exactos — el jugador apuesta, no calcula. | *Por implementar* |
 | **Panel de extracción** | Muestra loot seguro si extrae ahora vs. loot potencial si continúa, con el indicador de riesgo estimado de la siguiente oleada. | *Por implementar* |
-| **Inventario** | 9 slots (tecla `E`), ya implementado. Feedback visual cuando está lleno. | `InventoryController` |
 
 ### Canales de feedback
 
@@ -48,7 +47,6 @@ El HUD refuerza la tensión núcleo del juego: **cada decisión tiene un costo v
 | Visual | Parpadeo de barra de salud | HP < 30% |
 | Visual | Borde de pantalla enrojecido / pulsante | Barrera comprometida o abierta |
 | Visual | Loot con borde de color por rareza | Item de alta calidad en suelo |
-| Visual | Slots de inventario parpadeando en rojo | Inventario lleno al intentar recoger |
 | Audio | Alarma de baja intensidad → alta | Barrera abierta; sube con tiempo en riesgo |
 | Audio | Silencio relativo + música tensa | Entre oleadas (ventana de decisión) |
 | Audio | Sonido de confirmación | Extracción iniciada |
@@ -68,8 +66,7 @@ El HUD refuerza la tensión núcleo del juego: **cada decisión tiene un costo v
         v
 [DEFENSA ACTIVA]
   → Combate (Revolver / Sawed-off Shotgun)
-  → Gestión de inventario de 9 slots (E)
-  → Recolección de loot con descarte forzado si está lleno
+  → Recolección de loot: cada ítem se aplica al tocarlo (§15.7)
         |
         v
 [FIN DE OLEADA — ventana de decisión]
@@ -89,7 +86,6 @@ El HUD refuerza la tensión núcleo del juego: **cada decisión tiene un costo v
 El sistema de estados existente cubre la capa táctica de combate:
 
 - `player_idle_state` / `moving` → movimiento y combate
-- `on_inventory_state` → gestión de loot (tecla `E`)
 
 **Estados por implementar para el loop completo:**
 
@@ -105,7 +101,6 @@ El sistema de estados existente cubre la capa táctica de combate:
 |---|---|
 | **Codicia de loot** | El panel de extracción muestra el valor acumulado vs. el riesgo estimado de continuar. El jugador ve el costo de la codicia antes de comprometerse. |
 | **Control de barreras** | El indicador de barrera siempre visible no permite ignorar las consecuencias de haberla abierto. El borde de pantalla pulsante recuerda la exposición activa. |
-| **Presión de inventario** | 9 slots con feedback de llenado fuerzan decisiones de descarte. Añaden peso emocional a cada recogida: cada item nuevo desplaza a otro. |
 | **Escalada de dificultad** | El preview de oleada muestra la escalada antes de que el jugador se comprometa. La decisión de abrir/cerrar barrera es informada, no puramente reactiva. |
 | **Tensión de pérdida** | El indicador del Death Border acumula el riesgo elegido por el jugador. Recuerda cuánto hay en juego en cada oleada extra — la frontera entre codicia y ruina es visible. |
 

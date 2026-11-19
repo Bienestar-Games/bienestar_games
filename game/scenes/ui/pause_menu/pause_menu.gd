@@ -20,7 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if visible:
 		_resume()
-	# Don't stack on top of another pause owner such as the inventory
+	# Don't stack on top of another pause owner
 	elif not get_tree().paused:
 		_pause()
 	get_viewport().set_input_as_handled()

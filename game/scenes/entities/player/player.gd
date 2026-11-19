@@ -5,10 +5,9 @@ const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_co
 const WALL_SCENE: PackedScene = preload("res://scenes/world/wall/wall.tscn")
 
 signal active_weapon_changed(weapon: Weapon)
-## Emitted when an item can't be picked up because the inventory is full.
+## Emitted when an item can't be picked up because Kade already carries the maximum
+## (currently only throwable walls).
 signal pickup_rejected
-## Emitted after an item is added to the inventory.
-signal inventory_changed(inventory: Array[ItemData])
 ## Emitted when the number of throwable walls Kade carries changes.
 signal throwable_wall_count_changed(count: int)
 
@@ -22,7 +21,6 @@ signal throwable_wall_count_changed(count: int)
 
 var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
-var inventory: Array[ItemData] = []
 var _throwable_wall_count: int = 0
 
 ## Run-scoped consumable buffs. Weapons read these when they shoot.
@@ -43,15 +41,6 @@ func add_item(item: ItemData) -> bool:
 			return true
 		"max_health_up":
 			_apply_max_health_up(item)
-			return true
-		"resource":
-			if inventory.size() >= BALANCE_CONFIG.max_inventory_slots:
-				print("Inventory full")
-				pickup_rejected.emit()
-				return false
-			inventory.append(item)
-			inventory_changed.emit(inventory)
-			print(inventory.map(func(i: ItemData) -> String: return i.item_name))
 			return true
 		"throwable_wall":
 			if _throwable_wall_count >= BALANCE_CONFIG.max_throwable_walls:

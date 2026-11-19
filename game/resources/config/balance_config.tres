@@ -7,7 +7,6 @@ script = ExtResource("1_balance_config")
 loot_fallback_waves_per_threat_tier = 2
 death_border_barrier_open_step = 0.4
 death_border_open_wave_step = 0.12
-max_inventory_slots = 9
 barrier_interaction_duration = 2.0
 barrier_unlock_wave = 2
 melee_fast_first_wave = 3
