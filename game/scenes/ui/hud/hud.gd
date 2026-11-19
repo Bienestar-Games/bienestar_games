@@ -43,18 +43,18 @@ func _ready() -> void:
 
 func _bind_player(player: Player) -> void:
 	_player = player
-	_health_bar.max_value = _player.base_health
-	_player.damage_taken.connect(_update_health)
-	_player.died.connect(_update_health)
+	_player.health_changed.connect(_update_health)
 	_player.active_weapon_changed.connect(_on_active_weapon_changed)
 	_player.throwable_wall_count_changed.connect(_on_throwable_wall_count_changed)
-	_update_health()
+	_update_health(_player.base_health, _player.max_health)
 	_on_active_weapon_changed(_player.get_active_weapon())
 	_on_throwable_wall_count_changed(_player.get_throwable_wall_count())
 	_update_switch_hint()
 
-func _update_health() -> void:
-	var health: float = clampf(_player.base_health, 0.0, _health_bar.max_value)
+## Refreshes the health bar, label, colour and low-health blink from the player's values.
+func _update_health(current_health: float, max_health: float) -> void:
+	_health_bar.max_value = maxf(max_health, 1.0)
+	var health: float = clampf(current_health, 0.0, _health_bar.max_value)
 	_health_bar.value = health
 	_health_label.text = str(ceili(health))
 	var ratio: float = health / _health_bar.max_value
