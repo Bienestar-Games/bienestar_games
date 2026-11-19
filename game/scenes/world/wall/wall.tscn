@@ -1,24 +1,34 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwallwallwall1"]
+[gd_scene load_steps=6 format=3 uid="uid://cwallwallwall1"]
 
 [ext_resource type="Script" path="res://scenes/world/wall/wall.gd" id="1_wall"]
 [ext_resource type="Script" uid="uid://0p4oioevwwwi" path="res://scripts/components/hit_box.gd" id="2_hitbox"]
-[ext_resource type="Texture2D" uid="uid://cm1tdit54y1w7" path="res://assets/environment/tiles/stoneWall_S.png" id="3_stonewall"]
+[ext_resource type="Texture2D" uid="uid://baqtjjf82b3p0" path="res://assets/environment/tilesheets/walls.png" id="3_walls"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
-size = Vector2(64, 40)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rising"]
+points = PackedVector2Array(42.666668, -42.666668, -85.333336, 21.333334, -42.666668, 42.666668, 85.333336, -21.333334)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_falling"]
+points = PackedVector2Array(85.333336, 21.333334, -42.666668, -42.666668, -85.333336, -21.333334, 42.666668, 42.666668)
 
 [node name="Wall" type="StaticBody2D"]
 collision_layer = 5
 collision_mask = 0
 script = ExtResource("1_wall")
+rising_region = Rect2(0, 512, 256, 512)
+rising_offset = Vector2(42.666668, -160.66667)
+rising_shape = SubResource("ConvexPolygonShape2D_rising")
+falling_region = Rect2(256, 512, 256, 512)
+falling_offset = Vector2(42.666668, -203.33333)
+falling_shape = SubResource("ConvexPolygonShape2D_falling")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.28, 0.28)
-texture = ExtResource("3_stonewall")
+texture = ExtResource("3_walls")
+offset = Vector2(42.666668, -160.66667)
+region_enabled = true
+region_rect = Rect2(0, 512, 256, 512)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_wall")
+shape = SubResource("ConvexPolygonShape2D_rising")
 
 [node name="HitBox" type="Area2D" parent="." node_paths=PackedStringArray("owner_character")]
 collision_layer = 16
@@ -27,4 +37,4 @@ script = ExtResource("2_hitbox")
 owner_character = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-shape = SubResource("RectangleShape2D_wall")
+shape = SubResource("ConvexPolygonShape2D_rising")
