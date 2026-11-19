@@ -10,7 +10,8 @@ enum Rarity { COMMON, UNCOMMON, RARE }
 ## Consumable buff items ("heal", "damage_up", "bullets_up", "max_health_up") are applied the
 ## moment they are picked up and never enter the inventory. "resource" takes an inventory slot
 ## (GDD §15.7). Each buff reads its amount from the item's ConsumableAction.modifier_value.
-@export_enum("heal", "damage_up", "bullets_up", "max_health_up", "resource") var item_type: String = "resource"
+## "throwable_wall" fills a separate wall carrier the player deploys with `interact`.
+@export_enum("heal", "damage_up", "bullets_up", "max_health_up", "resource", "throwable_wall") var item_type: String = "resource"
 @export var rarity: Rarity = Rarity.COMMON
 var item_model_prefab: PackedScene
 

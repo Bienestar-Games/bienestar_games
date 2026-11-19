@@ -2,8 +2,7 @@ class_name DeathBorder
 extends CanvasLayer
 ## Death Border (GDD §4, §8 Nivel 3, §15.11): accumulated run risk shown as a screen
 ## vignette that closes in from the edges, plus a minimal non-numeric HUD icon.
-## Risk rises when the barrier opens and with every wave fought while it stays open.
-## The risk steps live in balance_config.tres.
+## Risk rises with every wave fought. The risk steps live in balance_config.tres.
 
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
@@ -15,23 +14,19 @@ const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_co
 
 var _risk: float = 0.0
 var _shown_risk: float = 0.0
-var _barrier_open: bool = false
 var _tween: Tween
 
 func _ready() -> void:
 	_apply_risk(0.0)
-	Events.barrier_opened.connect(_on_barrier_opened)
 	Events.wave_started.connect(_on_wave_started)
 
-func _on_barrier_opened() -> void:
-	if _barrier_open:
+func _on_wave_started(wave_number: int) -> void:
+	# First wave of a new run resets the vignette; every later wave raises the risk.
+	if wave_number <= 1:
+		_risk = 0.0
+		_apply_risk(0.0)
 		return
-	_barrier_open = true
-	_raise_risk(BALANCE_CONFIG.death_border_barrier_open_step)
-
-func _on_wave_started(_wave_number: int) -> void:
-	if _barrier_open:
-		_raise_risk(BALANCE_CONFIG.death_border_open_wave_step)
+	_raise_risk(BALANCE_CONFIG.death_border_open_wave_step)
 
 func _raise_risk(amount: float) -> void:
 	_risk = minf(_risk + amount, 1.0)

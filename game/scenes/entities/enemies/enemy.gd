@@ -27,8 +27,17 @@ const REPATH_THRESHOLD: float = 8.0
 const HUNT_UPDATE_INTERVAL: float = 1.0
 ## Max distance (px) between the end of a path and the target for it to count as reachable.
 const REACHABLE_TOLERANCE: float = 16.0
+## Radius (px) within which the enemy aggroes onto a deployed wall over the player.
+const WALL_AGGRO_RANGE: float = 480.0
 
 var _hunt_timer: float = 0.0
+## The wall this enemy is currently chasing, if any. Takes priority over `player_in_range`.
+var wall_target: Wall = null
+## Players touching the attack area; counted so simultaneous overlaps are handled correctly.
+var _players_in_attack_area: int = 0
+## Walls touching the attack area, in the order they entered. Lets us know if `wall_target`
+## is close enough to be hit without changing EnemyAttackingState's attack path.
+var _walls_in_attack_area: Array[Wall] = []
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -50,9 +59,50 @@ func _physics_process(delta: float) -> void:
 		return
 	_check_line_of_sight(delta)
 	_update_hunt(delta)
+	_update_wall_priority()
 	attack_cd_timer -= delta
 	_update_rotation(vision_area, _last_move_direction)
 	_update_rotation(attack_area, _last_move_direction)
+
+## Picks the closest wall inside WALL_AGGRO_RANGE and, if it is not farther than the player,
+## routes `target` onto it so the enemy chases and attacks it first. Falls back to Kade as
+## soon as the wall is gone or he gets closer than it.
+func _update_wall_priority() -> void:
+	if not is_instance_valid(wall_target):
+		wall_target = null
+	var closest := _find_closest_wall(WALL_AGGRO_RANGE)
+	if closest == null:
+		if wall_target != null and target == wall_target:
+			# The wall we were chasing is gone: let the normal sight logic retake the player.
+			target = player_in_range
+			player_in_attack_area = _players_in_attack_area > 0
+		wall_target = null
+		return
+	wall_target = closest
+	var wall_dist := global_position.distance_to(closest.global_position)
+	var player_dist := INF
+	if player_in_range != null:
+		player_dist = global_position.distance_to(player_in_range.global_position)
+	if wall_dist <= player_dist:
+		target = closest
+		last_seen_position = closest.global_position
+		has_last_seen = true
+		player_in_attack_area = _walls_in_attack_area.has(closest)
+	elif target == closest:
+		target = player_in_range
+		player_in_attack_area = _players_in_attack_area > 0
+
+func _find_closest_wall(max_distance: float) -> Wall:
+	var closest: Wall = null
+	var closest_dist_sq: float = max_distance * max_distance
+	for wall in get_tree().get_nodes_in_group(&"wall"):
+		if not (wall is Wall) or not is_instance_valid(wall):
+			continue
+		var dist_sq := global_position.distance_squared_to(wall.global_position)
+		if dist_sq <= closest_dist_sq:
+			closest_dist_sq = dist_sq
+			closest = wall
+	return closest
 
 func _check_line_of_sight(delta: float) -> void:
 	sight_loss_timer -= delta
@@ -83,7 +133,7 @@ func _update_hunt(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player") as BaseCharacter
 	if player == null or player.base_health <= 0:
 		return
-	# Sealed in (e.g. behind a closed barrier): stop hunting and fall back to idle/wander
+	# Unreachable (e.g. no navmesh path to the player): stop hunting and fall back to idle/wander
 	if not _can_reach(player.global_position):
 		has_last_seen = false
 		return
@@ -113,13 +163,27 @@ func _on_vision_body_exited(body: Node2D) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
+		_players_in_attack_area += 1
 		player_in_attack_area = true
 		attack_cd_timer = attack_cooldown
+	elif body.is_in_group("wall") and body is Wall:
+		if not _walls_in_attack_area.has(body):
+			_walls_in_attack_area.append(body)
+		if target == body:
+			player_in_attack_area = true
+			attack_cd_timer = attack_cooldown
 
 func _on_attack_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		player_in_attack_area = false
-		
+		_players_in_attack_area = maxi(_players_in_attack_area - 1, 0)
+		if _players_in_attack_area == 0 and (target == null or target == player_in_range):
+			player_in_attack_area = false
+	elif body.is_in_group("wall"):
+		_walls_in_attack_area.erase(body)
+		if target == body:
+			player_in_attack_area = false
+
+
 
 func handle_animations(state:String):
 	handle_flip_h_sprite()

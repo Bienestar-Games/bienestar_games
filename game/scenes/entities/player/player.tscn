@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://ddphrtlthrtol" path="res://scripts/states/player/player_moving_state.gd" id="8_rqk8h"]
 [ext_resource type="Texture2D" uid="uid://cq11hks0hvltr" path="res://assets/sprites/player/character.png" id="8_rx1o7"]
 [ext_resource type="PackedScene" uid="uid://cuuy4bp8vbbwx" path="res://scenes/weapons/revolver/revolver.tscn" id="11_revolver"]
-[ext_resource type="Script" path="res://scripts/states/player/player_interacting_barrier_state.gd" id="12_barrier"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8lruo"]
 radius = 11.045361
@@ -320,10 +319,6 @@ inventory_controller = NodePath("../../InventoryController")
 
 [node name="Moving" type="Node" parent="StateMachine" unique_id=1971325715 node_paths=PackedStringArray("player")]
 script = ExtResource("8_rqk8h")
-player = NodePath("../..")
-
-[node name="InteractingBarrier" type="Node" parent="StateMachine" unique_id=500000003 node_paths=PackedStringArray("player")]
-script = ExtResource("12_barrier")
 player = NodePath("../..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1282814956]

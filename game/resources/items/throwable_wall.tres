@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://btxfpoa22ofmv" path="res://scripts/data/item_data.gd" id="1_item_data"]
+[ext_resource type="Texture2D" uid="uid://cm1tdit54y1w7" path="res://assets/environment/tiles/stoneWall_S.png" id="2_stonewall"]
+
+[resource]
+script = ExtResource("1_item_data")
+item_name = "Throwable Wall"
+item_icon = ExtResource("2_stonewall")
+item_type = "throwable_wall"
+rarity = 2

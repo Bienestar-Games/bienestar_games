@@ -14,7 +14,10 @@ func update(delta: float) -> void:
 		_leave_combat()
 		return
 	if enemy.player_in_attack_area:
-		if enemy.attack_cd_timer <= 0.0 and not enemy.vision_ray.is_colliding():
+		# A wall between the enemy and Kade blocks the vision ray, so we only check LOS
+		# when the target is the player itself.
+		var los_clear := enemy.target is Wall or not enemy.vision_ray.is_colliding()
+		if enemy.attack_cd_timer <= 0.0 and los_clear:
 			transitioned.emit(self, "attacking")
 		else:
 			transitioned.emit(self, "attack_recovery")

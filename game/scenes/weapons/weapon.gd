@@ -11,6 +11,14 @@ class_name Weapon extends Node2D
 @export var shoot_cd: Timer
 @export var reload_cd: Timer
 @export var icon: Texture2D
+## Human-readable name of the weapon shown in the HUD (GDD §4).
+@export var display_name: String = ""
+
+## Name of the weapon as shown to the player: `display_name` when set, else the node's name.
+func get_display_name() -> String:
+	if display_name.is_empty():
+		return name
+	return display_name
 
 const ORBIT_RADIUS: float = 30.0
 

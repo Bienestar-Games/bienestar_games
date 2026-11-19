@@ -2,12 +2,15 @@ class_name Player
 extends BaseCharacter
 
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
+const WALL_SCENE: PackedScene = preload("res://scenes/world/wall/wall.tscn")
 
 signal active_weapon_changed(weapon: Weapon)
 ## Emitted when an item can't be picked up because the inventory is full.
 signal pickup_rejected
 ## Emitted after an item is added to the inventory.
 signal inventory_changed(inventory: Array[ItemData])
+## Emitted when the number of throwable walls Kade carries changes.
+signal throwable_wall_count_changed(count: int)
 
 @onready var f_arm_2 = %f_arm_2
 @onready var b_arm_2 = %b_arm_2
@@ -20,6 +23,7 @@ signal inventory_changed(inventory: Array[ItemData])
 var _weapons: Array[Weapon] = []
 var _current_weapon_index: int = 0
 var inventory: Array[ItemData] = []
+var _throwable_wall_count: int = 0
 
 ## Run-scoped consumable buffs. Weapons read these when they shoot.
 var max_health: float = 0.0
@@ -48,6 +52,13 @@ func add_item(item: ItemData) -> bool:
 			inventory.append(item)
 			inventory_changed.emit(inventory)
 			print(inventory.map(func(i: ItemData) -> String: return i.item_name))
+			return true
+		"throwable_wall":
+			if _throwable_wall_count >= BALANCE_CONFIG.max_throwable_walls:
+				pickup_rejected.emit()
+				return false
+			_throwable_wall_count += 1
+			throwable_wall_count_changed.emit(_throwable_wall_count)
 			return true
 	return false
 
@@ -87,6 +98,28 @@ func _apply_max_health_up(item: ItemData) -> void:
 	# Also grants the same amount of current HP as a shield-like bonus, clamped to the new cap.
 	base_health = minf(base_health + raised_by, max_health)
 
+## Walls Kade still carries. Each throw spends one.
+func get_throwable_wall_count() -> int:
+	return _throwable_wall_count
+
+## Spawns a wall in front of Kade along the aim direction, consuming one from the stock.
+## Returns true when a wall was deployed.
+func try_throw_wall() -> bool:
+	if _throwable_wall_count <= 0:
+		return false
+	var to_mouse: Vector2 = get_global_mouse_position() - global_position
+	if to_mouse.length_squared() < 0.01:
+		return false
+	var dir: Vector2 = to_mouse.normalized()
+	var wall: Wall = WALL_SCENE.instantiate()
+	get_tree().current_scene.add_child(wall)
+	wall.global_position = global_position + dir * BALANCE_CONFIG.wall_throw_distance
+	# The rectangle shape is wider than tall; rotate so its long side blocks the throw direction.
+	wall.rotation = dir.angle() + PI / 2
+	_throwable_wall_count -= 1
+	throwable_wall_count_changed.emit(_throwable_wall_count)
+	return true
+
 func _ready() -> void:
 	MAX_SPEED = BALANCE_CONFIG.player_speed
 	base_health = BALANCE_CONFIG.player_health
@@ -120,17 +153,20 @@ func set_weapons_enabled(enabled: bool) -> void:
 	elif not _weapons.is_empty():
 		_weapons[_current_weapon_index].process_mode = Node.PROCESS_MODE_DISABLED
 
-## Returns the barrier the player can start opening right now, or null.
-func get_interactable_barrier() -> InteractiveBarrier:
-	for barrier: InteractiveBarrier in get_tree().get_nodes_in_group(&"barriers"):
-		if barrier.can_interact(self):
-			return barrier
-	return null
-
 func get_active_weapon() -> Weapon:
 	if _weapons.is_empty():
 		return null
 	return _weapons[_current_weapon_index]
+
+## Number of weapons the player carries (GDD §8: Kade starts with 2).
+func get_weapon_count() -> int:
+	return _weapons.size()
+
+## Weapon at `index`, or null when out of range.
+func get_weapon(index: int) -> Weapon:
+	if index < 0 or index >= _weapons.size():
+		return null
+	return _weapons[index]
 
 func switch_weapon(index: int) -> void:
 	if _weapons.is_empty() or index == _current_weapon_index:

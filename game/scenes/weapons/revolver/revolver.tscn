@@ -251,6 +251,7 @@ region = Rect2(0, 0, 64, 64)
 y_sort_enabled = true
 script = ExtResource("1_y8ai0")
 icon = SubResource("AtlasTexture_hud_icon")
+display_name = "Revolver"
 magazine = NodePath("Magazine")
 bullet_scene = ExtResource("2_x7leg")
 muzzle = NodePath("WeaponRoot/FlipContainer/Muzzle")
