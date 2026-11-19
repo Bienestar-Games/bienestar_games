@@ -18,6 +18,9 @@ const ITEM_POOL: Array[ItemData] = [
 	preload("res://resources/items/scrap.tres"),
 	preload("res://resources/items/spare_parts.tres"),
 	preload("res://resources/items/weapon_parts.tres"),
+	preload("res://resources/items/damage_boost.tres"),
+	preload("res://resources/items/max_health_boost.tres"),
+	preload("res://resources/items/bullet_boost.tres"),
 ]
 ## Gap (px) between the last enemy's drop and the barrier reward so both stay visible.
 const REWARD_DROP_OFFSET: Vector2 = Vector2(40, 0)
