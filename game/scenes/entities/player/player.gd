@@ -10,6 +10,9 @@ signal active_weapon_changed(weapon: Weapon)
 signal pickup_rejected
 ## Emitted when the number of throwable walls Kade carries changes.
 signal throwable_wall_count_changed(count: int)
+## Emitted whenever Kade's current health (`base_health`) or its ceiling (`max_health`)
+## changes: damage, death, heals and max-health buffs.
+signal health_changed(health: float, max_health: float)
 
 @onready var f_arm_2 = %f_arm_2
 @onready var b_arm_2 = %b_arm_2
@@ -63,6 +66,7 @@ func _apply_heal(item: ItemData) -> void:
 	if amount <= 0:
 		return
 	base_health = minf(base_health + float(amount), max_health)
+	_emit_health_changed()
 
 func _apply_damage_up(item: ItemData) -> void:
 	var stacks := _get_modifier_value(item)
@@ -86,6 +90,11 @@ func _apply_max_health_up(item: ItemData) -> void:
 	max_health = new_max
 	# Also grants the same amount of current HP as a shield-like bonus, clamped to the new cap.
 	base_health = minf(base_health + raised_by, max_health)
+	_emit_health_changed()
+
+## Notifies listeners (HUD) of the current health and max health.
+func _emit_health_changed() -> void:
+	health_changed.emit(base_health, max_health)
 
 ## Walls Kade still carries. Each throw spends one.
 func get_throwable_wall_count() -> int:
@@ -114,6 +123,8 @@ func _ready() -> void:
 	base_health = BALANCE_CONFIG.player_health
 	max_health = BALANCE_CONFIG.player_max_health
 	died.connect(_on_died)
+	damage_taken.connect(_emit_health_changed)
+	died.connect(_emit_health_changed)
 	Events.wave_started.connect(_on_wave_started)
 	_init_weapons()
 
