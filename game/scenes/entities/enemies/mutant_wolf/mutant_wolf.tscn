@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/entities/enemies/melee_basic/melee_basic.tscn" id="1_melee_basic"]
+[ext_resource type="Script" path="res://scenes/entities/enemies/mutant_wolf/mutant_wolf.gd" id="2_mutant_wolf"]
+
+[node name="MutantWolf" instance=ExtResource("1_melee_basic")]
+script = ExtResource("2_mutant_wolf")
+
+[node name="Sprite2D" parent="." index="0"]
+self_modulate = Color(0.45, 1.6, 0.25, 1)

@@ -6,6 +6,7 @@ extends Node
 ## Enemy count and spawn interval live in balance_config.tres (B20). Each wave adds a
 ## fixed number of enemies to the previous one (B17). DifficultyManager's adaptive
 ## difficulty then scales the count, spawn rate and each enemy's health and speed.
+## Every mutant_wolf_wave_interval waves one more MutantWolf joins the wave as an extra enemy.
 
 ## Emitted every time the number of alive enemies of the current wave changes.
 signal enemies_remaining_changed(enemies_remaining: int)
@@ -16,6 +17,7 @@ const NAVIGATION_WAIT_MAX_FRAMES: int = 120
 const MAP_WAIT_MAX_FRAMES: int = 60
 const MELEE_BASIC_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_basic/melee_basic.tscn")
 const MELEE_FAST_SCENE: PackedScene = preload("res://scenes/entities/enemies/melee_fast/melee_fast.tscn")
+const MUTANT_WOLF_SCENE: PackedScene = preload("res://scenes/entities/enemies/mutant_wolf/mutant_wolf.tscn")
 const BALANCE_CONFIG: BalanceConfig = preload("res://resources/config/balance_config.tres")
 
 ## Enemies spawned in the current wave.
@@ -77,13 +79,21 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 	enemy_count = get_enemy_count(wave_number)
 	enemies_remaining = enemy_count
 	enemies_remaining_changed.emit(enemies_remaining)
-	var fast_count := _get_fast_enemy_count(wave_number)
+	var mutant_count := BALANCE_CONFIG.get_mutant_wolf_count(wave_number)
+	var regular_count := enemy_count - mutant_count
+	var fast_count := _get_fast_enemy_count(wave_number, regular_count)
+	var regular_index := 0
 
 	for i in enemy_count:
 		# Round-robin across zones so all of them are used.
 		var zone := zones[i % zones.size()] as EnemySpawnZone
 		if is_instance_valid(zone):
-			_spawn_enemy(zone, _is_fast_slot(i, fast_count))
+			if _is_spread_slot(i, mutant_count, enemy_count):
+				_spawn_enemy(zone, MUTANT_WOLF_SCENE)
+			else:
+				var fast := _is_spread_slot(regular_index, fast_count, regular_count)
+				_spawn_enemy(zone, MELEE_FAST_SCENE if fast else enemy_scene)
+				regular_index += 1
 		else:
 			_on_enemy_died()
 		var spawn_interval := _get_spawn_interval()
@@ -96,11 +106,11 @@ func _spawn_wave(wave_number: int, zones: Array[Node], run_id: int) -> void:
 
 
 ## Enemies in `wave_number` (1-based): the base count plus a fixed increment per wave (B17),
-## scaled by the adaptive difficulty.
+## scaled by the adaptive difficulty, plus the wave's mutant wolves.
 func get_enemy_count(wave_number: int) -> int:
 	var base := BALANCE_CONFIG.wave_base_enemy_count + BALANCE_CONFIG.wave_enemy_increment * maxi(wave_number - 1, 0)
 	var scale := DifficultyManager.get_scale(BALANCE_CONFIG.difficulty_enemy_count_influence)
-	return maxi(roundi(base * scale), 1)
+	return maxi(roundi(base * scale), 1) + BALANCE_CONFIG.get_mutant_wolf_count(wave_number)
 
 
 ## Seconds between spawns: harder runs spawn enemies closer together.
@@ -121,19 +131,20 @@ func _wait_for_navigation(zone: EnemySpawnZone) -> void:
 
 
 ## How many enemies of this wave are fast melee enemies (B19, GDD §8 level 3).
-func _get_fast_enemy_count(wave_number: int) -> int:
-	if wave_number < BALANCE_CONFIG.melee_fast_first_wave:
+func _get_fast_enemy_count(wave_number: int, regular_count: int) -> int:
+	if wave_number < BALANCE_CONFIG.melee_fast_first_wave or regular_count <= 0:
 		return 0
-	return clampi(roundi(enemy_count * BALANCE_CONFIG.melee_fast_wave_share), 0, enemy_count)
+	return clampi(roundi(regular_count * BALANCE_CONFIG.melee_fast_wave_share), 0, regular_count)
 
 
-## Spreads the fast enemies evenly through the spawn order so they mix with the basic ones.
-func _is_fast_slot(index: int, fast_count: int) -> bool:
-	return floori((index + 1) * fast_count / float(enemy_count)) > floori(index * fast_count / float(enemy_count))
+## True for `count` slots spread evenly over `total`, so special enemies mix with the rest.
+func _is_spread_slot(index: int, count: int, total: int) -> bool:
+	if total <= 0 or count <= 0:
+		return false
+	return floori((index + 1) * count / float(total)) > floori(index * count / float(total))
 
 
-func _spawn_enemy(zone: EnemySpawnZone, fast: bool) -> void:
-	var scene := MELEE_FAST_SCENE if fast else enemy_scene
+func _spawn_enemy(zone: EnemySpawnZone, scene: PackedScene) -> void:
 	var enemy := scene.instantiate() as Enemy
 	enemy.hunts_player = true
 	enemy.died.connect(_on_enemy_died, CONNECT_ONE_SHOT)

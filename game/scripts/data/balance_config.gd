@@ -31,6 +31,28 @@ extends Resource
 ## Fast melee enemy damage relative to melee_basic.
 @export var melee_fast_damage_multiplier: float = 1.5
 
+@export_group("Mutant wolf")
+## Every this many waves one more mutant wolf (big, radioactive green, fast and tough) joins
+## the wave as one extra enemy. 5 means 1 in waves 5–9, 2 in waves 10–14, 3 from wave 15…
+@export_range(1, 50) var mutant_wolf_wave_interval: int = 5
+## Size of the mutant wolf relative to a normal enemy.
+@export var mutant_wolf_scale: float = 1.5
+## Speed relative to melee_basic. Fast, but still slower than Kade (player_speed).
+@export var mutant_wolf_speed_multiplier: float = 1.5
+## Damage per bite relative to melee_basic.
+@export var mutant_wolf_damage_multiplier: float = 1.8
+## Seconds between two bites (melee enemies use 0.2). Gives Kade a window to back off.
+@export var mutant_wolf_attack_cooldown: float = 0.5
+## Health = seconds the player needs to kill it with their best weapon, firing nonstop and
+## hitting every shot (sustained damage per second, buffs and reloads included). It scales
+## with the player's damage, so damage buffs never make it trivial.
+@export var mutant_wolf_time_to_kill: float = 7.0
+## Health floor, in case the player's damage cannot be read (e.g. isolated test scenes).
+@export var mutant_wolf_min_health: float = 250.0
+## Items it drops when it dies.
+@export_range(1, 10) var mutant_wolf_loot_drops: int = 2
+@export_group("")
+
 @export_group("Waves")
 ## Enemies in wave 1 (GDD §8 level 1: 5–8 enemies).
 @export_range(1, 50) var wave_base_enemy_count: int = 6
@@ -122,3 +144,10 @@ extends Resource
 @export var risk_high_threshold: float = 2.0
 ## Lowest threat multiplier shown as "extreme" risk.
 @export var risk_extreme_threshold: float = 2.75
+
+
+## Mutant wolves in `wave` (1-based): one more every mutant_wolf_wave_interval waves.
+func get_mutant_wolf_count(wave: int) -> int:
+	if mutant_wolf_wave_interval <= 0 or wave <= 0:
+		return 0
+	return floori(wave / float(mutant_wolf_wave_interval))
