@@ -9,6 +9,16 @@ class_name Bullet
 
 var _age: float = 0.0
 
+func _ready() -> void:
+	# The muzzle can already be inside an enemy's hitbox at point-blank range; without this
+	# the ray starts inside the shape, ignores it and the bullet flies through the enemy.
+	ray.hit_from_inside = true
+
+## Makes the bullet ignore `body` (e.g. the shooter's own body and hitbox), so that
+## hit_from_inside never hits whoever fired it.
+func ignore(body: CollisionObject2D) -> void:
+	ray.add_exception(body)
+
 func _physics_process(delta: float) -> void:
 	var motion: Vector2 = transform.x * SPEED * delta
 	ray.target_position = Vector2(motion.length(), 0)  # local, hacia +X

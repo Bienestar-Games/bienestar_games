@@ -24,6 +24,8 @@ const ORBIT_RADIUS: float = 30.0
 
 ## Cached damage of one bullet; negative until _get_bullet_damage() reads it.
 var _bullet_damage: float = -1.0
+## Collision objects of the player holding this weapon; see _get_owner_colliders().
+var _owner_colliders: Array[CollisionObject2D] = []
 
 #func _process(delta: float) -> void:
 	#_update_orbit_and_aim()
@@ -55,6 +57,9 @@ func _spawn_bullet() -> void:
 		bullet.global_position = muzzle.global_position
 		bullet.global_rotation = global_rotation + _get_weapon_inaccuracy()
 		bullet.DAMAGE *= damage_multiplier
+		if player != null:
+			for body in _get_owner_colliders(player):
+				bullet.ignore(body)
 
 ## Damage per second this weapon deals firing nonstop with every bullet hitting, counting
 ## reloads and the owner's buffs. Used to size enemies against the player (e.g. the mutant wolf).
@@ -83,6 +88,14 @@ func _get_bullet_damage() -> float:
 		if bullet != null:
 			bullet.free()
 	return _bullet_damage
+
+## The owner's own body and areas (hitbox…), which its bullets must never hit. Cached.
+func _get_owner_colliders(player: Player) -> Array[CollisionObject2D]:
+	if _owner_colliders.is_empty():
+		_owner_colliders.append(player)
+		for node in player.find_children("*", "CollisionObject2D", true, false):
+			_owner_colliders.append(node as CollisionObject2D)
+	return _owner_colliders
 
 func _get_weapon_inaccuracy() -> float:
 	return randf_range(-40,40)/360
