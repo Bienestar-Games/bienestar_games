@@ -6,7 +6,7 @@ const WALL_SCENE: PackedScene = preload("res://scenes/world/wall/wall.tscn")
 
 signal active_weapon_changed(weapon: Weapon)
 ## Emitted when an item can't be picked up because Kade already carries the maximum
-## (currently only throwable walls).
+## (throwable walls) or the buff it grants is already at its cap (damage, bullets, max health).
 signal pickup_rejected
 ## Emitted when the number of throwable walls Kade carries changes.
 signal throwable_wall_count_changed(count: int)
@@ -37,12 +37,21 @@ func add_item(item: ItemData) -> bool:
 			_apply_heal(item)
 			return true
 		"damage_up":
+			if is_buff_capped(item.item_type):
+				pickup_rejected.emit()
+				return false
 			_apply_damage_up(item)
 			return true
 		"bullets_up":
+			if is_buff_capped(item.item_type):
+				pickup_rejected.emit()
+				return false
 			_apply_bullets_up(item)
 			return true
 		"max_health_up":
+			if is_buff_capped(item.item_type):
+				pickup_rejected.emit()
+				return false
 			_apply_max_health_up(item)
 			return true
 		"throwable_wall":
@@ -52,6 +61,18 @@ func add_item(item: ItemData) -> bool:
 			_throwable_wall_count += 1
 			throwable_wall_count_changed.emit(_throwable_wall_count)
 			return true
+	return false
+
+## True when the buff granted by `item_type` already reached its cap in balance_config,
+## so picking up another one would do nothing. Items that are not buffs are never capped.
+func is_buff_capped(item_type: String) -> bool:
+	match item_type:
+		"damage_up":
+			return damage_multiplier >= BALANCE_CONFIG.consumable_damage_multiplier_cap
+		"bullets_up":
+			return extra_bullets_per_shot >= BALANCE_CONFIG.consumable_bullets_up_cap
+		"max_health_up":
+			return max_health >= BALANCE_CONFIG.player_max_health_cap
 	return false
 
 ## Reads `modifier_value` from the item's ConsumableAction, or 0 when the item has none.

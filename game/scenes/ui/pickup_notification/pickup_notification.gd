@@ -43,10 +43,17 @@ static func describe_pickup(item: ItemData) -> String:
 			return "%s +%d" % [item.item_name, amount]
 	return item.item_name
 
-## Player-facing text for a rejected pickup, e.g. "Walls full".
+## Player-facing text for a rejected pickup, e.g. "Walls full" or "Damage at its limit".
 static func describe_rejection(item: ItemData) -> String:
-	if item.item_type == "throwable_wall":
-		return "Walls full"
+	match item.item_type:
+		"throwable_wall":
+			return "Walls full"
+		"damage_up":
+			return "Damage at its limit"
+		"bullets_up":
+			return "Bullets per shot at their limit"
+		"max_health_up":
+			return "Max health at its limit"
 	return "Can't carry %s" % item.item_name
 
 static func _get_amount(item: ItemData) -> int:
